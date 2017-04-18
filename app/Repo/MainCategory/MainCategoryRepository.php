@@ -4,7 +4,7 @@ use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
 use App\MainCategory;
 
-class MainRepository extends BaseRepository implements MainInterface{
+class MainCategoryRepository extends BaseRepository implements MainCategoryInterface{
 
 	public function __construct(){
 

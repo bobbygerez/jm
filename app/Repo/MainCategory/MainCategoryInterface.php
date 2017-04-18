@@ -2,6 +2,6 @@
 
 use App\Repo\BaseInterface;
 
-interface MainInterface extends BaseInterface{
+interface MainCategoryInterface extends BaseInterface{
 
 }

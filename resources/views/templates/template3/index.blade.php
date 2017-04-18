@@ -4,56 +4,50 @@
     <div class="container">
         <div class="row">
             <div class="row">
-                <div class="col-sm-3 col-md-2">
+                <div class="col-sm-4 col-md-4">
                     <!-- Block vertical-menu -->
                     <div class="block block-vertical-menu">
                         <div class="vertical-head">
-                            <h5 class="vertical-title">Merchants</h5>
+                            <h5 class="vertical-title">Categories</h5>
                         </div>
                         <div class="vertical-menu-content">
                             <ul class="vertical-menu-list">
 
-                                    <li class="ef4896"><a href="#"><img class="icon-menu" alt="Funky roots" src=""></a>
-                                        <div class="vertical-dropdown-menu">
-                                            <div class="vertical-groups col-sm-12">
-                                                <div class="row">
-                                                    <div class="col-sm-3">
-                                                        <div class="block-content-vertical-menu">
-                                                            <h3 class="head" style="text-align: center;"></h3>
-                                                            <div class="inner">
-                                                                <p></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <div class="row mega-products">
+                                    @foreach($maincategories as $maincategory)
+                                        <li class="ef4896"><a href="{{ url('products/maincategories/'. $maincategory->id) }}"><img class="icon-menu" alt="Funky roots" src="{{ asset('template3/data/'. $loop->iteration. '.png') }}">{{ $maincategory->name }}</a>
+                                            <div class="vertical-dropdown-menu">
+                                                <div class="vertical-groups col-sm-12">
+                                                    <div class="row">
 
-                                                                <div class="col-sm-4 mega-product">
-                                                                    <div class="product-avatar">
-                                                                        <a href="#"><img src="" alt"></a>
+                                                        @foreach($maincategory->merchantcategory as $mcategory)
+                                                            <div class="col-sm-6">
+                                                                <div class="block-content-vertical-menu">
+                                                                    <h3 class="head" style="text-align: center;">
+                                                                       <a href="" style="color:white"> {{ $mcategory->name }}
+                                                                        </a>
+                                                                    </h3>
+                                                                     
+                                                                    <div class="inner">
+                                                                        @foreach($mcategory->merchantSubcategory as $msub)
+                                                                            <p><a href=""> {{ $msub->name }} </a></p>
+
+                                                                        @endforeach
                                                                     </div>
-                                                                    <div class="product-name">
-                                                                        <a href="#"> </a>
-                                                                    </div>
-                                                                    <div class="price-box">
-                                                                        <span class="product-price"></span>
-                                                                        <span class="product-price-old">$169.00</span>
-                                                                    </div>
-                                                                    <div class="product-star">
-                                                                        <i class="fa fa-star"></i>
-                                                                        <i class="fa fa-star"></i>
-                                                                        <i class="fa fa-star"></i>
-                                                                        <i class="fa fa-star"></i>
-                                                                        <i class="fa fa-star-half-o"></i>
-                                                                    </div>
+
                                                                 </div>
-                                                            
-                                                        </div>
+                                                            </div>
+
+                                                                @if(($loop->iteration == 2))
+                                                                  <div class="clearfix"></div>
+                                                                @endif
+                                                        @endforeach
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+
+                                    @endforeach
                                 
                             </ul>
                         </div>
@@ -61,7 +55,7 @@
                     <!-- ./Block vertical-menu -->
                 </div>
                 <!-- block search -->
-                <div class="col-sm-5 col-md-7">
+                <div class="col-sm-5 col-md-5">
                     <div class="advanced-search box-radius">
                         <form class="form-inline">
                             <div class="form-group search-category">
@@ -80,7 +74,7 @@
                 </div>
                 <!-- ./block search -->
                 <!-- block cl-->
-                <div class="col-sm-4 col-md-3 wrap-block-cl">
+                <div class="col-sm-3 col-md-3 wrap-block-cl">
                     <div class="inner-cl box-radius">
                         <div class="dropdown language">
                           <a data-toggle="dropdown" role="button"><img src="" alt="languae">English</a>

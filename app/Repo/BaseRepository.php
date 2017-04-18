@@ -35,5 +35,10 @@ class BaseRepository{
 
 		return $this->modelName->where($fieldName, $id);
 	}
+
+	public function with($array){
+
+		return $this->modelName->with($array);
+	}
 	
 }

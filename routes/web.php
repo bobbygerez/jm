@@ -12,3 +12,9 @@ Route::group(['prefix' => 'api'], function(){
 });
 
 Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
+
+Route::group(['prefix' => 'products'], function(){
+
+	Route::get('maincategories', 'NavController@mainCategories');
+
+});

@@ -20,7 +20,7 @@ class PhotosTableSeeder extends Seeder
         	Photo::create([
 
         			'path' => 'images/uploads/' . $i . '.jpg',
-        			'imageable_id' => rand(1, 60),
+        			'imageable_id' => rand(1, 10),
         			'imageable_type' => 'App\Product'
 
         		]);

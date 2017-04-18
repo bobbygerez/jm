@@ -23,6 +23,6 @@ class MainCategoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Repo\MainCategory\MainCategoryInterface', 'App\Repo\MainCategory\MainRepository');
+        $this->app->bind('App\Repo\MainCategory\MainCategoryInterface', 'App\Repo\MainCategory\MainCategoryRepository');
     }
 }
