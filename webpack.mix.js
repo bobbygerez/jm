@@ -11,5 +11,33 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix.js('resources/assets/js/app.js', 'public/js');
+
+  /* .sass('resources/assets/sass/app.scss', 'public/css'); */
+
+mix.styles([
+	'public/template3/assets/css/bootstrap.min.css',
+    'public/template3/assets/css/owl.carousel.min.css',
+    'public/template3/assets/css/animated.css',
+    'public/template3/assets/css/font-awesome.css',
+    'public/template3/assets/css/ui.css',
+    'public/template3/assets/css/jquery.mmenu.all.css',
+    'public/template3/assets/css/flaticon.css',
+    'public/template3/assets/css/style.css',
+], 'public/template3/assets/css/template3.css');
+
+
+mix.scripts([
+    'public/template3/assets/js/jquery.min.js',
+    'public/template3/assets/js/bootstrap.min.js',
+    'public/template3/assets/js/wow.min.js',
+    'public/template3/assets/js/owl.carousel.min.js',
+    'public/template3/assets/js/jquery.appear.min.js',
+    'public/template3/assets/js/jquery.countTo.js',
+    'public/template3/assets/js/ui.js',
+    'public/template3/assets/js/jquery.bxslider.min.js',
+    'public/template3/assets/js/jquery.mmenu.all.min.js',
+    'public/template3/assets/js/chosen.jquery.min.js',
+    'public/template3/assets/js/jquery.countdown.js',
+    'public/template3/assets/js/frontend.js',
+], 'public/template3/assets/js/template3.js');

@@ -1,5 +1,6 @@
 <?php namespace App\Repo;
 
+use Obfuscate;
 
 class BaseRepository{
 
@@ -18,27 +19,25 @@ class BaseRepository{
 
 	public function find( $id ){
 
-		return $this->modelName->find($id);
+		$origId = Obfuscate::decode($id);
+		return $this->modelName->find($origId);
 	}
 
-	public function update($id){
-
-		return false;
-	}
-
-	public function delete($id){
-
-		return $this->modelName->find($id)->delete();
-	}
-
+	
 	public function where($fieldName, $id){
 
-		return $this->modelName->where($fieldName, $id);
+		$origId = Obfuscate::decode($id);
+		return $this->modelName->where($fieldName, $origId);
 	}
 
 	public function with($array){
 
 		return $this->modelName->with($array);
+	}
+
+	public function searchPaginateAndOrder(){
+
+		return $this->modelName->searchPaginateAndOrder();
 	}
 	
 }

@@ -12,5 +12,4 @@ class ProvinceRepository extends BaseRepository implements ProvinceInterface{
 	}
 
 	
-	
 }

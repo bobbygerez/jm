@@ -18,8 +18,8 @@ class CreateProductPricesTable extends Migration
             $table->integer('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')
                 ->on('products');
-            $table->decimal('prices');
-            $table->boolean('default')->default(0);
+            $table->decimal('price');
+            $table->boolean('is_primary')->default(0);
             $table->timestamps();
         });
     }

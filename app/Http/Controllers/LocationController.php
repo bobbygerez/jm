@@ -7,6 +7,7 @@ use App\Repo\Region\RegionInterface;
 use App\Repo\Province\ProvinceInterface;
 use App\Repo\City\CityInterface;
 use App\Repo\Barangay\BarangayInterface;
+use Obfuscate;
 class LocationController extends Controller
 {
 
@@ -25,6 +26,8 @@ class LocationController extends Controller
     
 
     public function region(){
+
+        $collection  = $this->region->all();
 
     	return response()->json([
 

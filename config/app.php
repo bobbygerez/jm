@@ -182,6 +182,10 @@ return [
         App\Providers\CityServiceProvider::class,
         App\Providers\BarangayServiceProvider::class,
         App\Providers\MainCategoryServiceProvider::class,
+        App\Providers\OptimusServiceProvider::class,
+        App\Providers\MerchantCategoryServiceProvider::class,
+        App\Providers\MerchantSubcategoryServiceProvider::class,
+        App\Providers\ProductServiceProvider::class,
 
     ],
 
@@ -231,6 +235,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Obfuscate' => App\Facades\OptimusFacade::class,
 
     ],
 
