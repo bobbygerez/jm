@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repo\MainCategory\MainCategoryInterface;
 use App\Repo\MerchantCategory\MerchantCategoryInterface;
 use App\Repo\MerchantSubcategory\MerchantSubcategoryInterface;
+use Obfuscate;
 
 class NavController extends Controller
 {
@@ -23,27 +24,44 @@ class NavController extends Controller
     
     public function home(){
 
-    	$mainCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->take(8)->get();
+    	$mainCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->get();
     	
     	return view('templates.template3.index', compact('mainCategories'));
     }
 
-    public function mainCategories(){
+    public function mainCategories($maincategoryName, $maincategoryId){
     	
-        return view('templates.template3.maincategories');
+        $menuCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->get();
+
+ 
+        $result = $this->mainCategory->where('id', $maincategoryId)->with(['merchantCategory','merchantCategory.merchantSubcategory.products']);
+        $mainCategories = $this->mainCategory->first($result);
+        
+
+     
+        return view('templates.template3.products.main-products', compact('mainCategories', 'menuCategories'));
     }
 
-    public function merchantCategories($merchantCategoryId){
+    public function merchantCategories($maincategoryName, $merchantCategoryName, $merchantCategoryId){
 
-    	$merchantCategories = $this->merchantCategory->where('id', $merchantCategoryId)->with(['merchantSubcategory', 'products'])->get();
-        dd($merchantCategories);
+        $menuCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->get();
+
+    	$result = $this->merchantCategory->where('id', $merchantCategoryId)->with(['mainCategory', 'merchantSubcategory','merchantSubcategory.products' ]);
+
+        $merchantCategories = $this->merchantCategory->first($result);
+          
+        return view('templates.template3.products.merchant-category-products', compact('merchantCategories', 'menuCategories', 'maincategoryName'));
     }
 
-    public function merchantSubcategories($merchantSubcategoryId){
+    public function merchantSubcategories($maincategoryName, $merchantCategoryName, $merchantSubName, $merchantSubNameId){
 
+        $menuCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->get();
 
-        $merchantSubcategories = $this->merchantSubcategory->where('id', $merchantSubcategoryId)->with('products')->get();
-        dd($merchantSubcategories);
+        $result = $this->merchantSubcategory->where('id', $merchantSubNameId)->with(['products', 'merchantCategory.mainCategory', 'merchantCategory']);
+
+        $merchantSubcategories = $this->merchantCategory->first($result);
+        
+        return view('templates.template3.products.merchant-subcategory-products', compact('merchantSubcategories', 'menuCategories'));
     }
 
     public function sample(){

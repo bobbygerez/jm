@@ -18,4 +18,14 @@ class Photo extends Model
 
     	return $this->morphTo();
     }
+
+    public function scopeIsPrimary($query){
+
+    	$result  = $query->where('is_primary', 1)->first();
+
+    	if( $result ){
+
+    		return $result->path;
+    	}
+    }
 }

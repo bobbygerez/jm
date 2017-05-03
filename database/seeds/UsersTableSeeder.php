@@ -8,8 +8,10 @@ use App\MerchantSubcategory;
 use App\Product;
 use App\Unit;
 use App\Photo;
-use App\ProductPrice;
+use App\Price;
 use App\Role;
+use App\Branch;
+use App\Merchant;
 
 class UsersTableSeeder extends Seeder
 {
@@ -24,10 +26,6 @@ class UsersTableSeeder extends Seeder
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $product = new Product();
-        $product->merchantSubcategory()->detach();
-        $product->mainCategory()->detach();
-        
 		User::truncate();
         MainCategory::truncate();
         MerchantCategory::truncate();
@@ -35,14 +33,21 @@ class UsersTableSeeder extends Seeder
         Unit::truncate();
         Product::truncate();
         Photo::truncate();
+        Price::truncate();
+        Branch::truncate();
+        Merchant::truncate();
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
         for ($i=1; $i < 10 ; $i++) { 
+
+             $name = explode(' ', $faker->name);
          	
         	 $user = User::create([
 
-        	 		'name' => $faker->name,
+        	 		'firstname' => $name[0],
+                    'lastname' => $name[1],
         	 		'email' => $faker->email,
+                    'status' => rand(0,1),
         	 		'password' => Hash::make(1234)
 
         	 	]);
@@ -57,15 +62,38 @@ class UsersTableSeeder extends Seeder
 
             ]);
 
+            $merchant = Merchant::create([
+
+                    'created_by' => $user->id,
+                    'name' => $faker->company,
+                    'email' => $faker->email,
+                    'website' => 'http://www.'.$faker->domainName,
+                    'phone_no' => $faker->tollFreePhoneNumber,
+                    'mobile_no' => $faker->e164PhoneNumber
+
+                ]);
+
+            
 
             for ($xy=0; $xy < 2; $xy++) { 
 
                 $maincategory = MainCategory::create([
 
                     'user_id' => $user->id,
-                    'name' => $faker->sentence($nbWords = 3, $variableNbWords = true),
+                    'name' => $faker->word . ' ' . $faker->word,
                     'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
                 ]);
+
+                $branch = Branch::create([
+                    'merchant_id' => $merchant->id,
+                    'created_by' => $user->id,
+                    'phone_no' => $faker->tollFreePhoneNumber,
+                    'mobile_no' => $faker->e164PhoneNumber,
+
+                ]);
+
+                 $newBranchMerchant = Branch::find($branch->id);
+                
 
 
                     for( $ab=0; $ab < 5; $ab++){
@@ -74,11 +102,11 @@ class UsersTableSeeder extends Seeder
 
                                 'user_id' => $user->id,
                                 'maincategory_id' => $maincategory->id,
-                                'name' => $faker->sentence($nbWords = 3, $variableNbWords = true),
+                                'name' => $faker->word . ' ' . $faker->word,
                                 'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
                             ]);
 
-                            
+
                             for($abc=0; $abc < 5; $abc++){
 
                                 $merchantSubcategory = MerchantSubcategory::create([
@@ -89,9 +117,11 @@ class UsersTableSeeder extends Seeder
                                         'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
                                     ]);
 
+                                for($abcd=0; $abcd < 2; $abcd++){
                                  $product =  Product::create([
                                     'user_id' => $user->id,
-                                    'name' => $faker->word,
+                                    'merchant_subcategory_id' => $merchantSubcategory->id,
+                                    'name' => $faker->word . ' ' . $faker->word,
                                     'model_number' => $faker->isbn13,
                                     'unit_id' => $unit->id,
                                     'desc' => $faker->text($maxNbChars = 100),
@@ -100,7 +130,13 @@ class UsersTableSeeder extends Seeder
 
                                 ]);
 
-                                 if($abc === 0){
+                                 $newBranchMerchant->products()->attach($branch->id, [
+
+                                        'product_id' => $product->id
+
+                                    ]);
+
+                                  
 
                                         Photo::create([
 
@@ -111,38 +147,16 @@ class UsersTableSeeder extends Seeder
 
                                         ]);
 
-                                         ProductPrice::create([
+                                         Price::create([
                                             'product_id' => $product->id,
                                             'price' => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100000),
                                             'is_primary' => 1
                                         ]);
-                                    }
-                                    else{
+                                    
 
-                                        Photo::create([
-
-                                            'path' => 'images/uploads/' . rand(1,67) . '.jpg',
-                                            'imageable_id' => $product->id,
-                                            'imageable_type' => 'App\Product',
-                                            'is_primary' => 0
-
-                                        ]);
-
-                                        ProductPrice::create([
-                                            'product_id' => $product->id,
-                                            'price' => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100000),
-                                            'is_primary' => 0
-                                        ]);
-                                    }
-
-                                $myProduct = Product::find($product->id);
-                                $maincategory->products()->attach($maincategory->id, ['product_id' => $product->id]);
-
-                                $merchantcategory->products()->attach($merchantcategory->id, ['product_id' => $product->id]);
-                                $myProduct->merchantSubcategory()->attach($product->id, ['merchant_subcategory_id' => $merchantSubcategory->id ]);
 
                                 
-
+                                 } /** END LOOP $abcd **/
                                     
                                 
 

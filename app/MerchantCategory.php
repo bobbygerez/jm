@@ -19,4 +19,14 @@ class MerchantCategory extends Model
 
     	return $this->belongsToMany('App\Product', 'merchant_category_product', 'merchant_category_id', 'product_id');
     }
+
+    public function mainCategory(){
+
+        return $this->hasOne('App\MainCategory', 'id', 'maincategory_id');
+    }
+
+    public function getNameAttribute( $value ){
+
+    	return str_slug($value);
+    }
 }

@@ -493,16 +493,16 @@ jQuery(document).ready(function ($) {
     $('.slider-range').each(function(e) {
         $(this).slider({
             range: true,
-            min: 3,
-            max: 6789,
-            values: [3, 6789],
+            min: 5,
+            max: 20000,
+            values: [5, 20000],
             slide: function (event, ui) {
-                $(this).find('.amount').html('$' + ui.values[0])
-                $(this).find('.amount2').html('$' + ui.values[1]);
+                $(this).find('.amount').html('&#8369;' + ui.values[0])
+                $(this).find('.amount2').html('&#8369;' + ui.values[1]);
             }
         });
-        $(this).find('.amount').html('$' + $(this).slider('values', 0));
-        $(this).find('.amount2').html(' $' + $(this).slider('values', 1));
+        $(this).find('.amount').html('&#8369;' + $(this).slider('values', 0));
+        $(this).find('.amount2').html('&#8369;' + $(this).slider('values', 1));
     });
 
     //check out shipping

@@ -48,7 +48,7 @@ class LocationController extends Controller
 
     	return response()->json([
 
-    			'provinces' => $this->province->all()
+    			'provinces' => $this->province->orderBy('provDesc', 'asc')->get()
     		]);
     }
 
@@ -64,7 +64,7 @@ class LocationController extends Controller
 
     	return response()->json([
 
-    			'cities' => $this->city->where('provCode', $provCode)->get()
+    			'cities' => $this->city->whereNoDecode('provCode', $provCode)->get()
     		]);
     }
 
@@ -72,7 +72,7 @@ class LocationController extends Controller
 
     	return response()->json([
 
-    			'barangays' => $this->barangay->where('citymunCode', $cityCode)->get()
+    			'barangays' => $this->barangay->whereNoDecode('citymunCode', $cityCode)->get()
     		]);
     }
 }

@@ -5,8 +5,8 @@ namespace App\Helpers;
 trait ProductDataViewer {
 
 
-	public function scopeSearchPaginateAndOrder($query){
-		//$mainCategories = $this->mainCategory->where('id', $mainCategoryId)->with(['merchantCategory', 'merchantCategory.merchantSubcategory', 'products'])->get();
+	public function scopeProductsViewer($query){
+		
 		return $query->with(['photos', 'unit'])->paginate(10);
 	}
 }

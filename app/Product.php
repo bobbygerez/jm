@@ -22,9 +22,14 @@ class Product extends Model
     	return $this->morphMany('App\Photo', 'imageable');
     }
 
+    public function prices(){
+
+        return $this->hasMany('App\Price', 'product_id', 'id');
+    }
+
     public function merchantSubcategory(){
 
-    	return $this->belongsToMany('App\MerchantSubcategory', 'merchant_subcategory_product', 'merchant_subcategory_id', 'product_id');
+    	return $this->hasOne('App\MerchantSubcategory', 'id', 'merchant_subcategory_id');
     }
 
     public function mainCategory(){
@@ -40,5 +45,10 @@ class Product extends Model
     public function getDiscountAttribute($value){
 
         return $value . '%';
+    }
+
+    public function getNameAttribute($value){
+
+        return str_slug($value);
     }
 }

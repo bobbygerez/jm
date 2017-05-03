@@ -30,6 +30,12 @@ class BaseRepository{
 		return $this->modelName->where($fieldName, $origId);
 	}
 
+	public function whereNoDecode($fieldName, $id){
+
+		return $this->modelName->where($fieldName, $id);
+	}
+
+
 	public function with($array){
 
 		return $this->modelName->with($array);
@@ -39,5 +45,20 @@ class BaseRepository{
 
 		return $this->modelName->searchPaginateAndOrder();
 	}
+
+	public function orderBy($fieldName, $sort){
+
+		return $this->modelName->orderBy($fieldName, $sort);
+	}
 	
+	public function first( $model ){
+
+		$result = $model->first();
+		if($result){
+
+			return $result;
+		}
+
+		return [];
+	}
 }

@@ -17,11 +17,16 @@ class MerchantSubcategory extends Model
 
     public function products(){
 
-    	return $this->belongsToMany('App\Product', 'merchant_subcategory_product', 'merchant_subcategory_id', 'product_id');
+    	return $this->hasMany('App\Product', 'merchant_subcategory_id', 'id');
     }
 
     public function merchantCategory(){
 
-    	return $this->hasMany('App\MerchantCategory', 'id', 'merchant_category_id');
+    	return $this->hasOne('App\MerchantCategory', 'id', 'merchant_category_id');
+    }
+
+    public function getNameAttribute($value){
+
+        return str_slug($value);
     }
 }

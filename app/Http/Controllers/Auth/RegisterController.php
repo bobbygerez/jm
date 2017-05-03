@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Traits\CaptchaTrait;
 
 class RegisterController extends Controller
 {
@@ -19,7 +20,7 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
+    use CaptchaTrait;
     use RegistersUsers;
 
     /**
@@ -47,11 +48,34 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+
+
+        $data['captcha'] = $this->captchaCheck($data);
+
+        $validator = Validator::make($data,
+            [
+                'firstname'            => 'required',
+                'lastname'             => 'required',
+                'email'                 => 'required|email|unique:users',
+                'password'              => 'required|min:6|max:20',
+                'password_confirmation' => 'required|same:password',
+                'g-recaptcha-response'  => 'required',
+                'captcha'               => 'required|min:1'
+            ],
+            [
+                'firstname.required'   => 'First Name is required',
+                'lastname.required'    => 'Last Name is required',
+                'email.required'        => 'Email is required',
+                'email.email'           => 'Email is invalid',
+                'password.required'     => 'Password is required',
+                'password.min'          => 'Password needs to have at least 6 characters',
+                'password.max'          => 'Password maximum length is 20 characters',
+                'g-recaptcha-response.required' => 'Captcha is required',
+                'captcha.min'           => 'Wrong captcha, please try again.'
+            ]
+        );
+
+        return $validator;
     }
 
     /**
@@ -62,8 +86,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        
+                
         return User::create([
-            'name' => $data['name'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

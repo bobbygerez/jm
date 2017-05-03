@@ -1,6 +1,6 @@
 <?php
 
-/** AJAX ROUTES **/
+/******************* AJAX ROUTES ******************/
 
 Route::group(['prefix' => 'api'], function(){
 
@@ -10,7 +10,7 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('provinces', 'LocationController@provinceAll');
 	Route::get('cities', 'LocationController@cityAll');
 	Route::get('cities/{province_id}', 'LocationController@provinceCities');
-	Route::get('barangay/{cityCode}', 'LocationController@cityBarangay');
+	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
 
 	/** Products **/
 	
@@ -22,18 +22,45 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('sample', 'AjaxCategoriesController@getData');
 
 	/** Products **/
-	Route::get('products/maincategories', 'Product\ApiProductController@maincategories');
+	Route::get('products', 'Product\ApiProductController@getData');
 
 });
 
+/******************* END AJAX ROUTES ******************/
+
+
+/****************** IMPLICIT ROUTES *****************/
+Route::get('logout', 'Auth\LoginController@logout');
+Route::auth();
 Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
+Route::get('dashboard', 'DashboardController@index');
 
-Route::group(['prefix' => 'products'], function(){
+/******************  END IMPLICIT ROUTES *****************/
 
-	Route::get('maincategories', 'NavController@mainCategories');
-	Route::get('merchant-categories/{merchantcategory_id}', 'NavController@merchantCategories');
-	Route::get('merchant-subcategories/{merchantsubcategory_id}', 'NavController@merchantSubcategories');
 
+
+
+
+/************ RESOURCE CONTROLLER ****************/
+
+	/*** Users Resource ****/
+		Route::resource('user', 'UserController');
+		Route::resource('admin', 'AdminController');
+	/*** End Users Resource ***/
+
+/************ END RESOURCE CONTROLLER ************/
+ 
+
+
+
+ /******************* ROUTE PREFIX ********************/
+
+Route::group(['prefix' => 'browse'], function(){
+
+	Route::get('{maincategory}/{maincategory_id}', 'NavController@mainCategories');
+	Route::get('{maincategory}/{merchantcategory}/{merchantcategory_id}', 'NavController@merchantCategories');
+	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{merchantsub_id}', 'NavController@merchantSubcategories');
+	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{product_name}/{product_id}', 'Product\ProductController@getProduct');
 });
 
-Route::get('sample', 'NavController@sample');
+/****************** END ROUTE PREFIX ***************/

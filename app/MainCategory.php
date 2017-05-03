@@ -33,5 +33,10 @@ class MainCategory extends Model
 
     	return $this->belongsToMany('App\Product', 'maincategory_product', 'maincategory_id', 'product_id');
     }
+
+    public function getNameAttribute( $value ){
+
+        return str_slug($value);
+    }
     
 }
