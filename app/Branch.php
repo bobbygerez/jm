@@ -16,7 +16,7 @@ class Branch extends Model
    		'business_type'
    ];
 
-   public function merchants(){
+   public function merchant(){
 
    		return $this->hasOne('App\Merchant', 'id', 'merchant_id');
    }

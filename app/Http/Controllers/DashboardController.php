@@ -8,6 +8,8 @@ use Auth;
 class DashboardController extends Controller
 {
 
+	protected $user;
+
     public function __construct(){
 
     	$this->middleware('auth');
@@ -16,7 +18,6 @@ class DashboardController extends Controller
 
     public function index(){
 
-    	
-    	
+    	return view('templates.template3.dashboard.index');
     }
 }

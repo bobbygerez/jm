@@ -186,6 +186,8 @@ return [
         App\Providers\MerchantCategoryServiceProvider::class,
         App\Providers\MerchantSubcategoryServiceProvider::class,
         App\Providers\ProductServiceProvider::class,
+        App\Providers\RoleServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
 

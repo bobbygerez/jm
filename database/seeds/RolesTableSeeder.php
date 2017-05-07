@@ -16,13 +16,13 @@ class RolesTableSeeder extends Seeder
         Role::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
-        Role::create([ 'name' => 'JMAdmin']);
+        Role::create([ 'name' => 'Admin']);
         Role::create([ 'name' => 'JMValidator']);
         Role::create([ 'name' => 'JMDelivery']);
-        Role::create([ 'name' => 'MAdmin']);
+        Role::create([ 'name' => 'Merchant']);
         Role::create([ 'name' => 'MValidator']);
         Role::create([ 'name' => 'MDelivery']);
-        Role::create([ 'name' => 'Client']);
+        Role::create([ 'name' => 'User']);
 
     }
 }

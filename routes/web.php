@@ -12,9 +12,9 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('cities/{province_id}', 'LocationController@provinceCities');
 	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
 
-	/** Products **/
-	
-
+	/** Users **/
+	Route::get('user/admin', 'User\AdminController@getUsers');
+	Route::get('user/admin/{userid}', 'User\AdminController@getUser');
 	/** Categories **/
 	Route::get('maincategories/{maincategory_id}', 'AjaxCategoriesController@mainCategories');
 	Route::get('merchant-categories/{merchantcategory_id}', 'AjaxCategoriesController@merchantCategories');
@@ -44,8 +44,8 @@ Route::get('dashboard', 'DashboardController@index');
 /************ RESOURCE CONTROLLER ****************/
 
 	/*** Users Resource ****/
-		Route::resource('user', 'UserController');
-		Route::resource('admin', 'AdminController');
+		Route::resource('user', 'User\UserController');
+		Route::resource('admin', 'User\AdminController');
 	/*** End Users Resource ***/
 
 /************ END RESOURCE CONTROLLER ************/

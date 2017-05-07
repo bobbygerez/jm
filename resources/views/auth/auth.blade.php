@@ -21,6 +21,7 @@
 				@include('auth.partials.unconfirm')
 				<div class="panel panel-login">
 					<div class="panel-heading">
+						
 						<div class="row">
 							<div class="col-xs-6">
 								<a href="#" class="active" id="login-form-link">Login</a>
@@ -46,7 +47,7 @@
 @endsection
 
 @section('script')
-    <script type='text/javascript' src="{{ asset('template3/assets/js/register.js') }}"></script>
+	<script type='text/javascript' src="{{ asset('template3/assets/js/template3.js') }}"></script>
 	<script src='https://www.google.com/recaptcha/api.js'></script>
 
 @endsection

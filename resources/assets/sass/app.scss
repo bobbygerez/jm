@@ -1,3 +1,4 @@
+
 .hideVisible{
 	
 	display: none;
@@ -109,4 +110,15 @@
 	color: #fff;
 	background-color: #1CA347;
 	border-color: #1CA347;
+}
+
+
+
+/**********  Pagination *************/
+@media (max-width: 991px) and (min-width: 768px){
+	
+	body .page-nav{
+	
+		width: 100%
+	}
 }

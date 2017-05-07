@@ -42,6 +42,11 @@ class Product extends Model
         return $this->hasOne('App\Unit', 'id', 'unit_id');
     }
 
+    public function branches(){
+
+        return $this->belongsToMany('App\Branch', 'branch_product', 'product_id', 'branch_id');
+    }
+
     public function getDiscountAttribute($value){
 
         return $value . '%';

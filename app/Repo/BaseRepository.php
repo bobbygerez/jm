@@ -30,6 +30,11 @@ class BaseRepository{
 		return $this->modelName->where($fieldName, $origId);
 	}
 
+	public function whereIn($fieldName, $array){
+
+		return $this->modelName->whereIn($fieldName, $array);
+	}
+
 	public function whereNoDecode($fieldName, $id){
 
 		return $this->modelName->where($fieldName, $id);
@@ -49,6 +54,11 @@ class BaseRepository{
 	public function orderBy($fieldName, $sort){
 
 		return $this->modelName->orderBy($fieldName, $sort);
+	}
+
+	public function orWhere($fieldName, $operator, $value){
+
+		return $this->modelName->orWhere($fieldName, $operator, $value);
 	}
 	
 	public function first( $model ){
