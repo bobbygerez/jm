@@ -5,6 +5,10 @@ import axios from 'axios'
 import UserRegister from './components/UserRegister.vue'
 import MainCategoriesProducts from './components/MainCategoriesProducts.vue'
 import SidebarOptions from './components/SidebarOptions.vue'
+import modal from 'vue-strap/src/modal'
+import alert from 'vue-strap/src/alert'
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.bus = new Vue();
 
@@ -13,55 +17,44 @@ var app = new Vue({
   components: {
     UserRegister,
     MainCategoriesProducts,
-    SidebarOptions
+    SidebarOptions,
+    modal,
+    alert
 
   },
   data: {
 
-    Spinner: false
+    Spinner: false,
+    loginShow: false,
+    messages: {},
+    showAlertLogin: false,
+    email: '',
+    password: ''
+  },
+
+  methods: {
+
+    showLogin: function(){
+      this.loginShow = true
+    },
+    LoginMethod: function(){
+
+      var vm = this
+      axios.post('login',{
+          email: vm.email,
+          password: vm.password
+      })
+        .then(function(response){
+            Vue.set(vm.$data, 'messages', response.data)
+
+        })
+        .catch(function(response){
+           Vue.set(vm.$data, 'messages', response)
+        });
+    }
   }
 
   
 })
 
 
-
-
-
-/************* REGISTER AND LOGIN *****************/
-window.$ = window.jQuery = require('jquery');
-$(function() {
-
-    $('#login-form-link').click(function(e) {
-    	$("#login-form").delay(100).fadeIn(100);
- 		$("#register-form").fadeOut(100);
-		$('#register-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
-	$('#register-form-link').click(function(e) {
-		$("#register-form").delay(100).fadeIn(100);
- 		$("#login-form").fadeOut(100);
-		$('#login-form-link').removeClass('active');
-		$(this).addClass('active');
-		e.preventDefault();
-	});
-
-});
-
-$(document).ready(function(){
-    var pathArray = window.location.pathname.split( '/' );
-    var segment_1 = pathArray[1];
-   
-   if (segment_1 == 'register') {
-
-        $("#register-form-link").trigger("click");
-   }
-   else{
-        $('#login-form-link').trigger("click");
-   }
-
-    
-});
-
-/*********** END REGISTER AND LOGIN ******************/

@@ -95,4 +95,35 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+        /**
+     * Handle a registration request for the application.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request) {
+        $validator = $this->validator($request->all());
+
+        if($validator->fails())
+            return response()->json(['ERROR' => $validator->errors()->getMessages()], 422);
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param Request $request
+     * @param  mixed $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user) {
+        return response()->json(['SUCCESS' => 'AUTHENTICATED']);
+    }
 }

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i;Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
 </head>
 <body>
+    <div id="app">
     <header class="header header-style1">
         <div class="header-top">
             <div class="container">
@@ -22,9 +23,9 @@
                 <div class="header-mid-left">
                     <p class="wellcome-to">Wellcome to Super Market</p>
                     <p class="register-or-login">
-                        <a href="{{ url('register') }}" class="register">Register</a>
+                        <a href="#" class="register">Register</a>
                         or
-                        <a href="{{ url('logout') }}" class="login">Logout</a>
+                        <a href="#" class="login" @click="showLogin">Login</a>
                     </p>
                 </div>
                 <div class="header-mid-right">
@@ -1345,10 +1346,63 @@
         </div>
         <a href="#" class="backtotop ts-block"><span class="pulser"> Top</span></a>
     </footer>
+        <modal v-model="loginShow" effect="zoom">
+          <!-- custom header -->
+          <div slot="modal-header" class="modal-header">
+            <h3 class="modal-title text-center">
+              Login to Juan Merkado
+            </h3>
+          </div>
+
+          <div class="modal-body">
+
+                <alert v-model="showAlertLogin" placement="top" duration="3000" type="danger" width="400px" dismissable>
+                  <span class="fa fa-warning"></span>
+                  <strong>Login Error</strong>
+                  <br />
+                  <p v-for="m in messages" style="margin-left: 10px;">@{{ m }}</p>
+                </alert>
+
+                <form id="login-form" action="{{ url('login') }}" method="post" role="form" style="display: block;">
+
+                {{ csrf_field() }}
+
+                <div class="form-group">
+                    <input type="text" v-model="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
+                </div>
+                <div class="form-group">
+                    <input type="password" v-model="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group text-center">
+                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                        <label for="remember"> Remember Me</label>
+                </div>
+               
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="text-center">
+                                <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+          </div>
+          
+          <!-- custom buttons -->
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click="loginShow = false">Exit</button>
+            <button type="button" class="btn btn-success" @click="LoginMethod">Login</button>
+          </div>
+        </modal>
+
     <!--end footer-->
     <!--end footer-->
+      </div>
     <script type='text/javascript' src="{{ asset('template3/assets/js/template3.js') }}"></script>
    
-   
+ 
 </body>
 </html>

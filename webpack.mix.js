@@ -14,7 +14,6 @@ const { mix } = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
 .sass('resources/assets/sass/app.scss', 'public/css'); 
 
-mix.js('resources/assets/js/register.js', 'public/template3/assets/js/');
 mix.js('resources/assets/js/dashboard.js', 'public/template3/dashboard/assets/js/');
 
 mix.styles([

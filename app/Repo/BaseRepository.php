@@ -23,6 +23,16 @@ class BaseRepository{
 		return $this->modelName->find($origId);
 	}
 
+	public function findNoDecode($id){
+
+		return $this->modelName->find($id);
+	}
+
+	public function update($request, $id){
+
+		return $this->modelName->find($id)->update($request->all());
+	}
+
 	
 	public function where($fieldName, $id){
 

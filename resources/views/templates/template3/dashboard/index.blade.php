@@ -144,7 +144,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <user-data-viewer source="{{ url('api/user/admin') }}" v-on:mymodal="showModal" userid="{{ url('api/user/admin/userid') }}" >
+                            <user-data-viewer source="{{ url('api/user/admin') }}" v-on:mymodal="showModal" userid="{{ url('api/user/admin/userid') }}">
 
                             </user-data-viewer>
                         </div>
@@ -160,8 +160,13 @@
               </div>
 
               <div class="modal-body">
+
+             
                     <form>
-                        
+                        <alert  v-model="showTop" duration="3000" placement="top" type="success" width="400px" dismissable >
+                          <span class="icon-info-circled alert-icon-float-left"></span>
+                          <p class="text-center"><strong>@{{ message }}</strong></p>
+                        </alert>
                         <div class="form-group">
                             <label>Lastname</label>
                             <input type="text" class="form-control border-input" v-model="myUser.user.lastname">
@@ -195,6 +200,10 @@
           <div slot="modal-footer" class="modal-footer">
             <button type="button" class="btn btn-default" @click="show = false">Exit</button>
             <button type="button" class="btn btn-success" @click="saveMethod">Save</button>
+            <dropdown text="Delete" type="danger">
+              <li><a href="#confirmDelete" @click="confirmDelete">Confirm Delete?</a></li>
+            </dropdown>
+
           </div>
         </modal>
                    

@@ -5,6 +5,12 @@
               <div class="col-md-4">
                <input type="text" class="form-control border-input" placeholder="Search Lastname, Firstname, Email" v-model="string" >
                </div>
+               <div class="col-md-4">
+                <select class="form-control border-input" v-model="roleId">
+                    <option value="">Select Roles By Group</option>
+                    <option v-for="role in roles"  :value="role.id"> {{ role.name }}</option>
+                </select>
+               </div>
           </div>
       </div>
 
@@ -30,6 +36,9 @@
                   <td>
                     <span v-if="user.status === 1" class="label label-success">Active</span>
                     <span v-if="user.status === 0" class="label label-danger">Inactive</span>
+                  </td>
+                  <td>
+                    
                   </td>
                 </tr>
               
@@ -58,7 +67,9 @@ export default{
         columns: {},
         string: '',
         userId: '',
-        myUser: {}
+        myUser: {},
+        roles: {},
+        roleId: ''
       }
 
           
@@ -67,16 +78,20 @@ export default{
   created(){
 
     this.fetchUserData()
+    bus.$on('updated-users', data => {this.fetchUserData()})
+
 
   },
 
   methods: {
+   
     fetchUserData() {
         var vm = this
-        axios.get(`${this.source}?&string=${this.string}`)
+        axios.get(`${this.source}?&string=${this.string}&roleId=${this.roleId}`)
           .then(function(response) {
             
             Vue.set(vm.$data, 'users', response.data.users);
+            Vue.set(vm.$data, 'roles', response.data.roles);
             
           })
           .catch(function(response) {
@@ -97,10 +112,6 @@ export default{
         .catch(function(response){
 
         })
-        
-
-        
-
 
 
     }
@@ -117,7 +128,12 @@ export default{
     myUser: function(){
 
        this.$emit('mymodal', this.myUser)
-    }
+    },
+
+    roleId: _.debounce(function(){
+
+      this.fetchUserData()
+    }, 500)
   }
 }
 </script>

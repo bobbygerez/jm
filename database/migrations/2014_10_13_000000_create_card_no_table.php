@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMerchantCategoriesTable extends Migration
+class CreateCardNoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class CreateMerchantCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('merchantcategories', function (Blueprint $table) {
+        Schema::create('card_nos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')
                 ->on('users');
-            $table->integer('maincategory_id')->unsigned()->nullable();
-            $table->foreign('maincategory_id')->references('id')
-                ->on('maincategories');
-            $table->string('name');
-            $table->string('desc')->nullable();
-            $table->softDeletes();
+            $table->string('card_no');
             $table->timestamps();
         });
     }
@@ -35,6 +30,6 @@ class CreateMerchantCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('merchantcategories');
+        Schema::dropIfExists('card_nos');
     }
 }
