@@ -10,7 +10,7 @@ trait CaptchaTrait {
     public function captchaCheck($data)
     {
 
-        $response = $data['g-recaptcha-response'];
+        $response = $data['gRecaptchReponse'];
         $remoteip = $_SERVER['REMOTE_ADDR'];
         $secret   = env('RE_CAP_SECRET');
 

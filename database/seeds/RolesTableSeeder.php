@@ -19,7 +19,7 @@ class RolesTableSeeder extends Seeder
         $roles = [
 
         'CEO/Owner', 'Manager', 'Finance Officer', 'Audit Officer',
-        'Inventory Manager', 'System Admin', 'Cashier', 'Validator',
+        'Inventory Manager', 'System Admin', 'Branch Manager', 'Cashier', 'Validator',
         'Merchandiser', 'Delivery Personnel', 'Customer', 'Beneficiary'
 
         ];

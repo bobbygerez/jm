@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Repo\Country\CountryInterface;
 use App\Repo\Region\RegionInterface;
 use App\Repo\Province\ProvinceInterface;
 use App\Repo\City\CityInterface;
@@ -11,20 +12,29 @@ use Obfuscate;
 class LocationController extends Controller
 {
 
+    protected $country;
 	protected $region;
 	protected $province;
 	protected $city;
 	protected $barangay;
 
-	public function __construct(RegionInterface $region, ProvinceInterface $province, CityInterface $city, BarangayInterface $barangay){
+	public function __construct(RegionInterface $region, ProvinceInterface $province, CityInterface $city, BarangayInterface $barangay, CountryInterface $country){
 
+        $this->country = $country;
 		$this->region = $region;
 		$this->province = $province;
 		$this->city = $city;
 		$this->barangay = $barangay;
 	}
     
+    public function countries(){
 
+        return response()->json([
+
+                'countries' => $this->country->orderBy('name', 'asc')->get()
+            ]);
+
+    }
     public function region(){
 
         $collection  = $this->region->all();

@@ -31,3 +31,16 @@
 .form-control .border-input{
 	border: 1px solid #CCC5B9;
 }
+
+@media (min-width: 768px){
+	
+	.modal-dialog {
+
+		margin: 100px auto;
+	}
+}
+
+.alert .top{
+	
+	top: 85px;
+}

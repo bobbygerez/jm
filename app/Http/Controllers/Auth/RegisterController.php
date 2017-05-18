@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\PersonalData;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Traits\CaptchaTrait;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -50,7 +52,8 @@ class RegisterController extends Controller
     {
 
 
-        $data['captcha'] = $this->captchaCheck($data);
+
+        $data['g-recaptcha-response'] = $this->captchaCheck($data);
 
         $validator = Validator::make($data,
             [
@@ -59,8 +62,7 @@ class RegisterController extends Controller
                 'email'                 => 'required|email|unique:users',
                 'password'              => 'required|min:6|max:20',
                 'password_confirmation' => 'required|same:password',
-                'g-recaptcha-response'  => 'required',
-                'captcha'               => 'required|min:1'
+                'g-recaptcha-response'  => 'required'
             ],
             [
                 'firstname.required'   => 'First Name is required',
@@ -70,8 +72,7 @@ class RegisterController extends Controller
                 'password.required'     => 'Password is required',
                 'password.min'          => 'Password needs to have at least 6 characters',
                 'password.max'          => 'Password maximum length is 20 characters',
-                'g-recaptcha-response.required' => 'Captcha is required',
-                'captcha.min'           => 'Wrong captcha, please try again.'
+                'g-recaptcha-response.required' => 'Captcha is required'
             ]
         );
 
@@ -89,8 +90,7 @@ class RegisterController extends Controller
         
                 
         return User::create([
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
+            'personal_data_id' => $data['personal_data_id'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
@@ -105,15 +105,38 @@ class RegisterController extends Controller
     public function register(Request $request) {
         $validator = $this->validator($request->all());
 
-        if($validator->fails())
-            return response()->json(['ERROR' => $validator->errors()->getMessages()], 422);
 
-        event(new Registered($user = $this->create($request->all())));
+        if($validator->fails()){
+            return response()->json(['messages' => $validator->errors()->getMessages(), 'error' => true]);
+        }
+        
+        $firstname = $request->input('firstname');
+        $lastname = $request->input('lastname');
 
-        $this->guard()->login($user);
+        $personalData = PersonalData::create([
+                'firstname' => $firstname,
+                'lastname' => $lastname
+            ]);
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        $requestAll = $request->all();
+        $requestAll['personal_data_id'] = $personalData->id;
+
+        $this->create($requestAll);
+
+        return response()->json([
+
+            'messages' => [
+
+                'messages' => ['Please check your email to verify!'], 
+                'error' => false
+            ]
+
+            ]);
+
+        //$this->guard()->login($user);
+
+        //return $this->registered($request, $user)
+         //   ?: redirect($this->redirectPath());
     }
 
     /**

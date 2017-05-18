@@ -14,4 +14,9 @@ class Merchant extends Model
     	'created_by', 'name', 'website', 'email'
     	
     ];
+
+    public function users(){
+
+    	return $this->belongsToMany('App\User', 'merchant_user', 'merchant_id', 'user_id');
+    }
 }

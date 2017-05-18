@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Exception;
+use Auth;
 class LoginController extends Controller
 {
     /*
@@ -45,10 +45,18 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function sendLoginResponse(Request $request) {
+    protected function sendLoginResponse(Request $request ) {
         $this->clearLoginAttempts($request);
 
-        return response()->json(['SUCCESS' => 'AUTHENTICATED']);
+        $user = Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname;
+            
+        return response()->json([
+
+            'messages' => ['messages' => 'You have successfully Log-in!'],
+            'user' => $user,
+            'error' => false
+
+            ]);
     }
 
     /**
@@ -57,7 +65,10 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected function sendFailedLoginResponse() {
-        return response()->json(['ERROR' => 'AUTH_FAILED']);
+        return response()->json([
+            'messages' => ['messages' => 'Authentication Failed!'],
+            'error' => true
+            ]);
     }
 
     /**
@@ -71,7 +82,13 @@ class LoginController extends Controller
             $this->throttleKey($request)
         );
 
-        return response()->json(['ERROR' => 'TOO_MANY_ATTEMPTS', 'WAIT' => $seconds]);
+        return response()->json([
+
+            'messages' => [
+                    'Too Many Attempts.', 
+                    'Please wait ' . $seconds . ' seconds!'
+                ]
+        ]);
     }
 
     protected function hasTooManyLoginAttempts(Request $request)

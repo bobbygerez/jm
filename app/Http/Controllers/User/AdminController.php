@@ -6,27 +6,35 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repo\User\UserInterface;
 use App\Repo\Role\RoleInterface;
+use App\Repo\City\CityInterface;
+use App\Repo\MaritalStatus\MaritalStatusInterface;
 
 class AdminController extends Controller
 {
     
     protected $user;
+    protected $role;
+    protected $maritalStatus;
+    protected $city;
 
-    public function __construct(UserInterface $user, RoleInterface $role){
+    public function __construct(UserInterface $user, RoleInterface $role, MaritalStatusInterface $maritalStatus, CityInterface $city){
 
     	$this->middleware('auth');
-    	$this->middleware('role:Admin');
+    	$this->middleware('role:System Admin');
     	$this->user = $user;
         $this->role = $role;
+        $this->maritalStatus =$maritalStatus;
+        $this->city = $city;
     }
 
-    public function getUsers(){
+    
+    public function index(){
 
     	$request = app()->make('request');
         $users = '';
         $roleId = $request->roleId;
         $string = $request->string;
-        $roles = $this->role->all();
+        $roles = $this->role->orderBy('name', 'asc')->get();
 
         if($roleId !=''){
 
@@ -36,20 +44,19 @@ class AdminController extends Controller
 
         if($request->string != ''){
 
-            $users = $this->user->orWhere('lastname', 'LIKE', '%'.$string.'%')
-                ->orWhere('firstname', 'LIKE', '%'.$string.'%')
-                ->orWhere('email', 'LIKE', '%'.$string.'%')
-                ->orderBy('lastname', 'asc')
-                ->with('roles')
-                ->get();
-            
+            $string = $request->string;
+
+            $users = $this->user->orWhereHas('personalData', $string)
+            ->with(['personalData'])
+            ->get();
+
         }
 
         else{
 
            
-            $users = $this->user->orderBy('lastname', 'asc')->with('roles')->get();
-            
+            $users = $this->user->with(['roles', 'personalData'])->get();
+            $users =  $users->sortBy('lastname')->values()->all();
         }
 
     	
@@ -59,16 +66,18 @@ class AdminController extends Controller
     		]);
     }
 
-    public function getUser(){
+    public function edit($id){
 
         $request = app()->make('request');
-        
-        $user = $this->user->whereNoDecode('id', $request->userId)->with(['roles'])->first();
+        $roles = $this->role->orderBy('created_at', 'asc')->get();
+        $maritalStatus = $this->maritalStatus->orderBy('name', 'asc')->get();
+        $user = $this->user->whereNoDecode('id', $id)->with(['roles', 'personalData'])->first();
 
         return response()->json([
 
                 'user' => $user,
-                'roles' => $this->role->all()
+                'chunkRoles' => $roles->chunk(3),
+                'maritalStatus' => $maritalStatus
             ]);
     }
 

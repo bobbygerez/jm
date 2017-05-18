@@ -71,6 +71,7 @@ class BaseRepository{
 		return $this->modelName->orWhere($fieldName, $operator, $value);
 	}
 	
+	
 	public function first( $model ){
 
 		$result = $model->first();

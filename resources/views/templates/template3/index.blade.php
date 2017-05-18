@@ -7,6 +7,8 @@
     <link rel='stylesheet' href="{{ asset('template3/assets/css/template3.css') }}">
    
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i;Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+
+    
 </head>
 <body>
     <div id="app">
@@ -21,19 +23,40 @@
         <div class="header-mid">
             <div class="container">
                 <div class="header-mid-left">
-                    <p class="wellcome-to">Wellcome to Super Market</p>
-                    <p class="register-or-login">
-                        <a href="#" class="register">Register</a>
-                        or
-                        <a href="#" class="login" @click="showLogin">Login</a>
+                    <p class="wellcome-to">Welcome to Juan Merkado</p>
+
+                    @if(Auth::check())
+                         <p class="register-or-login">
+                            <a href="{{url('dashboard')}}" class="login"> {{ Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname . '!'}}</a>
+                            
+                        </p>
+                    @else
+
+                        <p class="register-or-login" v-show="welcomeName == false" v-cloak>
+                            <a href="/" class="register" @click="showRegister($event)">Register</a>
+                            or
+                            <a href="/" class="login" @click="showLogin($event)">Login</a>
+                        </p>
+                    @endif
+                    
+                    <p class="register-or-login" v-show="welcomeName" v-cloak>
+
+                        <a href="{{url('dashboard')}}" class="login">@{{ user }} !</a>
+                        
                     </p>
+
                 </div>
                 <div class="header-mid-right">
                     <div class="header-mid-right-content">
-                        <a href="{{ url('dashboard') }}">
-                            <i class="flaticon-user-outline"></i>
-                            @include('templates.template3.sub-views.user-name')                            
-                        </a>
+
+                        @if(Auth::check())
+                            
+                            <a href="{{url('dashboard')}}"> <i class="flaticon-user-outline"></i> {{ Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname }}</a>                 
+                        @else
+                            <a href="/" @click="showLogin($event)" v-show="welcomeName == false"><i class="flaticon-user-outline"></i> My Account</a>
+                            <a href="dashboard"  v-show="welcomeName" v-cloak><i class="flaticon-user-outline"></i> @{{ user }}</a>
+                        @endif
+                        
                     </div>
                     <div class="header-mid-right-content">
                         <a href="#">
@@ -199,33 +222,7 @@
                 </div>
             </div>
         </div>
-        <div class="container banner-absolutes">
-            <div class="banner-absolute banner-asblute-right">
-                <ul class="list-banner">
-                    <li class="banner-item banner-item1">
-                        <h5 class="banner-item-title">Sound</h5>
-                        <p class="banner-item-desc">
-                            Headphone<br/>CDs 4000
-                        </p>
-                        <a href="#" class="banner-item-link">Shop now <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                    </li>
-                    <li class="banner-item banner-item2">
-                        <h5 class="banner-item-title">Electrolux</h5>
-                        <p class="banner-item-desc">
-                            ECM3200 EasySense<br/>Vacuum cleaner
-                        </p>
-                        <a href="#" class="banner-item-link">Shop now <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                    </li>
-                    <li class="banner-item banner-item3">
-                        <h5 class="banner-item-title">Smartphone</h5>
-                        <p class="banner-item-desc">
-                            Solution for your<br/>Acer Smarphone
-                        </p>
-                        <a href="#" class="banner-item-link">Shop now <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
     </div>
     <!-- End .banner -->
     <div class="main-content">
@@ -1356,19 +1353,25 @@
 
           <div class="modal-body">
 
-                <alert v-model="showAlertLogin" placement="top" duration="3000" type="danger" width="400px" dismissable>
+                <alert v-model="showAlertLogin" placement="top" duration="5000" :type="alertType" width="400px" dismissable>
                   <span class="fa fa-warning"></span>
-                  <strong>Login Error</strong>
+                  <strong>@{{ errorHeader }}</strong>
                   <br />
-                  <p v-for="m in messages" style="margin-left: 10px;">@{{ m }}</p>
+                  <p v-for="m in messages.messages" style="margin-left: 10px;">@{{ m }}</p>
                 </alert>
+
+                
 
                 <form id="login-form" action="{{ url('login') }}" method="post" role="form" style="display: block;">
 
                 {{ csrf_field() }}
 
                 <div class="form-group">
-                    <input type="text" v-model="email" id="email" tabindex="1" class="form-control" placeholder="Email" value="">
+                    <p class="control has-icon has-icon-right">
+                        <input name="email" v-model="email" v-validate:name.initial="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }" type="text" placeholder="Email" class="form-control" >
+                        <i v-show="errors.has('email')" class="fa fa-warning text-danger"></i>
+                        <span v-cloak v-show="errors.has('email')" class="help text-danger">@{{ errors.first('email') }}</span>
+                    </p>
                 </div>
                 <div class="form-group">
                     <input type="password" v-model="password" id="password" tabindex="2" class="form-control" placeholder="Password">
@@ -1382,7 +1385,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="text-center">
-                                <a href="#" tabindex="5" class="forgot-password">Forgot Password?</a>
+                                <a href="/" tabindex="5" class="forgot-password" @click="forgotPassword($event)">Forgot Password?</a>
                             </div>
                         </div>
                     </div>
@@ -1398,11 +1401,52 @@
           </div>
         </modal>
 
+        <alert v-model="showAlertLoginSuccess" placement="top" duration="5000" type="success" width="400px" dismissable>
+          <span class="fa fa-check"></span>
+          <strong>Login Success</strong>
+          <br />
+          <p v-for="m in messages.messages" style="margin-left: 10px;">@{{ m }}</p>
+        </alert>
+
+        <alert v-model="registerSuccess" placement="top" duration="10000" type="success" width="400px" dismissable>
+          <span class="fa fa-check"></span>
+          <strong>Registration Success</strong>
+          <br />
+          <p style="margin-left: 10px;">Please check your email address to verify your account!</p>
+        </alert>
+
+         <modal v-model="registerShow" effect="zoom">
+          <!-- custom header -->
+          <div slot="modal-header" class="modal-header">
+            <h3 class="modal-title text-center">
+              Register to Juan Merkado
+            </h3>
+          </div>
+
+          <div class="modal-body">
+
+                <form id="register-form"  method="post" role="form" @submit.prevent="validateBeforeSubmit">
+
+                    {{ csrf_field() }}
+
+                    <user-register sitekey="{{ env('RE_CAP_SITE') }}" source="{{ url('register') }}"></user-register>
+
+                </form>
+
+          </div>
+          
+          <!-- custom buttons -->
+          <div slot="modal-footer" class="modal-footer">
+            <button type="button" class="btn btn-default" @click="registerShow = false">Exit</button>
+            <button type="button" class="btn btn-info" @click="validateBeforeSubmit">Register Now</button>
+          </div>
+        </modal>
     <!--end footer-->
     <!--end footer-->
       </div>
     <script type='text/javascript' src="{{ asset('template3/assets/js/template3.js') }}"></script>
-   
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
  
 </body>
 </html>

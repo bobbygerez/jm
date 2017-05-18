@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repo\Role\RoleInterface;
+use App\Repo\Role\RoleRepository;
+use App\Http\Controllers\User\AdminController;
+use App\Http\Controllers\Role\AdminRoleController;
 
 class RoleServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,13 @@ class RoleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('App\Repo\Role\RoleInterface', 'App\Repo\Role\RoleRepository');
+
+     $this->app->when(AdminController::class)
+          ->needs(RoleInterface::class)
+          ->give(RoleRepository::class);
+
+      $this->app->when(AdminRoleController::class)
+          ->needs(RoleInterface::class)
+          ->give(RoleRepository::class);
     }
 }

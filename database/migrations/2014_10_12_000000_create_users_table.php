@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->integer('personal_data_id')->unsigned()->nullable();
             $table->foreign('personal_data_id')->references('id')
                 ->on('personal_data');
-            $table->string('member_id')->unique();
-            $table->string('account_no')->unique();
-            $table->string('email')->unique();
+            $table->string('member_id')->unique()->nullable();
+            $table->string('account_no')->unique()->nullable();
+            $table->string('email')->unique()->nullable();
             $table->boolean('status')->default(0);
             $table->string('password');
             $table->rememberToken();

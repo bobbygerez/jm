@@ -19,4 +19,9 @@ class PersonalData extends Model
 
     	return $this->hasOne('App\User', 'id', 'personal_data_id');
     }
+
+    public function likeName($value){
+
+    	return $query->orWhere('firstname', 'LIKE', '%'.$value.'%');
+    }
 }

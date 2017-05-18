@@ -51,7 +51,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\PersonalData::class, function (Faker\Generator $faker) {
 
 
-    $name = $faker->name;
+    $name = explode(' ', $faker->name);
 
     return [
         'gender_id' => rand(1, 3) ,
@@ -61,7 +61,7 @@ $factory->define(App\PersonalData::class, function (Faker\Generator $faker) {
         'mothers_maiden_name' => $name[1],
         'nationality' => 'Filipino',
         'birthdate' => $faker->dateTimeThisCentury->format('Y-m-d'),
-        'birthplace_city_id' => rand(1,5),
+        'birthplace' => $faker->city,
         'marital_status' => rand(1, 5)
     ];
 });
@@ -71,17 +71,17 @@ $factory->define(App\PersonalData::class, function (Faker\Generator $faker) {
 $factory->define(App\CardNo::class, function (Faker\Generator $faker) {
 
 
-    $user = factory(App\User::class, 1)->create();
+    $user = factory(App\User::class)->create();
 
-    $user[0]->roles()->attach($user[0]->id, [
+    $user->roles()->attach($user->id, [
 
                     'role_id' => rand(1, 12),
-                    'user_id' => $user[0]->id
+                    'user_id' => $user->id
                 ]);
 
     return [
 
-        'user_id' => $user[0]->id,
+        'user_id' => $user->id,
         'card_no' => $faker->creditCardNumber,
         
     ];
@@ -89,16 +89,16 @@ $factory->define(App\CardNo::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Merchant::class, function(Faker\Generator $faker){
 
-    $user = factory(App\User::class, 1)->create();
+    $user = factory(App\User::class)->create();
 
-    $user[0]->roles()->attach($user[0]->id, [
+    $user->roles()->attach($user->id, [
 
                     'role_id' => rand(1, 12),
-                    'user_id' => $user[0]->id
+                    'user_id' => $user->id
                 ]);
 
     return [
-        'created_by' => $user[0]->id,
+        'created_by' => $user->id,
         'name' => $faker->company,
         'email' => $faker->email,
         'website' => 'http://www.'.$faker->domainName,
@@ -109,12 +109,12 @@ $factory->define(App\Merchant::class, function(Faker\Generator $faker){
 
 $factory->define(App\Branch::class, function(Faker\Generator $faker){
 
-    $merhant = factory(App\Merchant::class, 1)->create();
+    $merchant = factory(App\Merchant::class)->create();
 
     return [
 
-            'merchant_id' => $merchant[0]->id,
-            'created_by' => $user->id,
+            'merchant_id' => $merchant->id,
+            'created_by' => rand(1, 30),
             'phone_no' => $faker->tollFreePhoneNumber,
             'mobile_no' => $faker->e164PhoneNumber,
     ];
@@ -122,17 +122,17 @@ $factory->define(App\Branch::class, function(Faker\Generator $faker){
 
 $factory->define(App\MainCategory::class, function(Faker\Generator $faker){
 
-    $user = factory(App\User::class, 1)->create();
+    $user = factory(App\User::class)->create();
 
-    $user[0]->roles()->attach($user[0]->id, [
+    $user->roles()->attach($user->id, [
 
                     'role_id' => rand(1, 12),
-                    'user_id' => $user[0]->id
+                    'user_id' => $user->id
                 ]);
 
     return [
 
-        'user_id' => $user[0]->id,
+        'user_id' => $user->id,
         'name' => $faker->word . ' ' . $faker->word,
         'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
 
@@ -143,13 +143,13 @@ $factory->define(App\MainCategory::class, function(Faker\Generator $faker){
 $factory->define(App\MerchantCategory::class, function(Faker\Generator $faker){
 
        
-        $mainCat = factory(App\MainCategory::class, 1)->create();
+        $mainCat = factory(App\MainCategory::class)->create();
 
 
     return [
 
-        'user_id' => $mainCat[0]->user_id,
-        'maincategory_id' => $mainCat[0]->id,
+        'user_id' => $mainCat->user_id,
+        'maincategory_id' => $mainCat->id,
         'name' => $faker->word . ' ' . $faker->word,
         'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
     ];
@@ -159,11 +159,11 @@ $factory->define(App\MerchantCategory::class, function(Faker\Generator $faker){
 
 $factory->define(App\MerchantSubcategory::class, function(Faker\Generator $faker){
 
-     $merchantcategory = factory(App\MerchantCategory::class, 1)->create();
+     $merchantcategory = factory(App\MerchantCategory::class)->create();
 
     return [
-         'user_id' => $merchantcategory[0]->user_id,
-         'merchant_category_id' => $merchantcategory[0]->id,
+         'user_id' => rand(1, 30),
+         'merchant_category_id' => $merchantcategory->id,
          'name' => $faker->sentence($nbWords = 3, $variableNbWords = true),
          'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
     ];
@@ -172,11 +172,11 @@ $factory->define(App\MerchantSubcategory::class, function(Faker\Generator $faker
 
 $factory->define(App\Product::class, function(Faker\Generator $faker){
 
-     $merchantSub = factory(App\MerchantSubcategory::class, 1)->create();
-
+     $merchantSub = factory(App\MerchantSubcategory::class)->create();
+    
     return [
-         'user_id' => $merchantSub[0]->user_id,
-        'merchant_subcategory_id' => $merchantSub[0]->id,
+         'user_id' => $merchantSub->user_id,
+        'merchant_subcategory_id' => $merchantSub->id,
         'name' => $faker->word . ' ' . $faker->word,
         'model_number' => $faker->isbn13,
         'unit_id' => rand(1, 4),

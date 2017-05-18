@@ -11,10 +11,12 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('cities', 'LocationController@cityAll');
 	Route::get('cities/{province_id}', 'LocationController@provinceCities');
 	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
+	Route::Get('countries', 'LocationController@countries');
 
-	/** Users **/
-	Route::get('user/admin', 'User\AdminController@getUsers');
-	Route::get('user/admin/{userid}', 'User\AdminController@getUser');
+	Route::resource('admin', 'User\AdminController');
+	Route::resource('role', 'Role\AdminRoleController');
+	Route::resource('product_branch_manager', 'Product\BranchManagerProductController');
+	
 	/** Categories **/
 	Route::get('maincategories/{maincategory_id}', 'AjaxCategoriesController@mainCategories');
 	Route::get('merchant-categories/{merchantcategory_id}', 'AjaxCategoriesController@merchantCategories');
@@ -34,22 +36,11 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::auth();
 Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
 Route::get('dashboard', 'DashboardController@index');
+Route::get('user/{user_id}', 'User\UserController@index');
 
 /******************  END IMPLICIT ROUTES *****************/
 
 
-
-
-
-/************ RESOURCE CONTROLLER ****************/
-
-	/*** Users Resource ****/
-		Route::resource('user', 'User\UserController');
-		Route::resource('admin', 'User\AdminController');
-	/*** End Users Resource ***/
-
-/************ END RESOURCE CONTROLLER ************/
- 
 
 
 

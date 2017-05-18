@@ -191,6 +191,10 @@ return [
         App\Providers\UserServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        App\Providers\MaritalStatusServiceProvider::class,
+        App\Providers\CountryServiceProvider::class,
+        App\Providers\BranchServiceProvider::class,
+        App\Providers\MerchantServiceProvider::class,
 
     ],
 

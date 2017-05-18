@@ -24,7 +24,7 @@ class CreatePersonalDataTable extends Migration
             $table->string('mothers_maiden_name')->nullable();
             $table->string('nationality')->nullable();
             $table->date('birthdate')->nullable();
-            $table->string('birthplace_city_id')->nullable();
+            $table->string('birthplace')->nullable();
             $table->string('marital_status')->nullable();
             $table->string('spouse_name')->nullable();
             $table->timestamps();

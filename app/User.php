@@ -16,7 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-       'member_id', 'acount_no', 'card_no', 'email', 'password',
+       'contact_data_id', 'personal_data_id', 'member_id', 'account_no', 'email',
+       'password', 'status'
     ];
 
     /**
@@ -41,8 +42,18 @@ class User extends Authenticatable
 
     public function contactData(){
 
-        return $this->hasOne('App\ContaData', 'contact_data_id', 'id');
+        return $this->hasOne('App\ContactData', 'id', 'contact_data_id');
     }
+
+    public function personalData(){
+
+        return $this->hasOne('App\PersonalData', 'id', 'personal_data_id');
+    }
+
+    public function merchants(){
+
+        return $this->belongsToMany('App\Merchant', 'merchant_user', 'user_id', 'merchant_id');
+    }   
 
     
 }

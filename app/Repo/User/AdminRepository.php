@@ -20,6 +20,8 @@ class AdminRepository extends BaseRepository implements UserInterface{
 		$user->update($request->all());
 
 		$user->roles()->sync($roles);
+        
+        $user->personalData->update( $request->all() );
 
 	}
 
@@ -30,36 +32,45 @@ class AdminRepository extends BaseRepository implements UserInterface{
 		$users = '';
 
 		if($string == ''){
-                $users = $this->modelName->with(['roles'])->get();
-            }
-            else{
 
-                 $users = $this->modelName->orWhere('lastname', 'LIKE', '%'.$string.'%')
-                ->orWhere('firstname', 'LIKE', '%'.$string.'%')
-                ->orWhere('email', 'LIKE', '%'.$string.'%')
-                ->orderBy('lastname', 'asc')
-                ->with('roles')
-                ->get();
-            }
+                $users = $this->modelName->with(['roles', 'personalData', 'contactData'])->get();
+        }
+        else{
+
+             $users = $this->orWhereHas('personalData', $string)
+                 ->with(['roles', 'personalData', 'contactData'])
+                 ->get();
+        }
             
             
-            $users =  $users->filter(function($user) use ($roleId, $string){
+        $users =  $users->filter(function($user) use ($roleId, $string){
+            
+            foreach ($user->roles as $role) {
                 
-                foreach ($user->roles as $role) {
+                if ($role->id == $roleId) {
                     
-                    if ($role->id == $roleId) {
-                        
-                        
-                        return $user;
-                    }
+                    
+                    return $user;
                 }
-            });
+            }
+        });
 
 
-            return response()->json([
-                'users' => $users,
-                'roles' => $roles
-            ]);
+        return response()->json([
+            'users' => $users,
+            'roles' => $roles
+        ]);
 	}
+
+    public function orWhereHas($model, $string){
+
+        return $this->modelName->orWhereHas($model, function($query) use ($string) {
+
+                $query->where('lastname', 'LIKE', '%'.$string.'%')
+                    ->orWhere('firstname', 'LIKE', '%'.$string.'%');
+
+            })
+            ->orWhere('email', 'LIKE', '%'.$string.'%');
+    }
 	
 }

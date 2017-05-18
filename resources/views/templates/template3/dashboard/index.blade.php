@@ -42,12 +42,24 @@
             </div>
 
             <ul class="nav">
-                <li class="active">
-                    <a href="dashboard.html">
-                        <i class="fa fa-users"></i>
-                        <p>Users</p>
-                    </a>
+                
+               @if (Auth::User()->roles()->hasRole(['System Admin']) != 'false')  
+                <li>
+                     <router-link to="/rights">
+                     <i class="fa fa-key" aria-hidden="true"></i>
+                        <p>Group Rights</p>
+                    </router-link>
                 </li>
+                <li>
+
+                    <router-link to="/users">
+                     <i class="fa fa-users"></i>
+                        <p>Users</p>
+                    </router-link>
+                   
+                </li>
+                @endif
+
                 <li>
                     <a href="user.html">
                         <i class="ti-user"></i>
@@ -55,10 +67,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Table List</p>
-                    </a>
+                    <router-link to="/products">
+                     <i class="ti-desktop"></i>
+                        <p>Products</p>
+                    </router-link>
                 </li>
                 <li>
                     <a href="typography.html">
@@ -92,7 +104,7 @@
     </div>
 
     <div class="main-panel">
-		<nav class="navbar navbar-default">
+		<nav class="navbar navbar-default" style="z-index: 1">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle">
@@ -101,7 +113,7 @@
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">All Users</a>
+                    <a class="navbar-brand" href="#">@{{ title }} </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -141,74 +153,9 @@
 
         <div class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <user-data-viewer source="{{ url('api/user/admin') }}" v-on:mymodal="showModal" userid="{{ url('api/user/admin/userid') }}">
-
-                            </user-data-viewer>
-                        </div>
-                    </div>
-
-           <modal v-model="show" effect="fade">
-              <!-- custom header -->
-              <div slot="modal-header" class="modal-header">
-                <h4 class="modal-title">
-                @{{ myUser.user.lastname }}, @{{ myUser.user.firstname }}
-                </h4>
-                
-              </div>
-
-              <div class="modal-body">
-
-             
-                    <form>
-                        <alert  v-model="showTop" duration="3000" placement="top" type="success" width="400px" dismissable >
-                          <span class="icon-info-circled alert-icon-float-left"></span>
-                          <p class="text-center"><strong>@{{ message }}</strong></p>
-                        </alert>
-                        <div class="form-group">
-                            <label>Lastname</label>
-                            <input type="text" class="form-control border-input" v-model="myUser.user.lastname">
-                        </div>
-                        <div class="form-group">
-                            <label>Firstname</label>
-                            <input type="text" class="form-control border-input" v-model="myUser.user.firstname">
-                        </div>
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="text" class="form-control border-input" v-model="myUser.user.email">
-                        </div>
-                        <div class="form-group" style="padding: 15px;">
-                            <label>Roles: </label>
-                            <br />
-                            <span v-for="role in myUser.roles">
-                                <div class="checkbox checkbox-success" style="display: inline; margin: 5px;">
-                                    <input :id="role.id" class="styled " type="checkbox" :value="role.id" v-model="checkedRoles">
-                                    <label :for="role.id">
-                                        @{{ role.name }}
-                                    </label>
-                                </div>
-                            </span>
-                             
-                        </div>
-                       
-                     </form>
-                </div>
-
-          <!-- custom buttons -->
-          <div slot="modal-footer" class="modal-footer">
-            <button type="button" class="btn btn-default" @click="show = false">Exit</button>
-            <button type="button" class="btn btn-success" @click="saveMethod">Save</button>
-            <dropdown text="Delete" type="danger">
-              <li><a href="#confirmDelete" @click="confirmDelete">Confirm Delete?</a></li>
-            </dropdown>
-
-          </div>
-        </modal>
-                   
-
-                </div>
+                <div class="col-md-12">
+                    <router-view></router-view>
+               </div>
             </div>
         </div>
 

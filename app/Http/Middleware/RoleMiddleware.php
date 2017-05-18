@@ -16,27 +16,24 @@ class RoleMiddleware
      public function handle($request, Closure $next, ...$params)
     {
 
-        $roles = $request->user()->roles()->get()->toArray();
+        
+        $roles = $request->user()->roles()->get();
 
-        $roleNames = [];
+        $roles = $roles->map(function($item){
 
-        foreach ($roles as $oV) {
-            
-            foreach ($oV as $iK => $iV) {
-                
-                if($iK === "name"){
+            return $item->name;
+        });
 
-                    $roleNames[] = $iV;
-                }
-            }
-        }
 
 
         foreach ($params as $value) {
             
-            if( ! in_array($value, $roleNames)){
+            if( ! in_array($value, $roles->toArray()) ){
 
-                return redirect()->action('NavController@home');
+                return response()->json([
+
+                        'message' => 'Access Denied!'
+                    ]);
             }
         }
 
