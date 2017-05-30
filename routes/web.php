@@ -1,5 +1,9 @@
 <?php
 
+
+Route::resource('tasks', 'TaskController');
+
+
 /******************* AJAX ROUTES ******************/
 
 Route::group(['prefix' => 'api'], function(){
@@ -11,11 +15,14 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('cities', 'LocationController@cityAll');
 	Route::get('cities/{province_id}', 'LocationController@provinceCities');
 	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
-	Route::Get('countries', 'LocationController@countries');
-
+	Route::get('countries', 'LocationController@countries');
+	Route::post('photo/product/upload', 'Photo\PhotoController@photoProduct');
 	Route::resource('admin', 'User\AdminController');
 	Route::resource('role', 'Role\AdminRoleController');
-	Route::resource('product_branch_manager', 'Product\BranchManagerProductController');
+	Route::resource('product', 'Product\ProductController');
+	Route::resource('user', 'User\UserController');
+	Route::resource('price', 'Price\PriceController');
+	Route::resource('quantity', 'Quantity\QuantityController');
 	
 	/** Categories **/
 	Route::get('maincategories/{maincategory_id}', 'AjaxCategoriesController@mainCategories');
@@ -36,7 +43,7 @@ Route::get('logout', 'Auth\LoginController@logout');
 Route::auth();
 Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
 Route::get('dashboard', 'DashboardController@index');
-Route::get('user/{user_id}', 'User\UserController@index');
+Route::get('dashboard/{user_id}', 'DashboardController@userId');
 
 /******************  END IMPLICIT ROUTES *****************/
 

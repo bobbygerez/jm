@@ -1,30 +1,49 @@
 <?php namespace App\Repo\User;
 
-use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
 use App\User;
 
-class AdminRepository extends BaseRepository implements UserInterface{
+class SystemAdminUserRepository extends UserRepository implements UserInterface{
 
 	public function __construct(){
 
 		$this->modelName = new User();
 	}
 
-	public function update($request, $id){
 
-		$roles = $request->input('roles');
 
-		$user = $this->modelName->find($id);
+    public function getAllUsers($request) {
 
-		$user->update($request->all());
+        $users = '';
+        $roleId = $request->roleId;
+        $string = $request->string;
 
-		$user->roles()->sync($roles);
-        
-        $user->personalData->update( $request->all() );
+        if($roleId !=''){
 
-	}
+           return $this->roleId($roleId, $string, $roles);
+        }
+       
 
+        if($request->string != ''){
+
+            $string = $request->string;
+
+            $users = $this->orWhereHas('personalData', $string)
+            ->with(['personalData'])
+            ->get();
+
+        }
+
+        else{
+
+           
+            $users = $this->with(['roles', 'personalData'])->get();
+            $users =  $users->sortBy('lastname')->values()->all();
+        }
+
+        return $users;
+
+    }
 
 	
 	public function roleId($roleId, $string, $roles) {

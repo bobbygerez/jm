@@ -19,6 +19,11 @@ class DashboardController extends Controller
 
     public function index(){
 
-    	return redirect()->to('user/' . Obfuscate::encode(Auth::User()->id) );
+    	return redirect()->to('dashboard/' . Obfuscate::encode(Auth::User()->id) );
+    }
+
+    public function userId(){
+
+    	return view('templates.template3.dashboard.index');
     }
 }

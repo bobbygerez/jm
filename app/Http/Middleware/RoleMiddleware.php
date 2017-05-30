@@ -16,7 +16,6 @@ class RoleMiddleware
      public function handle($request, Closure $next, ...$params)
     {
 
-        
         $roles = $request->user()->roles()->get();
 
         $roles = $roles->map(function($item){

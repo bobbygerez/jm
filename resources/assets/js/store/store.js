@@ -11,9 +11,17 @@ export const store = new Vuex.Store({
 		title: '',
 		users: {},
 		user: {
+				id: 0,
 				personal_data:{
 					lastname: '',
 					firstname: ''
+				},
+				status: '',
+				roles: {
+				},
+				contact_data: {
+
+					messenger_acct: ''
 				}
 			},
 		chunkRoles: {},
@@ -21,7 +29,37 @@ export const store = new Vuex.Store({
 		maritalStatus: {},
 		checkedRoles: [],
 		countries: {},
-		userModal: false
+		branches: {},
+		products: {
+			last_page: 0
+		},
+
+		product: {
+			id: 0,
+			unit_id: '',
+			name: '',
+			discount: '',
+			discount2: '',
+			user: {
+
+				personal_data: {
+					firstname: '',
+					lastname: ''
+				}
+			},
+			quantities: [
+
+				{qty: 0}
+			]
+				
+			
+		},
+		units: {},
+		userModal: false,
+        alertMessage: '',
+        status: [{name: 'Active' , value: 1}, {name: 'Inactive', value: 0}],
+        heirarchy: 0
+
 	},
 
 	mutations: {
@@ -52,6 +90,26 @@ export const store = new Vuex.Store({
 		},
 		title(state, payload){
 			state.title = payload
+		},
+		branches(state, payload){
+			state.branches = payload
+		},
+		products(state, payload){
+			state.products = payload
+		},
+		product(state, payload){
+			state.product = payload
+		},
+		units(state, units){
+
+			state.units = units
+		},
+		alertMessage(state, alertMessage){
+
+			state.alertMessage = alertMessage
+		},
+		heirarchy(state, heirarchy){
+			state.heirarchy = heirarchy
 		}
 	},
 
@@ -89,9 +147,39 @@ export const store = new Vuex.Store({
 	    title(){
 
 	    	return store.state.title
+	    },
+	    branches(){
+
+	    	return store.state.branches
+	    },
+	    products(){
+
+	    	return store.state.products
+	    },
+	    product(){
+	    	return store.state.product
+	    },
+
+	    
+	    units(){
+
+	    	return store.state.units
+	    },
+	    alertMessage(){
+
+	    	return store.state.alertMessage
+	    },
+	    status(){
+
+	    	return store.state.status
+	    },
+	    heirarchy(){
+
+	    	return store.state.heirarchy
 	    }
 
 	},
+	
 	actions: {
 
 		checkedRoles(state, roleIds){

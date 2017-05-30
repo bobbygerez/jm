@@ -21,6 +21,7 @@ class CreateBranchesTable extends Migration
             $table->integer('merchant_id')->unsigned()->nullable();
             $table->foreign('merchant_id')->references('id')
                 ->on('merchants');
+            $table->string('branch_name');
             $table->string('phone_no');
             $table->string('mobile_no');
             $table->string('reg_dti')->nullable();

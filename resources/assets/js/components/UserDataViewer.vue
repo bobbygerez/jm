@@ -56,10 +56,11 @@
 
       <div class="modal-body">
         
-        <alert  v-model="showTop" duration="3000" placement="top" type="success" width="400px" dismissable >
-          <span class="icon-info-circled alert-icon-float-left"></span>
-          <p class="text-center"><strong>{{ message }}</strong></p>
-        </alert>
+        <alert v-model="showTop" placement="top" duration="4000" type="success" width="400px" dismissable>
+            <span class="icon-info-circled alert-icon-float-left"></span>
+            <strong>Success!</strong>
+            <p>{{ message }}</p>
+          </alert>
         
           <tabs v-model="activeTab" nav-style="tabs" justified>
               <tab header="Basic Informations">
@@ -117,32 +118,41 @@
                       <label>Birth Place</label>
                       <input type="text" class="form-control border-input" v-model="user.personal_data.birthplace">
                   </div>
-              </div>
-                  <div class="col-md-6">
-                      <div class="form-group">
+
+                  <div class="form-group">
                           <label>Marital Status</label>
                           <select class="form-control border-input" v-model="user.personal_data.marital_status">
                               <option value="">Select Marital Status</option>
                               <option v-for="marital in maritalStatus" :value="marital.id">{{ marital.name }}</option>
                           </select>
                       </div>
-                      <div class="form-group">
+                      
+                     
+              </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
                           <label>Spouse name</label>
                           <input type="text" class="form-control border-input" v-model="user.personal_data.spouse_name" >
                       </div>
-                      <div class="form-group">
-                          <label>Account Status</label>
-                          <select class="form-control border-input" v-model="user.status">
-                              <option value="">Select Status</option>
-                              <option v-for="stat in status" :value="stat.value">{{ stat.name }}</option>
-                          </select>
-                      </div>
+                  <div class="form-group">
+                    <label>Messenger</label>
+                    <input type="text" class="form-control border-input" v-model="user.contact_data.messenger_acct" >
                   </div>
+                  <div class="form-group">
+                    <label>Mobile No:</label>
+                    <input type="text" class="form-control border-input" v-model="user.contact_data.mobile_no" >
+                  </div>
+                  <div class="form-group">
+                    <label>Telephone No:</label>
+                    <input type="text" class="form-control border-input" v-model="user.contact_data.tel_no" >
+                  </div>
+                </div>
               </tab>
            
-            </tabs>
+          </tabs>
           <div class="row">
-              <div class="col-md-12">
+              <div class="col-lg-12">
                   <div class="form-group" style="padding: 15px;">
                       <label>Position: </label>
                       <br />
@@ -274,7 +284,7 @@ export default{
     
     fetchUserData() {
         var store = this.$store
-        axios.get(`${this.windowLocation}/api/admin?&string=${this.string}&roleId=${this.roleId}`)
+        axios.get(`${this.windowLocation}api/user?&string=${this.string}&roleId=${this.roleId}`)
           .then(function(response) {
             store.commit('users', response.data.users)
             store.commit('roles', response.data.roles)
@@ -289,7 +299,7 @@ export default{
       this.userId = userId
       var vm = this
 
-      axios.get(`${this.windowLocation}/api/admin/${this.userId}/edit`)
+      axios.get(`${this.windowLocation}/api/user/${this.userId}/edit`)
         .then(function(response){
           
            store.commit('user', response.data.user)
@@ -336,7 +346,7 @@ export default{
             var vm = this
             var user = this.$store.getters.user
 
-            axios.put(`${this.windowLocation}/api/admin/` + user.id,{
+            axios.put(`${this.windowLocation}/api/user/` + user.id,{
                 member_id: user.member_id,
                 account_no: user.account_no,
                 status: user.status,
@@ -350,7 +360,10 @@ export default{
                 birthplace: user.personal_data.birthplace,
                 nationality: user.personal_data.nationality,
                 marital_status: user.personal_data.marital_status,
-                spouse_name: user.personal_data.spouse_name
+                spouse_name: user.personal_data.spouse_name,
+                messenger_acct: this.user.contact_data.messenger_acct,
+                mobile_no: this.user.contact_data.mobile_no,
+                tel_no: this.user.contact_data.tel_no
                 
 
             })

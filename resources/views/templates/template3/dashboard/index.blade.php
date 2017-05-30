@@ -25,7 +25,6 @@
     </style>
 </head>
 <body>
-
 <div class="wrapper" id="app">
 	<div class="sidebar" data-background-color="white" data-active-color="danger">
 
@@ -43,7 +42,6 @@
 
             <ul class="nav">
                 
-               @if (Auth::User()->roles()->hasRole(['System Admin']) != 'false')  
                 <li>
                      <router-link to="/rights">
                      <i class="fa fa-key" aria-hidden="true"></i>
@@ -58,14 +56,16 @@
                     </router-link>
                    
                 </li>
-                @endif
+                
 
                 <li>
-                    <a href="user.html">
+                    <router-link to="/user-profile">
                         <i class="ti-user"></i>
-                        <p>User Profile</p>
-                    </a>
+                        <p>My Profile</p>
+                    </router-lilnk>
                 </li>
+
+
                 <li>
                     <router-link to="/products">
                      <i class="ti-desktop"></i>
@@ -196,7 +196,15 @@
 
 </body>
 
-   
+    <script type="text/javascript">
+        window.Laravel = {!!
+
+                json_encode([
+                    'csrfToken' => csrf_token()
+                  ])
+
+              !!}
+    </script>
 	<script src="{{ asset('template3/dashboard/assets/js/dashboard.js') }}"></script>
 
 

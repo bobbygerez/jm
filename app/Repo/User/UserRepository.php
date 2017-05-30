@@ -12,4 +12,20 @@ class UserRepository extends BaseRepository implements UserInterface{
 	}
 
 	
+	public function update($request, $id){
+
+		$roles = $request->input('roles');
+
+		$user = $this->modelName->find($id);
+
+		$user->update($request->all());
+
+		$user->roles()->sync($roles);
+        
+        $user->personalData->update( $request->all() );
+
+        $user->contactData->update( $request->all() );
+
+	}
+	
 }

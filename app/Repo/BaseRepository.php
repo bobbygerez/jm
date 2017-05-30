@@ -33,7 +33,10 @@ class BaseRepository{
 		return $this->modelName->find($id)->update($request->all());
 	}
 
-	
+	public function destroy($id){
+
+		return $this->modelName->find($id)->delete();
+	}
 	public function where($fieldName, $id){
 
 		$origId = Obfuscate::decode($id);

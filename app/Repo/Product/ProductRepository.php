@@ -16,6 +16,7 @@ class ProductRepository extends BaseRepository implements ProductInterface{
 		
 	}
 
+	
 	public function searchPaginateAndOrder(){
 
 		return $this->modelName->searchPaginateAndOrder();

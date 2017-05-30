@@ -195,6 +195,9 @@ return [
         App\Providers\CountryServiceProvider::class,
         App\Providers\BranchServiceProvider::class,
         App\Providers\MerchantServiceProvider::class,
+        App\Providers\UnitServiceProvider::class,
+        App\Providers\PriceServiceProvider::class,
+        App\Providers\QuantityServiceProvider::class,
 
     ],
 

@@ -19,4 +19,9 @@ class Merchant extends Model
 
     	return $this->belongsToMany('App\User', 'merchant_user', 'merchant_id', 'user_id');
     }
+
+    public function branches(){
+
+    	return $this->belongsToMany('App\Merchant', 'branch_merchant', 'merchant_id', 'branch_id');
+    }
 }

@@ -10,21 +10,20 @@ import {store} from './store/store'
 import AccessRights from './router/AccessRights.vue'
 import users from './router/users.vue'
 import Products from './router/Products.vue'
-
+import UserProfile from './router/UserProfile.vue'
 
 import VueRouter from 'vue-router'
 
+
+  
 Vue.use(VueRouter)
-
-const Foo = { template: '<div>foo</div>' }
-
-
 
 
 const routes = [
   { path: '/rights', component: AccessRights },
   { path: '/users', component: users },
-  { path: '/products', component: Products }
+  { path: '/products', component: Products },
+  { path: '/user-profile', component: UserProfile}
 
 ]
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductQuantityTable extends Migration
+class CreatePoliciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateProductQuantityTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_quantity', function (Blueprint $table) {
+        Schema::create('policies', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('product_id')->unsigned()->nullable();
-            $table->foreign('product_id')->references('id')
-                ->on('products');
-            $table->integer('qty')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateProductQuantityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_quantity');
+        Schema::dropIfExists('policies');
     }
 }

@@ -25,4 +25,9 @@ class Branch extends Model
 
    		return $this->belongsToMany('App\Product', 'branch_product', 'branch_id', 'product_id');
    }
+
+   public function users(){
+
+         return $this->belongsToMany('App\User', 'branch_user', 'branch_id', 'user_id');
+   }
 }

@@ -9,9 +9,8 @@ use App\Repo\Role\RoleInterface;
 use App\Repo\City\CityInterface;
 use App\Repo\MaritalStatus\MaritalStatusInterface;
 
-class AdminController extends Controller
+class SystemAdminUserController extends Controller
 {
-    
     protected $user;
     protected $role;
     protected $maritalStatus;
@@ -27,62 +26,48 @@ class AdminController extends Controller
         $this->city = $city;
     }
 
-    
     public function index(){
 
-    	$request = app()->make('request');
-        $users = '';
-        $roleId = $request->roleId;
-        $string = $request->string;
+        $request = app()->make('request');
+        
+        $users = $this->user->getAllUsers($request);
+
         $roles = $this->role->orderBy('name', 'asc')->get();
-
-        if($roleId !=''){
-
-           return $this->user->roleId($roleId, $string, $roles);
-        }
-       
-
-        if($request->string != ''){
-
-            $string = $request->string;
-
-            $users = $this->user->orWhereHas('personalData', $string)
-            ->with(['personalData'])
-            ->get();
-
-        }
-
-        else{
-
-           
-            $users = $this->user->with(['roles', 'personalData'])->get();
-            $users =  $users->sortBy('lastname')->values()->all();
-        }
-
-    	
-    	return response()->json([
-    			'users' => $users,
+        
+        return response()->json([
+                'users' => $users,
                 'roles' => $roles
-    		]);
+            ]);
     }
+
 
     public function edit($id){
 
-        $request = app()->make('request');
+
         $roles = $this->role->orderBy('created_at', 'asc')->get();
+
         $maritalStatus = $this->maritalStatus->orderBy('name', 'asc')->get();
-        $user = $this->user->whereNoDecode('id', $id)->with(['roles', 'personalData'])->first();
+
+        $user = $this->user->whereNoDecode('id', $id)
+            ->with(['roles', 'personalData', 'contactData'])
+            ->first();
+
+        $heirarchy = $user->roles->min()->heirarchy;
 
         return response()->json([
 
                 'user' => $user,
                 'chunkRoles' => $roles->chunk(3),
-                'maritalStatus' => $maritalStatus
+                'maritalStatus' => $maritalStatus,
+                'heirarchy' => $heirarchy,
+                'success' => true,
+
             ]);
     }
 
-    public function update(Request $request, $id){
+    public function update($id){
 
+        $request = app()->make('request');
         $user = $this->user->update($request, $id);
 
         return response()->json([
@@ -103,5 +88,4 @@ class AdminController extends Controller
 
             ]);
     }
-
 }

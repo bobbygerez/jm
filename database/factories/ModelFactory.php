@@ -113,6 +113,7 @@ $factory->define(App\Branch::class, function(Faker\Generator $faker){
 
     return [
 
+            'branch_name' => $faker->company,
             'merchant_id' => $merchant->id,
             'created_by' => rand(1, 30),
             'phone_no' => $faker->tollFreePhoneNumber,
@@ -174,16 +175,19 @@ $factory->define(App\Product::class, function(Faker\Generator $faker){
 
      $merchantSub = factory(App\MerchantSubcategory::class)->create();
     
-    return [
+     return [
          'user_id' => $merchantSub->user_id,
-        'merchant_subcategory_id' => $merchantSub->id,
-        'name' => $faker->word . ' ' . $faker->word,
-        'model_number' => $faker->isbn13,
-        'unit_id' => rand(1, 4),
-        'desc' => $faker->text($maxNbChars = 100),
-        'discount' => $faker->numberBetween(1, 99)
+         'brand_id' => rand(1, 30),
+         'unit_id' => rand(1, 4),
+         'merchant_subcategory_id' => $merchantSub->id,
+         'name' => $faker->word . ' ' . $faker->word,
+         'model_number' => $faker->isbn13,
+         'desc' => $faker->text($maxNbChars = 100),
+         'discount' => $faker->numberBetween(1, 99),
+         'discount2' => $faker->numberBetween(1, 99),
 
-    ];
+
+     ];
 });
 
 $factory->define(App\Photo::class, function(Faker\Generator $faker){

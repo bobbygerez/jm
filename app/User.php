@@ -53,7 +53,12 @@ class User extends Authenticatable
     public function merchants(){
 
         return $this->belongsToMany('App\Merchant', 'merchant_user', 'user_id', 'merchant_id');
-    }   
+    }  
+
+    public function branches(){
+
+        return $this->belongsToMany('App\Branch', 'branch_user', 'user_id', 'branch_id');
+    }
 
     
 }

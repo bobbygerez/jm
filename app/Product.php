@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\ProductDataViewer;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -12,7 +13,7 @@ class Product extends Model
 
     protected $fillable = [
 
-    	'user_id', 'model_number', 'name', 'unit_id', 'desc', 'discount'
+    	'user_id', 'unit_id', 'brand_id', 'model_number', 'name',  'desc', 'discount', 'discount2'
     ];
 
     
@@ -22,9 +23,18 @@ class Product extends Model
     	return $this->morphMany('App\Photo', 'imageable');
     }
 
+    public function user(){
+
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
     public function prices(){
 
         return $this->hasMany('App\Price', 'product_id', 'id');
+    }
+
+    public function quantities(){
+
+        return $this->hasMany('App\Quantity', 'product_id', 'id');
     }
 
     public function merchantSubcategory(){
@@ -56,4 +66,11 @@ class Product extends Model
 
         return str_slug($value);
     }
+
+    public function getCreatedAtAttribute($value){
+
+        return Carbon::parse($value)->toDayDateTimeString();
+    }
+
+    
 }
