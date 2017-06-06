@@ -60,7 +60,7 @@
             <span class="icon-info-circled alert-icon-float-left"></span>
             <strong>Success!</strong>
             <p>{{ message }}</p>
-          </alert>
+         </alert>
         
           <tabs v-model="activeTab" nav-style="tabs" justified>
               <tab header="Basic Informations">
@@ -182,7 +182,11 @@
 
       </div>
    </modal>
-      
+   <alert v-model="errorAlert" placement="top"  type="danger" width="400px" dismissable>
+    <span class="icon-info-circled alert-icon-float-left"></span>
+    <strong>Contact Your Administrator!</strong>
+    <p>{{ alertMessage }}</p>
+  </alert>
   </div>
 
 </template>
@@ -198,6 +202,7 @@ import panel from 'vue-strap/src/panel'
 import popover from 'vue-strap/src/popover'
 import tabs from 'vue-strap/src/tabs'
 import tab from 'vue-strap/src/tab'
+
 
 
 export default{
@@ -231,6 +236,7 @@ export default{
         largeModal: false,
         windowLocation: window.location.origin + '/',
         confirmDeleteUser: true,
+        errorAlert: false,
 
       }
 
@@ -261,6 +267,9 @@ export default{
 
           return this.$store.getters.maritalStatus
       },
+      alertMessage(){
+          return this.$store.getters.alertMessage
+      },
     checkedRoles: {
         
         get(){
@@ -284,13 +293,22 @@ export default{
     
     fetchUserData() {
         var store = this.$store
+        var vm = this
         axios.get(`${this.windowLocation}api/user?&string=${this.string}&roleId=${this.roleId}`)
           .then(function(response) {
             store.commit('users', response.data.users)
             store.commit('roles', response.data.roles)
 
+            if (response.data.error.length > 0) {
+
+              store.commit('alertMessage', response.data.error);
+              vm.errorAlert = true;
+            }
+
           })
           .catch(function(response) {
+            console.log(response);
+
           })
         },
     userTable: function(userId){
@@ -310,6 +328,8 @@ export default{
         })
         .catch(function(response){
 
+
+            
         })
 
         this.$store.watch(
@@ -323,6 +343,7 @@ export default{
               deep: true //add this if u need to watch object properties change etc.
           }
       );
+
        
     },
     showModal: function(){

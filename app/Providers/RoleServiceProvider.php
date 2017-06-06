@@ -9,6 +9,9 @@ use App\Http\Controllers\User\AdminController;
 use App\Http\Controllers\User\AreaManagerUserController;
 use App\Http\Controllers\Role\AdminRoleController;
 
+use App\Http\Controllers\Position\PositionController;
+use App\Repo\Role\AdminRoleRepository;
+
 class RoleServiceProvider extends ServiceProvider
 {
     /**
@@ -29,9 +32,6 @@ class RoleServiceProvider extends ServiceProvider
     public function register()
     {
 
-     $this->app->when(AdminController::class)
-     ->needs(RoleInterface::class)
-     ->give(RoleRepository::class);
 
      $this->app->when(AdminRoleController::class)
      ->needs(RoleInterface::class)
@@ -40,5 +40,10 @@ class RoleServiceProvider extends ServiceProvider
      $this->app->when(AreaManagerUserController::class)
      ->needs(RoleInterface::class)
      ->give(AreaManagerRoleRepository::class);
+
+
+     $this->app->when(PositionController::class)
+     ->needs(RoleInterface::class)
+     ->give(AdminRoleRepository::class);
    }
 }

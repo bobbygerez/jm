@@ -60,5 +60,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Branch', 'branch_user', 'user_id', 'branch_id');
     }
 
+    public function policies(){
+
+        return $this->morphToMany('App\Policy', 'policeable')->withTimestamps();;
+    }
+
     
 }

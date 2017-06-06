@@ -43,9 +43,15 @@
             <ul class="nav">
                 
                 <li>
-                     <router-link to="/rights">
+                     <router-link to="/positions">
+                      <i class="fa fa-users" aria-hidden="true"></i>
+                        <p>Positions</p>
+                    </router-link>
+                </li>
+                <li>
+                     <router-link to="/access-rights">
                      <i class="fa fa-key" aria-hidden="true"></i>
-                        <p>Group Rights</p>
+                        <p>Access Rights</p>
                     </router-link>
                 </li>
                 <li>

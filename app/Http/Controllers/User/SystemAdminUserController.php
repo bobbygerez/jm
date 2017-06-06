@@ -28,6 +28,8 @@ class SystemAdminUserController extends Controller
 
     public function index(){
 
+       
+
         $request = app()->make('request');
         
         $users = $this->user->getAllUsers($request);
@@ -87,5 +89,37 @@ class SystemAdminUserController extends Controller
                 'message' => 'The User has been Deleted!'
 
             ]);
+    }
+
+    public function userPopUp(){
+
+        $request = app()->make('request');
+        
+
+
+        $users = $this->user->orWhereHas('personalData', $request->q)
+            ->with(['personalData'])
+            ->take(8)
+            ->get();
+
+        // $users = $this->user->with(['personalData'])->get();
+
+        $data = $users->map( function($item){
+
+                return [
+                    'id' => $item->id,
+                    'user' => $item->personalData->firstname . ' ' . $item->personalData->lastname,
+                    'email' => $item->email,
+                    'firstname' => $item->personalData->firstname,
+                    'lastname' => $item->personalData->lastname
+
+                ];
+        });
+
+        
+        return response()->json(
+
+                $data
+            );
     }
 }

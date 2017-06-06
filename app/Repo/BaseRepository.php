@@ -13,7 +13,7 @@ class BaseRepository{
 
 	public function store( $request ){
 
-		return $this->modelName->create([ $request ]);
+		return $this->modelName->create($request->all());
 
 	}
 

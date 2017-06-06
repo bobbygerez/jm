@@ -43,7 +43,13 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
+    {   
+
+        if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException)
+        {
+            return response()->json(['error' => 'You are not authorized to access.']);
+        }
+
         return parent::render($request, $exception);
     }
 

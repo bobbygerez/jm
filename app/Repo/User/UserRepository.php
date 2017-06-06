@@ -27,5 +27,16 @@ class UserRepository extends BaseRepository implements UserInterface{
         $user->contactData->update( $request->all() );
 
 	}
+
+	 public function orWhereHas($model, $string){
+
+        return $this->modelName->orWhereHas($model, function($query) use ($string) {
+
+                $query->where('lastname', 'LIKE', '%'.$string.'%')
+                    ->orWhere('firstname', 'LIKE', '%'.$string.'%');
+
+            })
+            ->orWhere('email', 'LIKE', '%'.$string.'%');
+    }
 	
 }

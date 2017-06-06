@@ -58,11 +58,36 @@ export const store = new Vuex.Store({
 		userModal: false,
         alertMessage: '',
         status: [{name: 'Active' , value: 1}, {name: 'Inactive', value: 0}],
-        heirarchy: 0
+        heirarchy: 0,
+        positions: {
+
+        	name: '',
+        	desc: '',
+        	created_at: ''
+        },
+        position: {
+        	name: '',
+        	desc: '',
+        	created_at: ''
+        },
+        roles:{},
+        currentRoles: {},
+        usersMatch: [
+
+                {user: 'aaa', id: 0},
+            ],
+        mainFunctions: {}
 
 	},
 
 	mutations: {
+		mainFunctions(state, mainFunctions){
+
+			state.mainFunctions = mainFunctions
+		},
+		currentRoles(state, currentRoles){
+			state.currentRoles = currentRoles
+		},
 		user(state, payload){
 			state.user = payload
 		},
@@ -110,11 +135,35 @@ export const store = new Vuex.Store({
 		},
 		heirarchy(state, heirarchy){
 			state.heirarchy = heirarchy
+		},
+		positions(state, positions){
+
+			state.positions = positions
+		},
+		position(state, position){
+
+			state.position = position
+		},
+		usersMatch(state, usersMatch){
+			state.usersMatch = usersMatch
 		}
 	},
 
 	getters: {
 
+		mainFunctions(){
+
+			return store.state.mainFunctions
+		},
+		usersMatch(){
+
+			return store.state.usersMatch
+		},
+
+		currentRoles(){
+
+			return store.state.currentRoles
+		},
 		user(){
 
 			return store.state.user
@@ -176,8 +225,15 @@ export const store = new Vuex.Store({
 	    heirarchy(){
 
 	    	return store.state.heirarchy
-	    }
+	    },
+	    positions(){
 
+	    	return store.state.positions
+	    },
+	    position(){
+
+	    	return store.state.position
+	    }
 	},
 	
 	actions: {

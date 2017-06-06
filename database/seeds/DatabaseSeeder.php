@@ -17,6 +17,9 @@ use App\CardNo;
 use App\AccessRight;
 use App\MaritalStatus;
 use App\Brand;
+use App\Position;
+use App\Policy;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -43,6 +46,9 @@ class DatabaseSeeder extends Seeder
         MaritalStatus::truncate();
         AccessRight::truncate();
         Brand::truncate();
+        Position::truncate();
+        Policy::truncate();
+        Role::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->call(RolesTableSeeder::class);
@@ -61,13 +67,16 @@ class DatabaseSeeder extends Seeder
         factory(App\Photo::class, 200)->create();
         factory(App\Price::class)->create();
 
+
+        $this->call(PositionsTableSeeder::class);
         $this->call(BranchProductTableSeeder::class);
         $this->call(MerchantUserTableSeeder::class);
         $this->call(BranchMerchantTableSeeder::class);
         $this->call(BranchUserTableSeeder::class);
-
+        $this->call(PolicyTableSeeder::class);
         $this->call(ProductPriceTableSeeder::class);
         $this->call(ProductQuantityTableSeeder::class);
+        $this->call(MainFunctionsTableSeeder::class);
 
     }
 }

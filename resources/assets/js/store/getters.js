@@ -1,5 +1,9 @@
 export default {
 
+		currentRoles(){
+
+			return store.state.currentRoles
+		},
 		user(){
 
 			return store.state.user
@@ -53,6 +57,22 @@ export default {
 	    alertMessage(){
 
 	    	return store.state.alertMessage
+	    },
+	    status(){
+
+	    	return store.state.status
+	    },
+	    heirarchy(){
+
+	    	return store.state.heirarchy
+	    },
+	    positions(){
+
+	    	return store.state.positions
+	    },
+	    position(){
+
+	    	return store.state.position
 	    }
 
 	}

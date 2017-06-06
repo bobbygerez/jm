@@ -1,98 +1,151 @@
 <template>
-	<div class="container-fluid">
-		 <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                   <table class="table table-hover user-table">
-                         <thead>
-                            <th>Name</th>
-                            <th>Access Rights</th>
-                          </thead>
-                          <tbody>
-                          <tr v-for="role in roles" @click="modalShow">
-                            <td>{{ role.name }}</td>
-                            <td><span v-for="accessRight in role.access_rights">{{ accessRight.name }}, </span></td>
-                          </tr>
-                      </tbody>
-                   </table>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="row">
+            <div class="header">
+              <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                      
+                    <autocomplete
+                     placeholder="Search Firstname/Lastname"
+                    :url="userPopUp"
+                    anchor="user"
+                    :on-select="getData"
+                    >
+                  </autocomplete>
+                    </div>
+                     
                 </div>
-            </div>
 
+                <table class="table table-hover user-table">
+                <caption class="text-center" v-if="caption"><h3>{{ firstname }} {{ lastname }} </h3><p>{{ email }} </p></caption>
+                    <thead>
+                      <tr>
+                        <th>Menu and Functions</th>
+                        <th>Add</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Override/Approve</th>
+                        <th>View</th>
+                        <th>Print</th>
+                        <th>Publish</th>
+                      </tr>
+                    </thead>
+                    <tbody v-for="mainFunction in mainFunctions">
+
+                      <tr>
+                          <td>{{ mainFunction.name }}</td>
+                      </tr>
+                      <tr v-for="sub in mainFunction.sub_functions">
+                          <td><span>{{ sub.name }}</span></td>
+                      
+                      </tr>
+
+                    </tbody>
+                  </table>
+              </div>
+            </div><!--header end -->
+          </div>
+
+          
 
         </div>
+      </div>
 
-        <modal v-model="show" effect="fade" large>
-          <!-- custom header -->
-          <div slot="modal-header" class="modal-header">
-            <h4 class="modal-title">asdf</h4>
-            
-          </div>
 
-          <div class="modal-body"> </div>
-            
-            
-           
-          <!-- custom buttons -->
-          <div slot="modal-footer" class="modal-footer">
-            
+    </div>
 
-          </div>
-       </modal>
-
-	</div>
+ 
+  </div>
 </template>
 
 <script type="text/javascript">
 
+require('vue2-autocomplete-js/dist/style/vue2-autocomplete.css')
+
 import axios from 'axios'
-import modal from 'vue-strap/src/modal' 
+import lodash from 'lodash'
+import Autocomplete from 'vue2-autocomplete-js'
+
 export default{
 
     components: {
 
-        modal
-    },
+        Autocomplete 
+      },
+
     data(){
 
         return {
 
+            userPopUp: window.location.origin + '/api/user-pop',
             windowLocation: window.location.origin + '/',
-            show: false
+            firstname: '',
+            lastname: '',
+            email: '',
+            caption: false
         }
+        
     },
+
     created(){
 
-        this.fetchRoles()
-        this.$store.commit('title', 'Group Rights')
+        this.$store.commit('title', 'Access Rights')
+        this.fetchMainFunctions();
     },
     computed: {
-        
-        roles(){
+        usersMatch(){
 
-            return this.$store.getters.roles
-        } 
+            return this.$store.getters.usersMatch
+        },
+        mainFunctions(){
+
+            return this.$store.getters.mainFunctions
+        }
+
+
     },
     methods: {
-
-        fetchRoles(){
+        getData(obj){
+            axios.get(this.windowLocation + 'api/policy')
+            this.firstname = obj.firstname + ', '
+            this.lastname = obj.lastname
+            this.email = obj.email
+            this.caption = true
+        },
+        fetchMainFunctions(){
 
             var store = this.$store
 
-            axios.get(`${this.windowLocation}api/role`)
-                .then(function(response){
+            axios.get(this.windowLocation + 'api/main_functions')
+            .then( function(response){
 
-                    store.commit('roles', response.data.roles)
+                store.commit('mainFunctions', response.data.mainFunctions);
 
-                })
-                .catch(function(response){
-
-                })
-        },
-        modalShow(){
-            
-            this.show = true
+            })
+            .catch()
         }
     }
+  
 }
 
 </script>
+
+<style type="text/css" scoped>
+
+
+    tr td span{
+
+         margin-left: 20px;
+    }
+
+    tr td span span{
+
+         margin-left: 20px;
+    }
+
+   
+</style>

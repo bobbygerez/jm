@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAcessRightUserTable extends Migration
+class CreateSubFunctionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateAcessRightUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('access_right_user', function (Blueprint $table) {
+        Schema::create('sub_functions', function (Blueprint $table) {
             $table->increments('id');
-            
+            $table->integer('main_function_id')->unsigned()->nullable();
+            $table->foreign('main_function_id')->references('id')
+                ->on('main_functions');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateAcessRightUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('access_right_user');
+        Schema::dropIfExists('sub_functions');
     }
 }

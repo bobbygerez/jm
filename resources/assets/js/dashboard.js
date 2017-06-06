@@ -7,6 +7,7 @@ import axios from 'axios'
 
 
 import {store} from './store/store'
+import Positions from './router/Positions.vue'
 import AccessRights from './router/AccessRights.vue'
 import users from './router/users.vue'
 import Products from './router/Products.vue'
@@ -18,9 +19,11 @@ import VueRouter from 'vue-router'
   
 Vue.use(VueRouter)
 
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 const routes = [
-  { path: '/rights', component: AccessRights },
+  { path: '/access-rights', component: AccessRights},
+  { path: '/positions', component: Positions },
   { path: '/users', component: users },
   { path: '/products', component: Products },
   { path: '/user-profile', component: UserProfile}

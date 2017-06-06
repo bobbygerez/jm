@@ -3,7 +3,6 @@
 
 Route::resource('tasks', 'TaskController');
 
-
 /******************* AJAX ROUTES ******************/
 
 Route::group(['prefix' => 'api'], function(){
@@ -20,9 +19,17 @@ Route::group(['prefix' => 'api'], function(){
 	Route::resource('admin', 'User\AdminController');
 	Route::resource('role', 'Role\AdminRoleController');
 	Route::resource('product', 'Product\ProductController');
+	Route::get('user-pop', 'User\UserController@userPopUp');
 	Route::resource('user', 'User\UserController');
 	Route::resource('price', 'Price\PriceController');
 	Route::resource('quantity', 'Quantity\QuantityController');
+
+	Route::post('position/add_access', 'Position\PositionController@addAccess');
+	Route::post('position/remove_role', 'Position\PositionController@removeRole');
+	Route::resource('position', 'Position\PositionController');
+
+	Route::resource('main_functions', 'MainFunction\MainFunctionController');
+	Route::resource('policy', 'Policy\PolicyController');
 	
 	/** Categories **/
 	Route::get('maincategories/{maincategory_id}', 'AjaxCategoriesController@mainCategories');

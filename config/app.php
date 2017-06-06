@@ -198,6 +198,9 @@ return [
         App\Providers\UnitServiceProvider::class,
         App\Providers\PriceServiceProvider::class,
         App\Providers\QuantityServiceProvider::class,
+        App\Providers\PositionServiceProvider::class,
+        App\Providers\MainFunctionServiceProvider::class,
+        App\Providers\PolicyServiceProvider::class,
 
     ],
 

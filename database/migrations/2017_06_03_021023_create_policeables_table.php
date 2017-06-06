@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePolicyUserTable extends Migration
+class CreatePoliceablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreatePolicyUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('policy_user', function (Blueprint $table) {
+        Schema::create('policeables', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('policy_id')->unsigned()->nullable();
-            $table->foreign('policy_id')->references('id')
-                ->on('policies');
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')
-                ->on('users');
+            $table->integer('policeable_id')->unsigned()->nullable();
+            $table->string('policeable_type')->nullable();
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreatePolicyUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('policy_user');
+        Schema::dropIfExists('policeables');
     }
 }
