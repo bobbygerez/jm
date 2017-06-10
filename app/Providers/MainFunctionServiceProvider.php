@@ -29,5 +29,6 @@ class MainFunctionServiceProvider extends ServiceProvider
            $this->app->when(MainFunctionController::class)
              ->needs(MainFunctionInterface::class)
              ->give(MainFunctionRepository::class);
+             
     }
 }

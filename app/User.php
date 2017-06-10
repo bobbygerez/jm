@@ -65,5 +65,10 @@ class User extends Authenticatable
         return $this->morphToMany('App\Policy', 'policeable')->withTimestamps();;
     }
 
+    public function positions(){
+
+        return $this->belongsToMany('App\Position', 'position_user', 'user_id', 'position_id');
+    }
+
     
 }

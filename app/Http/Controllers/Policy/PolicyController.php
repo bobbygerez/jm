@@ -21,16 +21,29 @@ class PolicyController extends Controller
 
     public function index(){
 
-    	$policy  = $this->policy->findNoDecode(Auth::User()->id);
+        $request = app()->make('request');
 
-    	return response()->json([
+        $users = $this->policy->getUsers($request);
 
+    	return response()->json([  
+
+
+                'success' => true,
                 'policies' => $this->policy->all(),
-    			'user' => $policy->users()
-                                ->newPivotStatement()
-                				->where('user_id', Auth::User()->id)
-                                ->get()
+    			'user_policies' => $users
 
     		]);
+    }
+
+    public function store(){
+
+        $request = app()->make('request');
+
+        $policy = $this->policy->store($request);
+
+        return response()->json([
+
+                'message' => 'You have successfully updated the Access Right!'
+            ]);
     }
 }

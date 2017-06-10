@@ -7,6 +7,7 @@
             <div class="header">
               <div class="col-lg-12">
                   <p><a href="/" @click="newPosition($event)">New Position</a></p>
+                  <div class="content table-responsive table-full-width">
                   <table class="table table-hover user-table">
                     <thead>
                       <tr>
@@ -28,6 +29,7 @@
                       </tr>
                     </tbody>
                   </table>
+                  </div>
               </div>
             </div><!--header end -->
           </div>
@@ -40,7 +42,7 @@
 
     </div>
 
-    <modal v-model="positionModal" effect="fade" large width="40%">
+    <modal v-model="positionModal" effect="fade" large width="40%" :backdrop="backdrop">
       <!-- custom header -->
       <div slot="modal-header" class="modal-header">
         <h4 class="modal-title text-center"> Edit {{ position.name }}</h4>
@@ -63,11 +65,10 @@
         
         <div class="row">
           <div class="col-lg-12">
-            <p><strong>Member Group:</strong></p>
             
            <div class="col-lg-6">
             <div class="form-group">
-              <label>User Rights:</label>
+              <label>User Functions:</label>
               <select multiple="" class="form-control border-input" v-model="selectedCurrentRoles">
                <option v-for="cPosition in currentRoles" :value="cPosition.id">{{ cPosition.name }}</option>
              </select>
@@ -77,7 +78,7 @@
 
          <div class="col-lg-6">
               <div class="form-group">
-                <label>Built in access:</label>
+                <label>Built in Functions:</label>
                 <select multiple="" class="form-control border-input" v-model="selectedAccess">
                  <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
                </select>
@@ -98,7 +99,7 @@
       </div>
   </modal>
 
-  <modal v-model="newPositionModal" effect="fade" large width="40%">
+  <modal v-model="newPositionModal" effect="fade" large width="40%" :backdrop="backdrop">
       <!-- custom header -->
       <div slot="modal-header" class="modal-header">
         <h4 class="modal-title text-center"> Add New Position</h4>
@@ -121,21 +122,20 @@
         
         <div class="row">
           <div class="col-lg-12">
-            <p><strong>Member Group:</strong></p>
             
            <div class="col-lg-6">
             <div class="form-group">
-              <label>Access Right:</label>
+              <label>User Functions</label>
               <select multiple="" class="form-control border-input" v-model="newRoles">
                <option v-for="cPosition in newSelectedRoles" :value="cPosition.id">{{ cPosition.name }}</option>
              </select>
-             <input type="button" value="Remove" style="margin-top: 10px;" @click="removeSelected($event)">
+             <input type="button" value="Clear" style="margin-top: 10px;" @click="removeSelected($event)">
            </div>
          </div>
 
          <div class="col-lg-6">
               <div class="form-group">
-                <label>Built in access:</label>
+                <label>Built in Functions:</label>
                 <select multiple="" class="form-control border-input" v-model="newSelectedAccess">
                  <option v-for="role in roles" :value="role">{{ role.name }}</option>
                </select>
@@ -191,7 +191,8 @@ export default {
         newDesc: '',
         newSelectedRoles: [],
         newSelectedAccess: [],
-        deleteDanger: false
+        deleteDanger: false,
+        backdrop: false
     }
   },
 
@@ -227,7 +228,7 @@ export default {
   },
   methods: {
       removeSelected(){
-        console.log(this.newRoles)
+        this.newSelectedRoles = []
       },
       moveSelected(e){
        this.newSelectedRoles = this.newSelectedAccess
@@ -297,6 +298,7 @@ export default {
 
       })
       this.positionModal = true
+       this.fetchPositions()
     },
     deletePosition(e, id){
       e.preventDefault()
@@ -312,6 +314,7 @@ export default {
 
       })
       this.deleteDanger = true
+       this.fetchPositions()
     },
     confirmDeletePosition(e){
       e.preventDefault()
@@ -343,11 +346,12 @@ export default {
       })
 
       this.newPositionModal = true
+       this.fetchPositions()
     },
     exitModal(){
       this.positionModal = false
       this.newPositionModal = false
-      this.fetchPositions()
+     
     },
     saveMethod: function(){
       var store = this.$store

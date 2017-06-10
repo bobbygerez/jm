@@ -14,12 +14,13 @@
                     :url="userPopUp"
                     anchor="user"
                     :on-select="getData"
+                    :on-input="onInput"
                     >
                   </autocomplete>
                     </div>
                      
                 </div>
-
+                <div class="content table-responsive table-full-width">
                 <table class="table table-hover user-table">
                 <caption class="text-center" v-if="caption"><h3>{{ firstname }} {{ lastname }} </h3><p>{{ email }} </p></caption>
                     <thead>
@@ -36,16 +37,31 @@
                     </thead>
                     <tbody v-for="mainFunction in mainFunctions">
 
-                      <tr>
+                      <tr v-if="mainFunction.name == 'My Profile'">
                           <td>{{ mainFunction.name }}</td>
+                          <td v-for="policy in policies" style="text-align:center">
+                              <div class="checkbox checkbox-success" style="display: inline; margin: 5px;" v-if="caption">
+                                  <input :id="policy.id" class="styled" type="checkbox" :value="policy.id" v-model="userPolicies" @click="addPolicy()">
+                                  <label :for="policy.id">
+                                      
+                                  </label>
+                              </div>
+                          </td>
+                      </tr>
+                       <tr v-else>
+                          <td>{{ mainFunction.name }}</td>
+                          <td v-for="policy in policies">
+                            {{ policy.id }}
+                          </td>
                       </tr>
                       <tr v-for="sub in mainFunction.sub_functions">
                           <td><span>{{ sub.name }}</span></td>
-                      
+                          <td v-for="policy in policies">{{ policy.name }}</td>
                       </tr>
 
                     </tbody>
                   </table>
+                  </div>
               </div>
             </div><!--header end -->
           </div>
@@ -58,7 +74,11 @@
 
     </div>
 
- 
+    <alert v-model="alertSuccess" placement="top" duration="4000" type="success" width="400px" dismissable>
+      <span class="icon-info-circled alert-icon-float-left"></span>
+      <strong>Success!</strong>
+      <p>{{ alertMessage }}</p>
+    </alert>
   </div>
 </template>
 
@@ -69,12 +89,14 @@ require('vue2-autocomplete-js/dist/style/vue2-autocomplete.css')
 import axios from 'axios'
 import lodash from 'lodash'
 import Autocomplete from 'vue2-autocomplete-js'
+import alert from 'vue-strap/src/alert'
 
 export default{
 
     components: {
 
-        Autocomplete 
+        Autocomplete ,
+        alert
       },
 
     data(){
@@ -86,7 +108,20 @@ export default{
             firstname: '',
             lastname: '',
             email: '',
-            caption: false
+            caption: false,
+            defaultPolicies: [
+
+              { name: '', id: ''},
+              { name: '', id: ''},
+              { name: '', id: ''},
+              { name: '', id: ''},
+              { name: '', id: ''},
+              { name: '', id: ''},
+              { name: '', id: ''}
+              
+            ],
+            userId: '',
+            alertSuccess: false
         }
         
     },
@@ -94,6 +129,7 @@ export default{
     created(){
 
         this.$store.commit('title', 'Access Rights')
+        this.$store.commit('policies', this.defaultPolicies);
         this.fetchMainFunctions();
     },
     computed: {
@@ -104,17 +140,61 @@ export default{
         mainFunctions(){
 
             return this.$store.getters.mainFunctions
+        },
+        policies(){
+
+          return this.$store.getters.policies
+        },
+        userPolicies: {
+
+          get(){
+            return this.$store.getters.userPolicies
+          },
+          
+          set(value){
+
+            this.$store.commit('userPolicies', value);
+          }
+        },
+        alertMessage(){
+
+          return this.$store.getters.alertMessage
         }
 
 
     },
     methods: {
+
+        addPolicy(){
+          var store = this.$store
+          axios.post(this.windowLocation + 'api/policy',{
+            userId: this.userId,
+            userPolicies: this.userPolicies
+          }).then( function(response){
+
+            store.commit('alertMessage', response.data.message);
+          })
+          .catch(function (response){
+
+          })
+          this.alertSuccess = true
+        },
         getData(obj){
-            axios.get(this.windowLocation + 'api/policy')
+
+            var store = this.$store
+            this.userId = obj.id
+            axios.get(this.windowLocation + 'api/policy?id=' + obj.id)
+            .then(function(response){
+                store.commit('policies', response.data.policies);
+                store.commit('userPolicies', response.data.user_policies);
+            })
+            .catch()
             this.firstname = obj.firstname + ', '
             this.lastname = obj.lastname
             this.email = obj.email
             this.caption = true
+
+
         },
         fetchMainFunctions(){
 
@@ -127,6 +207,18 @@ export default{
 
             })
             .catch()
+        },
+        onInput(){
+
+          this.firstname = ''
+          this.lastname = ''
+          this.email = ''
+          this.caption = false,
+          this.$store.commit('policies', this.defaultPolicies);
+        },
+        checkUserPolicies(policyId){
+
+          console.log(policyId)
         }
     }
   
@@ -147,5 +239,7 @@ export default{
          margin-left: 20px;
     }
 
-   
+  tr:hover{
+    cursor: auto;
+  }
 </style>

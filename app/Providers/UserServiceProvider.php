@@ -59,7 +59,6 @@ class UserServiceProvider extends ServiceProvider
           ->give(RoleRepository::class);
 
 
-
         /************ AREA MANAGER **********/
 
         $this->app->when(AreaManagerProductController::class)

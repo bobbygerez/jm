@@ -19,7 +19,11 @@ Route::group(['prefix' => 'api'], function(){
 	Route::resource('admin', 'User\AdminController');
 	Route::resource('role', 'Role\AdminRoleController');
 	Route::resource('product', 'Product\ProductController');
+
+	Route::post('user-add-position', 'User\UserController@addPosition');
+	Route::post('user-remove-position', 'User\UserController@removePosition');
 	Route::get('user-pop', 'User\UserController@userPopUp');
+	Route::get('user-search', 'User\UserController@search');
 	Route::resource('user', 'User\UserController');
 	Route::resource('price', 'Price\PriceController');
 	Route::resource('quantity', 'Quantity\QuantityController');

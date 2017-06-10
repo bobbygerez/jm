@@ -19,7 +19,17 @@ class UserController extends Controller
     	$this->middleware('auth');
         $this->middleware(function($request, $next){
 
-            $role = Auth::User()->roles->min()->name;
+            $positions = Auth::User()->positions;
+
+            $roles = $positions->map(function($position){
+
+                return $position->roles->map(function($role){
+
+                    return $role;
+                });
+            });
+
+            $role = $roles[0]->min()->name;
             $this->role = str_replace(' ', '', $role);
             return $next($request);
         });
@@ -29,7 +39,7 @@ class UserController extends Controller
 
     public function index(){
 
-         $this->authorize('view', $this->user);
+        $this->authorize('index', $this->user);
 
         return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->index();
     }
@@ -50,8 +60,21 @@ class UserController extends Controller
 
         return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->userPopUp();
 
+    }
 
-        
+    public function search(){
+         
+         return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->search();
+    }
+
+    public function removePosition(){
+
+       return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->removePosition();
+    }
+
+     public function addPosition(){
+
+       return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->addPosition();
     }
 
 }

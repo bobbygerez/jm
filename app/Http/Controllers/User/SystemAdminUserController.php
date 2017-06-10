@@ -5,23 +5,24 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repo\User\UserInterface;
-use App\Repo\Role\RoleInterface;
+use App\Repo\Position\PositionInterface;
 use App\Repo\City\CityInterface;
 use App\Repo\MaritalStatus\MaritalStatusInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SystemAdminUserController extends Controller
 {
     protected $user;
-    protected $role;
+    protected $position;
     protected $maritalStatus;
     protected $city;
 
-    public function __construct(UserInterface $user, RoleInterface $role, MaritalStatusInterface $maritalStatus, CityInterface $city){
+    public function __construct(UserInterface $user, PositionInterface $position, MaritalStatusInterface $maritalStatus, CityInterface $city){
 
     	$this->middleware('auth');
     	$this->middleware('role:System Admin');
     	$this->user = $user;
-        $this->role = $role;
+        $this->position = $position;
         $this->maritalStatus =$maritalStatus;
         $this->city = $city;
     }
@@ -32,13 +33,15 @@ class SystemAdminUserController extends Controller
 
         $request = app()->make('request');
         
-        $users = $this->user->getAllUsers($request);
+        $users = $this->user
+                ->with(['positions', 'personalData', 'contactData'])
+                ->orderBy('created_at', 'asc')
+                ->get();
 
-        $roles = $this->role->orderBy('name', 'asc')->get();
-        
+        $paginate = new LengthAwarePaginator($users->forPage($request->page, $request->per_page), $users->count(), $request->per_page, $request->page);
+
         return response()->json([
-                'users' => $users,
-                'roles' => $roles
+                'users' => $paginate
             ]);
     }
 
@@ -46,22 +49,19 @@ class SystemAdminUserController extends Controller
     public function edit($id){
 
 
-        $roles = $this->role->orderBy('created_at', 'asc')->get();
+        $positions = $this->position->orderBy('created_at', 'asc')->get();
 
         $maritalStatus = $this->maritalStatus->orderBy('name', 'asc')->get();
 
         $user = $this->user->whereNoDecode('id', $id)
-            ->with(['roles', 'personalData', 'contactData'])
+            ->with(['positions', 'personalData', 'contactData'])
             ->first();
-
-        $heirarchy = $user->roles->min()->heirarchy;
 
         return response()->json([
 
                 'user' => $user,
-                'chunkRoles' => $roles->chunk(3),
                 'maritalStatus' => $maritalStatus,
-                'heirarchy' => $heirarchy,
+                'positions' => $positions,
                 'success' => true,
 
             ]);
@@ -70,11 +70,13 @@ class SystemAdminUserController extends Controller
     public function update($id){
 
         $request = app()->make('request');
+        
         $user = $this->user->update($request, $id);
 
         return response()->json([
 
-                'message' => 'The User has been Updated!'
+                'message' => 'The User has been successfully updated!',
+                'success' => true
 
             ]);
         
@@ -94,21 +96,17 @@ class SystemAdminUserController extends Controller
     public function userPopUp(){
 
         $request = app()->make('request');
-        
-
 
         $users = $this->user->orWhereHas('personalData', $request->q)
             ->with(['personalData'])
             ->take(8)
             ->get();
 
-        // $users = $this->user->with(['personalData'])->get();
-
         $data = $users->map( function($item){
 
                 return [
                     'id' => $item->id,
-                    'user' => $item->personalData->firstname . ' ' . $item->personalData->lastname,
+                    'user' => $item->personalData->firstname . ' ' . $item->personalData->lastname . ' (' . $item->email . ')',
                     'email' => $item->email,
                     'firstname' => $item->personalData->firstname,
                     'lastname' => $item->personalData->lastname
@@ -121,5 +119,53 @@ class SystemAdminUserController extends Controller
 
                 $data
             );
+    }
+
+    public function search(){
+
+        $request = app()->make('request');
+
+        $users = $this->user
+                ->whereNoDecode('id', $request->id)
+                ->with(['positions', 'personalData', 'contactData'])
+                ->get();
+
+        $paginate = new LengthAwarePaginator($users->forPage($request->page, $request->per_page), $users->count(), $request->per_page, $request->page);
+
+        return response()->json([
+                'users' => $paginate
+            ]);
+
+    }
+
+    public function removePosition(){
+
+        $request = app()->make('request');
+
+        $user = $this->user->findNoDecode($request->id);
+        $user->positions()->detach($request->positionIds);
+
+          return response()->json([
+
+                'message' => 'The position has been successfully removed!',
+                'success' => true
+
+            ]);
+        
+    }
+
+    public function addPosition(){
+
+        $request = app()->make('request');
+
+        $user = $this->user->findNoDecode($request->id);
+        $user->positions()->attach($request->positionIds);
+
+          return response()->json([
+
+                'message' => 'The position has been successfully added!',
+                'success' => true
+
+            ]);
     }
 }

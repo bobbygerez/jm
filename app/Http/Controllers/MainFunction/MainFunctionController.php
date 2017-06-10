@@ -16,6 +16,7 @@ class MainFunctionController extends Controller
     	$this->middleware('auth');
     	$this->mainFunction = $mainFunction;
 
+
     }
 
     public function index(){

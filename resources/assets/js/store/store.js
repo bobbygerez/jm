@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-
-import mutations from './mutations'
+import { mutations } from './mutations.vue'
+import { actions } from './actions.vue'
 
 Vue.use(Vuex)
 export const store = new Vuex.Store({
 	state: {
 
 		title: '',
-		users: {},
+		users: {
+			data: [],
+			last_page: 0
+		},
 		user: {
 				id: 0,
 				personal_data:{
@@ -76,80 +79,26 @@ export const store = new Vuex.Store({
 
                 {user: 'aaa', id: 0},
             ],
-        mainFunctions: {}
+        mainFunctions: {},
+        policies: {},
+        userPolicies: {
+        	
+        }
 
 	},
 
-	mutations: {
-		mainFunctions(state, mainFunctions){
-
-			state.mainFunctions = mainFunctions
-		},
-		currentRoles(state, currentRoles){
-			state.currentRoles = currentRoles
-		},
-		user(state, payload){
-			state.user = payload
-		},
-		users(state, payload){
-			state.users = payload
-		},
-		roles(state, payload){
-			state.roles = payload
-		},
-		chunkRoles(state, payload){
-			state.chunkRoles = payload
-		},
-		maritalStatus(state, payload){
-			state.maritalStatus = payload
-		},
-		clearRoles(state){
-			state.checkedRoles = []
-		},
-		checkedRoles(state, roleId){
-			
-			state.checkedRoles.push(roleId)
-		},
-		countries(state, payload){
-			state.countries = payload
-		},
-		title(state, payload){
-			state.title = payload
-		},
-		branches(state, payload){
-			state.branches = payload
-		},
-		products(state, payload){
-			state.products = payload
-		},
-		product(state, payload){
-			state.product = payload
-		},
-		units(state, units){
-
-			state.units = units
-		},
-		alertMessage(state, alertMessage){
-
-			state.alertMessage = alertMessage
-		},
-		heirarchy(state, heirarchy){
-			state.heirarchy = heirarchy
-		},
-		positions(state, positions){
-
-			state.positions = positions
-		},
-		position(state, position){
-
-			state.position = position
-		},
-		usersMatch(state, usersMatch){
-			state.usersMatch = usersMatch
-		}
-	},
-
+	mutations,
+	actions,
 	getters: {
+
+		userPolicies(){
+
+			return store.state.userPolicies
+		},
+		policies(){
+
+			return store.state.policies
+		},
 
 		mainFunctions(){
 
@@ -233,16 +182,12 @@ export const store = new Vuex.Store({
 	    position(){
 
 	    	return store.state.position
+	    },
+	    users(){
+
+	    	return store.state.users
 	    }
 	},
 	
-	actions: {
-
-		checkedRoles(state, roleIds){
-
-			for (var i = 0; i < roleIds.length; i++) {
-				state.commit('checkedRoles', roleIds[i])
-			}
-		}
-	}
+	
 })

@@ -29,5 +29,7 @@ class PolicyServiceProvider extends ServiceProvider
         $this->app->when(PolicyController::class)
          ->needs(PolicyInterface::class)
          ->give(PolicyRepository::class);
+
+       
     }
 }

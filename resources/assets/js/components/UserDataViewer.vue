@@ -159,7 +159,7 @@
                       <span v-for="roles in chunkRoles">
                           <div class="col-sm-4" v-for="role in roles">
                               <div class="checkbox checkbox-success" style="display: inline; margin: 5px;">
-                                  <input :id="role.id" class="styled " type="checkbox" :value="role.id" v-model="checkedRoles" >
+                                  <input :id="role.id" class="styled" type="checkbox" :value="role.id" v-model="checkedRoles" >
                                   <label :for="role.id">
                                       {{ role.name }}
                                   </label>

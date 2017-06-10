@@ -18,5 +18,7 @@ class PositionRepository extends BaseRepository implements PositionInterface{
 		$position->delete();
 	}
 
+
+	
 	
 }
