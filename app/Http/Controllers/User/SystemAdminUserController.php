@@ -9,6 +9,7 @@ use App\Repo\Position\PositionInterface;
 use App\Repo\City\CityInterface;
 use App\Repo\MaritalStatus\MaritalStatusInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Auth;
 
 class SystemAdminUserController extends Controller
 {
@@ -119,6 +120,25 @@ class SystemAdminUserController extends Controller
 
                 $data
             );
+    }
+
+    public function myProfile(){
+         $positions = $this->position->orderBy('created_at', 'asc')->get();
+
+        $maritalStatus = $this->maritalStatus->orderBy('name', 'asc')->get();
+
+        $user = $this->user->whereNoDecode('id', Auth::User()->id)
+            ->with(['positions', 'personalData', 'contactData'])
+            ->first();
+
+        return response()->json([
+
+                'user' => $user,
+                'maritalStatus' => $maritalStatus,
+                'positions' => $positions,
+                'success' => true,
+
+            ]);
     }
 
     public function search(){

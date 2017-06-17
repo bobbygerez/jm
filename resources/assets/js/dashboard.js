@@ -3,10 +3,11 @@ import VeeValidate from 'vee-validate';
 import UserDataViewer from './components/UserDataViewer.vue'
 import modal from 'vue-strap/src/modal'
 import axios from 'axios'
-import {store} from './store/store.js'
+import {store} from './store/store.vue'
 import VueRouter from 'vue-router'
 import {routes} from './router/routes.vue'
   
+
 Vue.use(VueRouter)
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
@@ -16,7 +17,6 @@ const router = new VueRouter({
 })
 
 window.bus = new Vue()
-
 var app = new Vue({
 	router,
 	store,
@@ -39,3 +39,4 @@ var app = new Vue({
 	}
 		
 }).$mount('#app')
+

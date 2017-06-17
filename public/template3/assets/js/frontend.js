@@ -315,20 +315,23 @@ jQuery(document).ready(function ($) {
                         $('.category-drop-list').slideUp(800);
                     }
                 };
+                
 
             } else {
                 $('.menu-primary').removeClass('menu-fixed');
-                $('#categories-menu').addClass('sub-menu-show');
-                if($('.header').hasClass('header-style1') || $('.header').hasClass('header-style3')||  $('.header').hasClass('header-style6')) {
-                    if(!$('.category-drop-list-show').length){
-                        $('.category-drop-list').slideDown(800);
-                    }
-                };
-                if($('.header').hasClass('header-style2')||$('.header').hasClass('header-style4')) {
-                    if(!$('.category-drop-list-show').length){
-                        $('.category-drop-list').slideUp(800);
-                    }
-                };
+                // $('#categories-menu').addClass('sub-menu-show');
+                // if($('.header').hasClass('header-style1') || $('.header').hasClass('header-style3')||  $('.header').hasClass('header-style6')) {
+                //     if(!$('.category-drop-list-show').length){
+                //         $('.category-drop-list').slideDown(800);
+                //     }
+                // };
+                // if($('.header').hasClass('header-style2')||$('.header').hasClass('header-style4')) {
+                //     if(!$('.category-drop-list-show').length){
+                //         $('.category-drop-list').slideUp(800);
+                //     }
+                // };
+
+                
             }
             if (scroll > 400){
 
@@ -676,4 +679,13 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    $('#categories-menu').removeClass('sub-menu-show');
+    if($('.header').hasClass('header-style1') || $('.header').hasClass('header-style2')|| $('.header').hasClass('header-style3')|| $('.header').hasClass('header-style4')|| $('.header').hasClass('header-style6')) {
+        if(!$('.category-drop-list-show').length){
+            $('.category-drop-list').slideUp(800);
+        }
+    };
+
 });
+ 
+

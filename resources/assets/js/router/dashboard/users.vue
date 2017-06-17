@@ -12,7 +12,7 @@
                   <div class="col-lg-6">
                   <div style="margin-top: 25px;">
                       <autocomplete
-                      placeholder="Search Firstname/Lastname"
+                      placeholder="Search firstname/lastname/email"
                       :url="userPopUp"
                       anchor="user"
                       :on-select="getData"
@@ -174,6 +174,28 @@
                 </div>
               </tab>
 
+              <tab header="Contact Informations">
+                 <div class="col-md-6">
+                  <div class="form-group">
+                      <label>Telephone No:</label>
+                      <input type="date" class="form-control border-input" v-model="user.contact_data.tel_no">
+                  </div>
+                  <div class="form-group">
+                      <label>Mobile No:</label>
+                      <input type="text" class="form-control border-input" v-model="user.contact_data.mobile_no">
+                  </div>
+                  
+                     
+              </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                      <label>Messenger Acct:</label>
+                      <input type="text" class="form-control border-input" v-model="user.contact_data.messenger_acct">
+                  </div>
+                </div>
+              </tab>
+
               <tab header="Position">
                <div class="col-lg-12">
                 <div class="col-lg-6">
@@ -250,7 +272,8 @@
            currentPosition: [],
            newSelectedPosition: [],
            alertSuccess: false,
-           backdrop: false
+           backdrop: false,
+           obj: ''
 
         }
        
@@ -297,6 +320,8 @@
             .catch(function(response){
 
             })
+
+            this.obj = ''
         },
         editUser(e, userId){
           e.preventDefault()
@@ -338,7 +363,14 @@
 
           })
           this.alertSuccess = true
-          this.index()
+
+          if(this.obj != ''){
+            this.getData(this.obj)
+          }
+          else {
+            this.index()
+          }
+          
 
         },
         deleteUser(e, userId){
@@ -362,6 +394,8 @@
             .catch(function(response){
 
             })
+
+            this.obj = obj
         },
         onInput(data){
           this.pageNum = 1

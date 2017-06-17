@@ -10,7 +10,7 @@
                     <div class="col-lg-4">
                       
                     <autocomplete
-                     placeholder="Search Firstname/Lastname"
+                     placeholder="Search firstname/lastname/email"
                     :url="userPopUp"
                     anchor="user"
                     :on-select="getData"

@@ -19,7 +19,7 @@ trait CaptchaTrait {
         if ($resp->isSuccess()) {
             return 1;
         } else {
-            return 0;
+            return '';
         }
 
     }

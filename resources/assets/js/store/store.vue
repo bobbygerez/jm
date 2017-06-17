@@ -1,3 +1,4 @@
+<script type="text/javascript">
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -83,14 +84,27 @@ export const store = new Vuex.Store({
         policies: {},
         userPolicies: {
         	
-        }
+        },
+        merchants: {},
+        merchant: {},
+        regMessage: ''
 
 	},
 
 	mutations,
 	actions,
 	getters: {
+		regMessage(){
 
+			return store.state.regMessage
+		},
+		merchant(){
+
+			return store.state.merchant
+		},
+		merchants(){
+			return store.state.merchants
+		},
 		userPolicies(){
 
 			return store.state.userPolicies
@@ -187,7 +201,10 @@ export const store = new Vuex.Store({
 
 	    	return store.state.users
 	    }
-	},
+	}
 	
 	
 })
+
+
+</script>

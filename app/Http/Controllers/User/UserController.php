@@ -19,18 +19,8 @@ class UserController extends Controller
     	$this->middleware('auth');
         $this->middleware(function($request, $next){
 
-            $positions = Auth::User()->positions;
-
-            $roles = $positions->map(function($position){
-
-                return $position->roles->map(function($role){
-
-                    return $role;
-                });
-            });
-
-            $role = $roles[0]->min()->name;
-            $this->role = str_replace(' ', '', $role);
+            $this->role =  Auth::User()->role();
+           
             return $next($request);
         });
     	
@@ -62,6 +52,11 @@ class UserController extends Controller
 
     }
 
+    public function myProfile(){
+
+         return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->myProfile();
+    }
+
     public function search(){
          
          return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->search();
@@ -76,5 +71,20 @@ class UserController extends Controller
 
        return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->addPosition();
     }
+
+    public function authenticated(){
+
+        if (Auth::check()){
+
+            return response()->json([
+
+                    'user' => Auth::User(),
+                    'success' => true
+                ]);
+        }
+
+    }
+
+   
 
 }

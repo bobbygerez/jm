@@ -5,9 +5,18 @@ import axios from 'axios'
 import UserRegister from './components/UserRegister.vue'
 import MainCategoriesProducts from './components/MainCategoriesProducts.vue'
 import SidebarOptions from './components/SidebarOptions.vue'
-import modal from 'vue-strap/src/modal'
+
 import alert from 'vue-strap/src/alert'
 import VeeValidate from 'vee-validate';
+import JuanFooter from './router/home/Footer.vue'
+import MainContent from './router/home/MainContent.vue'
+import HeaderBottom from './router/home/HeaderBottom.vue'
+import HeaderTop from './router/home/HeaderTop.vue'
+import HeaderMid from './router/home/HeaderMid.vue'
+import MenuPrimary from './router/home/MenuPrimary.vue'
+import Banner from './router/home/Banner.vue'
+import {store} from './store/store.vue'
+
 Vue.use(VeeValidate);
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -16,12 +25,19 @@ window.bus = new Vue();
 
 var app = new Vue({
   el: '#app',
+  store,
   components: {
     UserRegister,
     MainCategoriesProducts,
     SidebarOptions,
-    modal,
-    alert
+    alert,
+    JuanFooter,
+    MainContent,
+    HeaderBottom,
+    HeaderMid,
+    MenuPrimary,
+    Banner,
+    HeaderTop
 
   },
   data: {
@@ -67,11 +83,6 @@ var app = new Vue({
         this.showAlertLogin = true
       }
           
-    },  
-    showRegister: function(e){
-      e.preventDefault()
-      this.registerShow = true
-      this.loginShow = false
     },
     showLogin: function(e){
       this.loginShow = true
@@ -107,13 +118,6 @@ var app = new Vue({
         .catch(function(response){
            Vue.set(vm.$data, 'messages', response)
         });
-    },
-    validateBeforeSubmit: function(){
-      bus.$emit('check-register-form')
-    },
-    validateEmail: function() {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(this.email);
     }
   }
 

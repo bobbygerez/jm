@@ -7,7 +7,7 @@
 						<div class="header">
 							<div class="col-lg-12">
 									<div class="col-lg-12">
-										<h4>Basic Informations</h4>
+										<h4>Basic Information</h4>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
@@ -41,37 +41,11 @@
 									</div>
 							</div>
 
-							<div class="row">
-								<div class="col-lg-12">
-									<div class="form-group" style="padding: 15px;">
-										<label><strong>Position: </strong></label>
-										<br />
-										<span v-for="roles in chunkRoles">
-											<span v-for="role in roles">
-												<div class="col-sm-4"  v-if="role.heirarchy==heirarchy">
-													<div class="checkbox checkbox-success" style="display: inline; margin: 5px;">
-													<input :id="role.id" class="styled " type="checkbox" :value="role.id" v-model="checkedRoles" disabled >
-														<label :for="role.id">
-															{{ role.name }}
-														</label>
-													</div>
-												</div>
-												<div class="col-sm-4" v-else>
-													<div class="checkbox checkbox-success" style="display: inline; margin: 5px;">
-														<input :id="role.id" class="styled " type="checkbox" :value="role.id" v-model="checkedRoles" >
-														<label :for="role.id">
-															{{ role.name }}
-														</label>
-													</div>
-												</div>
-											</span>
-										</span>
-
-									</div>
-								</div>
-							</div>
-					          <div class="row">
+							
 					          	<div class="col-lg-12">
+					          		<div class="col-lg-12">
+										<h4>Personal Information</h4>
+									</div>
 					          		<br />
 					          		<div class="col-md-6">
 					          			<div class="form-group">
@@ -122,9 +96,8 @@
 					          			
 					          		</div>
 
-					          		<button class="btn btn-info" style="margin-left: 20px;" @click="updateProfile">Update</button>
+					          		<button class="btn btn-info btn-fill" style="margin-left: 20px;" @click="updateProfile">Update</button>
 					          	</div>
-					          </div>
 
 					          
 						</div><!--header end -->
@@ -210,7 +183,7 @@
 		methods: {
 			fetchUserData() {
 				var store = this.$store
-				axios.get(`${this.windowLocation}/api/user/` + this.user.id + `/edit`)
+				axios.post(`${this.windowLocation}/api/user-my-profile`)
 				.then(function(response) {
 					store.commit('user', response.data.user)
 					store.commit('chunkRoles', response.data.chunkRoles)

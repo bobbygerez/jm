@@ -19,7 +19,9 @@ use App\MaritalStatus;
 use App\Brand;
 use App\Position;
 use App\Policy;
-
+use App\RegisteredBy;
+use App\OwnershipType;
+use App\BusinessType;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -49,6 +51,10 @@ class DatabaseSeeder extends Seeder
         Position::truncate();
         Policy::truncate();
         Role::truncate();
+        RegisteredBy::truncate();
+        OwnershipType::truncate();
+        BusinessType::truncate();
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->call(RolesTableSeeder::class);
@@ -78,6 +84,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductQuantityTableSeeder::class);
         $this->call(MainFunctionsTableSeeder::class);
         $this->call(PositionUserTableSeeder::class);
+        $this->call(RegisteredByTableSeeder::class);
+        $this->call(OwnershipTypeTableSeeder::class);
 
     }
 }

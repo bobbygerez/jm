@@ -44,7 +44,7 @@
                 
                 <li>
                      <router-link to="/positions">
-                      <i class="fa fa-users" aria-hidden="true"></i>
+                      <i class="ti-world" aria-hidden="true"></i>
                         <p>Positions</p>
                     </router-link>
                 </li>
@@ -71,6 +71,12 @@
                     </router-lilnk>
                 </li>
 
+                <li>
+                    <router-link to="/merchant">
+                        <i class="fa fa-bank"></i>
+                        <p>Merchants</p>
+                    </router-lilnk>
+                </li>
 
                 <li>
                     <router-link to="/products">

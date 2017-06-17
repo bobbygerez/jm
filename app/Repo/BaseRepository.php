@@ -53,6 +53,10 @@ class BaseRepository{
 		return $this->modelName->where($fieldName, $id);
 	}
 
+	public function whereOperator($fieldName, $operator, $value){
+
+		return $this->modelName->where($fieldName, $operator, $value);
+	}
 
 	public function with($array){
 

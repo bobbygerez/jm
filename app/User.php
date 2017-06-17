@@ -5,11 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\RoleTrait;
+
+use Auth;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    use RoleTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -34,6 +38,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
 
     }
+
 
     public function cardNos(){
 

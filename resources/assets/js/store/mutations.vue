@@ -1,6 +1,14 @@
 <script type="text/javascript">
 	export const mutations = {
-
+		regMessage(state, regMessage){
+			state.regMessage = regMessage
+		},
+		merchant(state, merchant){
+			state.merchant = merchant
+		},
+		merchants(state, merchants){
+			state.merchants = merchants
+		},
 		clearUserPolicies(state){
 			state.userPolicies = []
 		},
