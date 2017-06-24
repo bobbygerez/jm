@@ -84,41 +84,8 @@ var app = new Vue({
       }
           
     },
-    showLogin: function(e){
-      this.loginShow = true
-      this.registerShow = false
-      e.preventDefault()
-    },
-    LoginMethod: function(){
-
-      var vm = this
-      axios.post('login',{
-          email: vm.email,
-          password: vm.password
-      })
-        .then(function(response){
-            Vue.set(vm.$data, 'messages', response.data)
-            Vue.set(vm.$data, 'user', response.data.user)
-
-            if(response.data.error){
-              vm.alertType = 'danger'
-              vm.errorHeader = 'Login Error'
-              vm.showAlertLogin = true
-            }
-            else{
-              vm.loginShow = false
-              vm.email = ''
-              vm.password = ''
-              vm.showAlertLoginSuccess = true
-              vm.welcomeName = true
-            }
-            
-
-        })
-        .catch(function(response){
-           Vue.set(vm.$data, 'messages', response)
-        });
-    }
+   
+    
   }
 
   

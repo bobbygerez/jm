@@ -22,6 +22,9 @@ use App\Policy;
 use App\RegisteredBy;
 use App\OwnershipType;
 use App\BusinessType;
+use App\Trade;
+use App\Franchise;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -54,6 +57,9 @@ class DatabaseSeeder extends Seeder
         RegisteredBy::truncate();
         OwnershipType::truncate();
         BusinessType::truncate();
+        Trade::truncate();
+        Franchise::truncate();
+
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
@@ -63,7 +69,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitTableSeeder::class);
         $this->call(AccessRightTableSeeder::class);
         $this->call(BrandTableSeeder::class);
-
+        $this->call(RegisteredByTableSeeder::class);
+        $this->call(OwnershipTypeTableSeeder::class);
+        
         factory(App\CardNo::class)->create();
         factory(App\User::class, 30)->create();
         factory(App\MerchantSubcategory::class)->create();
@@ -84,8 +92,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductQuantityTableSeeder::class);
         $this->call(MainFunctionsTableSeeder::class);
         $this->call(PositionUserTableSeeder::class);
-        $this->call(RegisteredByTableSeeder::class);
-        $this->call(OwnershipTypeTableSeeder::class);
+        $this->call(MerchantAttachmentTableSeeder::class);
+        $this->call(MerchantBranchSeeder::class);
+        $this->call(TradeTableSeeder::class);
+        $this->call(FranchiseTableSeeder::class);
 
     }
 }

@@ -18,15 +18,25 @@ class CreateMerchantsTable extends Migration
             $table->integer('created_by')->unsigned()->nullable();
             $table->foreign('created_by')->references('id')
                 ->on('users');
-            $table->string('name')->nullable();
+            $table->string('merchant_id')->nullable()->unique();
+            $table->string('branch_id')->nullable()->unique();
+            $table->string('name')->nullable()->unique();
             $table->string('website')->nullable();
             $table->string('email')->nullable();
             $table->string('phone_no')->nullable();
             $table->string('mobile_no')->nullable();
+            $table->boolean('status')->nullable();
             $table->string('contact_person')->nullable();
-            $table->string('reg_agency_reg')->nullable();
+            $table->integer('registered_by_id')->unsigned()->nullable();
+            $table->foreign('registered_by_id')->references('id')
+                ->on('registered_by');
+            $table->integer('ownership_type_id')->unsigned()->nullable();
+            $table->foreign('ownership_type_id')->references('id')
+                ->on('ownership_type');
             $table->string('business_type')->nullable();
             $table->string('misc_data')->nullable();
+            $table->string('registration_no')->unique()->nullable();
+            $table->date('date_registered')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

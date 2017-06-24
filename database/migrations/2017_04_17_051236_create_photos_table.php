@@ -18,7 +18,9 @@ class CreatePhotosTable extends Migration
             $table->string('path');
             $table->integer('imageable_id');
             $table->string('imageable_type');
-            $table->boolean('is_primary')->default(0);
+            $table->boolean('is_primary')->nullable()->default(0);
+            $table->string('name')->nullable();
+            $table->string('desc')->nullable();
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Role\AdminRoleController;
 
 use App\Http\Controllers\Position\PositionController;
 use App\Repo\Role\AdminRoleRepository;
+use App\Repo\Role\RoleRepository;
 
 class RoleServiceProvider extends ServiceProvider
 {

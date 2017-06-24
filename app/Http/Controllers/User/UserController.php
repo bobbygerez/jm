@@ -72,19 +72,6 @@ class UserController extends Controller
        return app('App\Http\Controllers\User'. '\\'. $this->role. 'UserController')->addPosition();
     }
 
-    public function authenticated(){
-
-        if (Auth::check()){
-
-            return response()->json([
-
-                    'user' => Auth::User(),
-                    'success' => true
-                ]);
-        }
-
-    }
-
-   
+    
 
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
+use Obfuscate;
+
 class LoginController extends Controller
 {
     /*
@@ -52,9 +54,10 @@ class LoginController extends Controller
             
         return response()->json([
 
-            'messages' => ['messages' => 'You have successfully Log-in!'],
+            'messages' => 'You have successfully Log-in!',
             'user' => $user,
-            'error' => false
+            'id' => Obfuscate::encode(Auth::User()->id),
+            'success' => true
 
             ]);
     }
@@ -66,8 +69,8 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse() {
         return response()->json([
-            'messages' => ['messages' => 'Authentication Failed!'],
-            'error' => true
+            'messages' => 'Invalid Username or Password!',
+            'success' => false
             ]);
     }
 
@@ -101,6 +104,10 @@ class LoginController extends Controller
             $this->throttleKey($request), $maxLoginAttempts, $lockoutTime
         );
     }
+
+    
+
+   
 
 
 }

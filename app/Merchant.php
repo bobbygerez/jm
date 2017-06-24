@@ -11,7 +11,7 @@ class Merchant extends Model
 
     protected $fillable = [
 
-    	'created_by', 'name', 'website', 'email'
+    	'created_by', 'merchant_id', 'phone_no', 'mobile_no', 'contact_person', 'status', 'name', 'website', 'email', 'registered_by_id', 'ownership_type_id', 'registration_no', 'date_registered'
     	
     ];
 
@@ -23,5 +23,15 @@ class Merchant extends Model
     public function branches(){
 
     	return $this->belongsToMany('App\Merchant', 'branch_merchant', 'merchant_id', 'branch_id');
+    }
+
+    public function photos(){
+
+        return $this->morphMany('App\Photo', 'imageable');
+    }
+
+    public function trade(){
+
+        return $this->hasOne('App\Trade', 'merchant_id', 'id');
     }
 }

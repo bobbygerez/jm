@@ -78,6 +78,13 @@ class BaseRepository{
 		return $this->modelName->orWhere($fieldName, $operator, $value);
 	}
 	
+	public function whereHas($model, $fieldName, $operator, $value){
+
+		return $this->modelName->whereHas($model, function($query) use ($fieldName, $operator, $value){
+
+				$query->where($fieldName, $operator, $value);
+		});
+	}
 	
 	public function first( $model ){
 

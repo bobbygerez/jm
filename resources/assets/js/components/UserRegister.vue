@@ -40,17 +40,15 @@
 
 		<div class="g-recaptcha" :data-sitekey="sitekey"></div> 
 	</form>
-	<alert v-model="alertSuccess" placement="top" duration="4000" type="success" width="400px" dismissable>
+	<alert v-model="alertSuccess" placement="top" duration="5000" type="success" width="400px" dismissable>
     <span class="icon-info-circled alert-icon-float-left"></span>
-    <strong>Success!</strong>
-    <p>{{ alertMessage.messages }}</p>
+    <strong><i class="fa fa-check-circle"> </i> Registration Success!</strong>
+    <p>{{ alertMessage }}</p>
   </alert>
-   <alert v-model="alertDanger" placement="top" type="danger" width="400px" dismissable>
+   <alert v-model="alertDanger" placement="top" type="danger" duration="5000" width="400px" dismissable>
     <span class="icon-info-circled alert-icon-float-left"></span>
-    <strong>Failed!</strong>
-    <p><ul>
-    	<li v-for="error in errors.errors">{{ error.msg }}</li>
-    </ul></p>
+    <strong><i class="fa fa-warning"> </i> Registration Failed!</strong>
+    <p>{{ alertMessage }}</p>
   </alert>
 	</div>
 </template>
@@ -129,22 +127,23 @@
 	                 	gRecaptchReponse: this.g_recaptcha_response
 	                 })
 	                 .then(function(response){
-
-	                 	store.commit('alertMessage', response.data.messages);
 	                 	
 	                 	if ( response.data.error ) {
-	                 		
+	                 		store.commit('alertMessage', response.data.messages );
 	                 		vm.alertDanger = true
+	                 		vm.alertSuccess = false
+	                 		
 	                 	}
 	                 	else {
-	           
+	                 		 store.commit('alertMessage', response.data.messages);
+	           				 vm.alertDanger = false
 		                 	 vm.alertSuccess = true
-		                 	//  vm.company = ''
-			                 // vm.email = ''
-			                 // vm.firstname = ''
-			                 // vm.lastname = ''
-			                 // vm.password = ''
-			                 // vm.confirm_password = ''
+		                 	 vm.company = ''
+			                 vm.email = ''
+			                 vm.firstname = ''
+			                 vm.lastname = ''
+			                 vm.password = ''
+			                 vm.confirm_password = ''
 		                 	
 	                 	}
 
@@ -157,7 +156,7 @@
 
 	            }).catch(() => {
 	                
-	                store.commit('regMessage', vm.errors);
+	                store.commit('alertMessage', "Please correct the error fields.");
 	                vm.alertDanger = true
 	                
 	            });

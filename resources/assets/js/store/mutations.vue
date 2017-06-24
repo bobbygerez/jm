@@ -1,5 +1,52 @@
 <script type="text/javascript">
 	export const mutations = {
+		forFranchise(state, forFranchise){
+
+			if (state.merchant.trade != null){
+
+           		state.merchant.trade.for_franchise = forFranchise
+          	}
+
+          	else {
+
+          		state.merchant.trade = {for_franchise: forFranchise};
+          	}
+		},
+		merchantContactPerson(state, merchantContactPerson){
+			state.merchant.contact_person = merchantContactPerson
+		},
+		merchantMobileNo(state, merchantMobileNo){
+
+			state.merchant.mobile_no = merchantMobileNo
+		},
+		merchantPhoneNo(state, merchantPhoneNo){
+
+			state.merchant.phone_no = merchantPhoneNo
+		},
+		merchantWebsite(state, merchantWebsite){
+			state.merchant.website = merchantWebsite
+		},
+		merchantName(state, merchantName){
+			state.merchant.name = merchantName
+		},
+		merchantId(state, merchantId){
+			state.merchant.merchant_id = merchantId
+		},
+		ownershipType(state, ownershipType){
+			state.ownershipType = ownershipType
+		},
+		tradeName(state, tradeName){
+
+			state.merchant.trade.name = tradeName
+		},
+		registeredBy(state, registeredBy){
+
+			state.registeredBy = registeredBy
+		},
+		myAccount(state, myAccount){
+
+			state.myAccount = myAccount
+		},
 		regMessage(state, regMessage){
 			state.regMessage = regMessage
 		},

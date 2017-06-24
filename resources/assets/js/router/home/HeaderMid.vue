@@ -8,15 +8,13 @@
                         or
                         <a href="#" class="login" @click="registerUser('Sell on Juan Merkado', 2)">Sell on Juan Merkado</a>
                     </p>
-                    <p class="register-or-login" v-show="showUser">
-                        <a href="#" class="register">Show User if Login</a>
-                    </p>
+                    
                 </div>
                 <div class="header-mid-right">
                     <div class="header-mid-right-content">
-                        <a href="#">
+                        <a :href="loginHref" @click="login()">
                             <i class="flaticon-user-outline"></i>
-                            My Account
+                            {{ myAccount }}
                         </a>
                     </div>
                     <div class="header-mid-right-content">
@@ -85,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <modal v-model="registerModal" effect="fade" large width="40%" >
+            <modal v-model="registerModal" effect="fade" large width="40%" :backdrop="backdrop">
             	<!-- custom header -->
             	<div slot="modal-header" class="modal-header">
             		<h2 class="modal-title text-center"> {{ title }}</h2>
@@ -104,6 +102,47 @@
             		</div>
             	</div>
             </modal>
+
+            <modal v-model="loginModal" effect="fade" large width="40%" :backdrop="backdrop">
+                <!-- custom header -->
+                <div slot="modal-header" class="modal-header">
+                    <h2 class="modal-title text-center">Login to Juan Merkado </h2>
+
+                </div>
+                
+                <div class="modal-body"> 
+
+
+                    <div class="form-group">
+                    <p class="control has-icon has-icon-right">
+                        <input name="email" v-model="email" type="text" placeholder="Email" class="form-control">
+                    </p>
+                </div>
+                   <div class="form-group">
+                        <input  name="password" type="password" class="form-control" placeholder="Password" v-model="password">
+                    </div>
+                </div>
+
+                <div slot="modal-footer" class="modal-footer">
+                    <div class="pull-right" style="margin-right: 50px;">
+                        <button type="button" class="btn btn-default btn-fill" @click="loginModal = false">Exit</button>
+                        <button type="button" class="btn btn-info btn-fill" @click="LoginMethod()">Log-in</button>
+                    </div>
+                </div>
+            </modal>
+
+            <alert v-model="alertSuccess" placement="top" duration="4000" type="success" width="400px" dismissable>
+                <span class="icon-info-circled alert-icon-float-left"></span>
+                <strong><i class="fa fa-check-circle"> </i> Login Success!</strong>
+                <p>{{ alertMessage }}</p>
+            </alert>
+
+            <alert v-model="alertDanger" placement="top" type="danger" duration="4000" width="400px" dismissable>
+                <span class="icon-info-circled alert-icon-float-left"></span>
+                <strong><i class="fa fa-warning"> </i> Authentication Failed!</strong>
+                <p>{{ alertMessage }}</p>
+            </alert>
+
         </div>
         
 </template>
@@ -115,6 +154,7 @@
 	import modal from 'vue-strap/src/modal'
 	import UserRegister from '../../components/UserRegister'
 	import VeeValidate from 'vee-validate'
+    import alert from 'vue-strap/src/alertlogin'
 
 	Vue.use(VeeValidate)
 
@@ -131,28 +171,52 @@
 				registerModal: false,
 				title: '',
 				sitekey: '',
-                companyShow: false
+                companyShow: false,
+                backdrop: false,
+                loginModal: false,
+                password: '',
+                email: '',
+                alertSuccess: false,
+                alertDanger: false,
+                loginHref: '#'
 			}
 		},
+        computed: {
+
+            alertMessage(){
+
+                return this.$store.getters.alertMessage
+            },
+            myAccount(){
+
+                return this.$store.getters.myAccount
+            }
+        },
 		components: {
 			modal,
-			UserRegister
+			UserRegister,
+            alert
 		},
 		created(){
 
 			this.sitekey = SiteKey.googleSiteKey
-			this.authenticated();
+            this.authenticated()
+
 		},
 		methods: {
 
 			authenticated(){
 
+                var store = this.$store;
+                var vm = this;
 				axios.post(this.windowLocation + 'api/authenticated')
 				.then(function(response){
 
-					if(response.data.success !== false){
+					if(response.data.authenticated){
 
+                        store.commit('myAccount', response.data.user);
 
+                        vm.loginHref = 'dashboard'
 					}
 				})
 				.catch(function(response){
@@ -179,7 +243,53 @@
 			},
             validateBeforeSubmit: function(){
               bus.$emit('check-register-form')
-            }
+            },
+            login(){
+                 
+                 if(this.loginHref == '#'){
+                    this.loginModal = true
+                 }
+
+            },
+            LoginMethod: function(){
+
+                  var store = this.$store
+                  var vm = this
+                  axios.post('login',{
+                      email: this.email,
+                      password: this.password
+                  })
+                    .then(function(response){
+
+                        if (response.data.success) {
+
+                            store.commit('alertMessage',response.data.messages);
+                            store.commit('myAccount', response.data.user);
+                            vm.loginHref = 'dashboard';
+                            vm.alertSuccess = true
+                            vm.alertDanger = false
+                            vm.password = ''
+                            vm.email = ''
+                            setTimeout(function() {
+                                vm.loginModal = false
+                            }, 4500);
+
+                           
+                        }
+                        else {
+                            store.commit('alertMessage', response.data.messages);
+                            vm.alertDanger = true
+                            vm.alertSuccess = false
+
+                        }
+                        
+                    })
+                    .catch(function(response){
+                      
+                    });
+
+
+                }
 		}
 	}
 </script>

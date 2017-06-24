@@ -16,14 +16,12 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
 	Route::get('countries', 'LocationController@countries');
 	Route::post('photo/product/upload', 'Photo\PhotoController@photoProduct');
-	Route::resource('admin', 'User\AdminController');
 	Route::resource('role', 'Role\AdminRoleController');
 	Route::resource('product', 'Product\ProductController');
 
 	Route::post('register-user-merchant', 'Auth\RegisterController@userMerchant');
 
 	Route::post('email/unique', 'Auth\RegisterController@emailUnique');
-	Route::post('authenticated', 'User\UserController@authenticated');
 	Route::post('user-my-profile', 'User\UserController@myProfile');
 	Route::post('user-add-position', 'User\UserController@addPosition');
 	Route::post('user-remove-position', 'User\UserController@removePosition');
@@ -31,6 +29,15 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('user-search', 'User\UserController@search');
 	Route::resource('user', 'User\UserController');
 
+
+	Route::resource('ownership_type', 'OwnershipType\OwnershipTypeController');
+	Route::resource('registered_by', 'RegisteredBy\RegisteredByController');
+
+	Route::resource('franchise', 'Franchise\FranchiseController');
+
+	Route::post('trade-check-unique-name', 'Trade\TradeController@checkUnique');
+	Route::post('merchant-franchisor','Merchant\MerchantController@franchisor');
+	Route::post('merchants-search', 'Merchant\MerchantController@autoCompleteMerchant');
 	Route::get('merchant-search', 'Merchant\MerchantController@search');
 	Route::post('merchant-branches', 'Merchant\MerchantController@branches');
 	Route::resource('merchant', 'Merchant\MerchantController');
@@ -62,8 +69,10 @@ Route::group(['prefix' => 'api'], function(){
 Route::get('logout', 'Auth\LoginController@logout');
 Route::auth();
 Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
+
 Route::get('dashboard', 'DashboardController@index');
 Route::get('dashboard/{user_id}', 'DashboardController@userId');
+
 
 /******************  END IMPLICIT ROUTES *****************/
 
@@ -71,15 +80,33 @@ Route::get('dashboard/{user_id}', 'DashboardController@userId');
 
 
 
+
  /******************* ROUTE PREFIX ********************/
 
-Route::group(['prefix' => 'browse'], function(){
+// Route::group(['prefix' => 'browse'], function(){
 
-	Route::get('{maincategory}/{maincategory_id}', 'NavController@mainCategories');
-	Route::get('{maincategory}/{merchantcategory}/{merchantcategory_id}', 'NavController@merchantCategories');
-	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{merchantsub_id}', 'NavController@merchantSubcategories');
-	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{product_name}/{product_id}', 'Product\ProductController@getProduct');
-});
+// 	Route::get('{maincategory}/{maincategory_id}', 'NavController@mainCategories');
+// 	Route::get('{maincategory}/{merchantcategory}/{merchantcategory_id}', 'NavController@merchantCategories');
+// 	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{merchantsub_id}', 'NavController@merchantSubcategories');
+// 	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{product_name}/{product_id}', 'Product\ProductController@getProduct');
+// });
 
 /****************** END ROUTE PREFIX ***************/
 
+Route::post('api/authenticated', function(){
+
+	  if(Auth::check()){
+
+            return response()->json([
+
+                    'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
+                    'id' => Obfuscate::encode(Auth::User()->id),
+                    'authenticated' => true
+
+                ]);
+        }
+
+        return response()->json([
+                'authenticated' => false
+            ]);
+});

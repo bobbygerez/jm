@@ -85,15 +85,38 @@ export const store = new Vuex.Store({
         userPolicies: {
         	
         },
-        merchants: {},
-        merchant: {},
-        regMessage: ''
+        merchants: {
+        	last_page: 0
+        },
+        merchant: {
+        	trade: {
+        		name: '',
+        		for_franchise: 0
+        	}
+        },
+        regMessage: '',
+        myAccount: 'My Account',
+        registeredBy: {},
+        ownershipType: {}
 
 	},
 
 	mutations,
 	actions,
 	getters: {
+
+		ownershipType(){
+
+			return store.state.ownershipType
+		},
+		registeredBy(){
+
+			return store.state.registeredBy
+		},
+		myAccount(){
+
+			return store.state.myAccount
+		},
 		regMessage(){
 
 			return store.state.regMessage

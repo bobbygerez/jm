@@ -61,8 +61,8 @@
                            </span>
                           
                          </td>
-                         <td v-if="user.status"><span class="label label-success"> Active </span></td>
-                         <td v-else><span class="label label-danger"> Inactive </span></td>
+                         <td v-if="user.status"><span class="label label-success"> <i class="fa fa-check"> </i></span></td>
+                         <td v-else><span class="label label-danger"> <i class="fa fa-times"> </i></span></td>
                          <td>
                            <a href="/" style="font-size:20px;" class="text-success" @click="editUser($event, user.id)"><span class="fa fa-edit"></span></a>
                           <a href="/" style="font-size:20px;" class="text-danger" @click="deleteUser($event, user.id)"><span class="fa fa-trash"></span></a>

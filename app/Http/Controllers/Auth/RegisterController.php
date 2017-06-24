@@ -115,7 +115,8 @@ class RegisterController extends Controller
         $validator = $this->validator($request->all());
 
         if($validator->fails()){
-            return response()->json(['messages' => $validator->errors()->getMessages(), 'error' => true]);
+
+            return $this->getErors($validator->errors()->getMessages());
         }
         
         $firstname = $request->input('firstname');
@@ -136,11 +137,9 @@ class RegisterController extends Controller
 
         return response()->json([
 
-            'messages' => [
 
-                'messages' => ['We have send a confirmation link to your email!'], 
+                'messages' => 'We have send a confirmation link to your email!', 
                 'error' => false
-            ]
 
             ]);
 
@@ -168,6 +167,7 @@ class RegisterController extends Controller
 
         $data['g-recaptcha-response'] = $this->captchaCheck($data);
 
+        
         $validator = Validator::make($data,
             [
                 'company'              => 'required',
@@ -199,8 +199,10 @@ class RegisterController extends Controller
         
         $validator = $this->validatorCompany($request->all());
 
+
         if($validator->fails()){
-            return response()->json(['messages' => $validator->errors()->getMessages(), 'error' => true]);
+
+            return $this->getErors($validator->errors()->getMessages());
         }
 
         $firstname = $request->input('firstname');
@@ -237,7 +239,7 @@ class RegisterController extends Controller
 
         return response()->json([
 
-                'messages' => ['We have send a confirmation link to your email!'], 
+                'messages' => 'We have send a confirmation link to your email!', 
                 'error' => false
             ]);
 
@@ -260,4 +262,24 @@ class RegisterController extends Controller
                 'success' => true
             ]);
     }
+
+    public function getErors($messages){
+
+      
+            $errors = collect($messages)->map(function($item){
+
+                return $item[0];
+            });
+
+            $newErrors = '';
+
+            foreach ($errors as $value) {
+                
+                $newErrors .= ' ' . $value;
+            }
+
+            return response()->json(['messages' => $newErrors, 'error' => true]);
+    }
+
+     
 }

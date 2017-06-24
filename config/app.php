@@ -184,6 +184,7 @@ return [
         App\Providers\BarangayServiceProvider::class,
         App\Providers\MainCategoryServiceProvider::class,
         App\Providers\OptimusServiceProvider::class,
+        App\Providers\PositionsHelperServiceProvider::class,
         App\Providers\MerchantCategoryServiceProvider::class,
         App\Providers\MerchantSubcategoryServiceProvider::class,
         App\Providers\ProductServiceProvider::class,
@@ -201,6 +202,9 @@ return [
         App\Providers\PositionServiceProvider::class,
         App\Providers\MainFunctionServiceProvider::class,
         App\Providers\PolicyServiceProvider::class,
+        App\Providers\RegisteredByServiceProvider::class,
+        App\Providers\TradeServiceProvider::class,
+        App\Providers\OwnershipTypeServiceProvider::class,
 
     ],
 
@@ -251,6 +255,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Obfuscate' => App\Facades\OptimusFacade::class,
+        'MyPosition' => App\Facades\PositionsFacade::class,
         'Img' => Intervention\Image\Facades\Image::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,

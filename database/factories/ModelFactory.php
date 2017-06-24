@@ -73,12 +73,6 @@ $factory->define(App\CardNo::class, function (Faker\Generator $faker) {
 
     $user = factory(App\User::class)->create();
 
-    $user->roles()->attach($user->id, [
-
-                    'role_id' => rand(1, 12),
-                    'user_id' => $user->id
-                ]);
-
     return [
 
         'user_id' => $user->id,
@@ -87,25 +81,7 @@ $factory->define(App\CardNo::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Merchant::class, function(Faker\Generator $faker){
 
-    $user = factory(App\User::class)->create();
-
-    $user->roles()->attach($user->id, [
-
-                    'role_id' => rand(1, 12),
-                    'user_id' => $user->id
-                ]);
-
-    return [
-        'created_by' => $user->id,
-        'name' => $faker->company,
-        'email' => $faker->email,
-        'website' => 'http://www.'.$faker->domainName,
-        'phone_no' => $faker->tollFreePhoneNumber,
-        'mobile_no' => $faker->e164PhoneNumber
-    ];
-});
 
 $factory->define(App\Branch::class, function(Faker\Generator $faker){
 
@@ -124,12 +100,6 @@ $factory->define(App\Branch::class, function(Faker\Generator $faker){
 $factory->define(App\MainCategory::class, function(Faker\Generator $faker){
 
     $user = factory(App\User::class)->create();
-
-    $user->roles()->attach($user->id, [
-
-                    'role_id' => rand(1, 12),
-                    'user_id' => $user->id
-                ]);
 
     return [
 
@@ -214,3 +184,25 @@ $factory->define(App\Price::class, function(Faker\Generator $faker){
     ];
 });
 
+
+
+$factory->define(App\Merchant::class, function(Faker\Generator $faker){
+
+    $user = factory(App\User::class)->create();
+
+   
+
+    return [
+        'created_by' => $user->id,
+        'merchant_id' => rand(20, 200) . '-' . rand(20, 10000),
+        'name' => $faker->company,
+        'email' => $faker->email,
+        'website' => 'http://www.'.$faker->domainName,
+        'status' => rand(0, 1),
+        'contact_person' => $faker->name,
+        'registered_by_id' => rand(1,4),
+        'ownership_type_id' => rand(1, 5),
+        'phone_no' => $faker->tollFreePhoneNumber,
+        'mobile_no' => $faker->e164PhoneNumber
+    ];
+});
