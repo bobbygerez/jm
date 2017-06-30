@@ -69,7 +69,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse() {
         return response()->json([
-            'messages' => 'Invalid Username or Password!',
+            'messages' => [ 'msg' => 'Invalid Username or Password!'],
             'success' => false
             ]);
     }

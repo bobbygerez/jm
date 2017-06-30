@@ -17,10 +17,9 @@ class FranchiseTableSeeder extends Seeder
         for ($i=1; $i < 112; $i++) { 
         	Franchise::create([
 
-        		'created_by' => $i,
+        		'created_by' => rand(1, 30),
         		'trade_id' => $i,
-        		'name' => $faker->company,
-        		'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
+        		'merchant_id' => rand(1, 30)
 
         	]);
         }

@@ -190,8 +190,6 @@ $factory->define(App\Merchant::class, function(Faker\Generator $faker){
 
     $user = factory(App\User::class)->create();
 
-   
-
     return [
         'created_by' => $user->id,
         'merchant_id' => rand(20, 200) . '-' . rand(20, 10000),
@@ -202,6 +200,8 @@ $factory->define(App\Merchant::class, function(Faker\Generator $faker){
         'contact_person' => $faker->name,
         'registered_by_id' => rand(1,4),
         'ownership_type_id' => rand(1, 5),
+        'trade_id' => rand(1, 112),
+        'for_franchise' => rand(0, 1),
         'phone_no' => $faker->tollFreePhoneNumber,
         'mobile_no' => $faker->e164PhoneNumber
     ];

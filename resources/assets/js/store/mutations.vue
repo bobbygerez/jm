@@ -1,37 +1,10 @@
 <script type="text/javascript">
 	export const mutations = {
-		forFranchise(state, forFranchise){
 
-			if (state.merchant.trade != null){
-
-           		state.merchant.trade.for_franchise = forFranchise
-          	}
-
-          	else {
-
-          		state.merchant.trade = {for_franchise: forFranchise};
-          	}
+		coordinates(state, coordinates){
+			state.coordinates = coordinates
 		},
-		merchantContactPerson(state, merchantContactPerson){
-			state.merchant.contact_person = merchantContactPerson
-		},
-		merchantMobileNo(state, merchantMobileNo){
-
-			state.merchant.mobile_no = merchantMobileNo
-		},
-		merchantPhoneNo(state, merchantPhoneNo){
-
-			state.merchant.phone_no = merchantPhoneNo
-		},
-		merchantWebsite(state, merchantWebsite){
-			state.merchant.website = merchantWebsite
-		},
-		merchantName(state, merchantName){
-			state.merchant.name = merchantName
-		},
-		merchantId(state, merchantId){
-			state.merchant.merchant_id = merchantId
-		},
+		
 		ownershipType(state, ownershipType){
 			state.ownershipType = ownershipType
 		},
@@ -94,11 +67,18 @@
 			
 			state.checkedRoles.push(roleId)
 		},
-		countries(state, payload){
-			state.countries = payload
+		cities(state, cities){
+
+			state.cities = cities
 		},
-		title(state, payload){
-			state.title = payload
+		provinces(state, provinces){
+			state.provinces = provinces
+		},
+		countries(state, countries){
+			state.countries = countries
+		},
+		title(state, title){
+			state.title = title
 		},
 		branches(state, payload){
 			state.branches = payload

@@ -9,6 +9,11 @@ class Franchise extends Model
     protected $table = 'franchise';
     protected $fillable = [
 
-    	'created_by', 'name', 'desc', 'trade_id'
+    	'created_by', 'merchant_id', 'trade_id'
     ];
+
+    public function franchisor(){
+
+    	return $this->hasOne('App\Trade', 'id', 'trade_id');
+    }
 }

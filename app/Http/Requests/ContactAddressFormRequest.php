@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MerchantFormRequest extends FormRequest
+class ContactAddressFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,19 +28,9 @@ class MerchantFormRequest extends FormRequest
 
         return [
             
-             'name' => 'required',
-             'merchant_id' => 'required',
-             'website' => 'required',
-             'email' => 'required|unique:merchants,email,'.$request->id,
-
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'mobile_no.required' => 'The mobile number is required.',
-            'phone_no.required' => 'The phone number is required.'
+            'phone_no' => 'required',
+            'mobile_no' => 'required',
+            'contact_person' => 'required'
         ];
     }
 }

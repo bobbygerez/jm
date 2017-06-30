@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repo\Country\CountryInterface;
 use App\Repo\Region\RegionInterface;
-use App\Repo\Province\ProvinceInterface;
-use App\Repo\City\CityInterface;
+
+
 use App\Repo\Barangay\BarangayInterface;
 use Obfuscate;
 class LocationController extends Controller

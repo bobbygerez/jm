@@ -27,7 +27,7 @@ class SystemAdminMerchantController extends Controller
         $request = app()->make('request');
 
     	$merchants  = $this->merchant
-    				->with(['branches','photos', 'trade.franchise'])
+    				->with(['branches','photos'])
     				->orderBy('created_at', 'desc')
     				->get();
 
@@ -44,9 +44,9 @@ class SystemAdminMerchantController extends Controller
     public function edit($id){
 
         $merchant = $this->merchant->whereNoDecode('id', $id)
-            ->with(['branches','photos', 'trade.franchise'])
+            ->with(['branches','photos', 'address.country', 'address.province', 'address.city', 'trade.franchise'])
             ->first();
-
+          
         return response()->json([
 
                 'merchant' => $merchant
@@ -57,16 +57,9 @@ class SystemAdminMerchantController extends Controller
 
     public function update($request, $id){
 
-        $merchant = $this->merchant->findNoDecode($request->id);
-        $merchant->update($request->all());
-
-        $merchant = $this->merchant->whereNoDecode('id', $id)
-            ->with(['branches','photos', 'trade.franchise'])
-            ->first();
-
         return response()->json([
                 'success' => true,
-                'merchant' => $merchant
+                'merchant' => $this->merchant->updateMerchant($request)
             ]);
 
     }
@@ -109,7 +102,7 @@ class SystemAdminMerchantController extends Controller
 
         $merchants  = $this->merchant
                     ->whereNoDecode('id', $request->id)
-                    ->with(['branches','photos', 'trade.franchise'])
+                    ->with(['branches','photos', 'trade.franchise', 'address.country', 'address.province', 'address.city'])
                     ->orderBy('created_at', 'desc')
                     ->get();
 
@@ -125,13 +118,48 @@ class SystemAdminMerchantController extends Controller
 
         return response()->json(
 
-                $this->trade
+                $this->merchant
                     ->whereNoDecode('for_franchise', 1)
+                    ->with('trade')
                     ->select(['id', 'name'])
                     ->orderBy('name', 'asc')
                     ->get()
 
             );
         
+    }
+
+    public function contactInfo(){
+
+        $request = app()->make('request');
+
+        $result = $this->merchant->contactInfo($request);
+
+        return response()->json([
+
+                'message' => $result
+
+            ]);
+    }
+
+    public function uploadPhotos(){
+
+        $request = app()->make('request');
+
+        $result = $this->merchant->photoUpload($request);
+
+        return response()->json([
+
+                'message' => $result
+
+            ]);
+    }
+
+    public function removePhotos(){
+
+        $request = app()->make('request');
+
+        $result = $this->merchant->removePhotos($request);
+
     }
 }

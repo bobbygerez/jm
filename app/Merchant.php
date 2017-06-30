@@ -11,7 +11,7 @@ class Merchant extends Model
 
     protected $fillable = [
 
-    	'created_by', 'merchant_id', 'phone_no', 'mobile_no', 'contact_person', 'status', 'name', 'website', 'email', 'registered_by_id', 'ownership_type_id', 'registration_no', 'date_registered'
+    	'created_by', 'merchant_id', 'phone_no', 'mobile_no', 'contact_person', 'status', 'name', 'website', 'email', 'registered_by_id', 'ownership_type_id', 'registration_no', 'date_registered', 'for_franchise', 'trade_id'
     	
     ];
 
@@ -25,13 +25,24 @@ class Merchant extends Model
     	return $this->belongsToMany('App\Merchant', 'branch_merchant', 'merchant_id', 'branch_id');
     }
 
-    public function photos(){
 
-        return $this->morphMany('App\Photo', 'imageable');
+    public function address(){
+
+        return $this->morphOne('App\Address', 'addressable', 'address_type', 'address_id');
     }
 
     public function trade(){
 
-        return $this->hasOne('App\Trade', 'merchant_id', 'id');
+        return $this->hasOne('App\Trade', 'id', 'trade_id');
+    }
+
+    public function franchisee(){
+
+        return $this->hasMany('App\Franchise', 'merchant_id', 'id');
+    }
+
+    public function photos(){
+
+        return $this->morphMany('App\Photo', 'imageable', 'imageable_type', 'imageable_id');
     }
 }

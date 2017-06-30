@@ -1,23 +1,28 @@
 <?php
 
 
-Route::resource('tasks', 'TaskController');
+// Route::resource('tasks', 'TaskController');
 
 /******************* AJAX ROUTES ******************/
 
 Route::group(['prefix' => 'api'], function(){
 
-	/** Locations **/
-	Route::get('regions', 'LocationController@region');
-	Route::get('provinces/{region_id}', 'LocationController@regionProvinces');
-	Route::get('provinces', 'LocationController@provinceAll');
-	Route::get('cities', 'LocationController@cityAll');
-	Route::get('cities/{province_id}', 'LocationController@provinceCities');
-	Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
-	Route::get('countries', 'LocationController@countries');
+	// /** Locations **/
+	// Route::get('regions', 'LocationController@region');
+	// Route::get('provinces/{region_id}', 'LocationController@regionProvinces');
+	// Route::get('provinces', 'LocationController@provinceAll');
+	// Route::get('cities', 'LocationController@cityAll');
+	// Route::get('cities/{province_id}', 'LocationController@provinceCities');
+	// Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
+	// Route::get('countries', 'LocationController@countries');
+	
 	Route::post('photo/product/upload', 'Photo\PhotoController@photoProduct');
 	Route::resource('role', 'Role\AdminRoleController');
 	Route::resource('product', 'Product\ProductController');
+
+	Route::resource('cities', 'City\CityController');
+	Route::resource('provinces', 'Province\ProvinceController');
+	Route::resource('countries', 'Country\CountryController');
 
 	Route::post('register-user-merchant', 'Auth\RegisterController@userMerchant');
 
@@ -36,11 +41,19 @@ Route::group(['prefix' => 'api'], function(){
 	Route::resource('franchise', 'Franchise\FranchiseController');
 
 	Route::post('trade-check-unique-name', 'Trade\TradeController@checkUnique');
+
+	//Merchant Controller
+	Route::post('merchant-remove-photos', 'Merchant\MerchantController@removePhotos');
+	Route::post('merchant-upload-photos', 'Merchant\MerchantController@uploadPhotos');
+	Route::post('merchant-contact-info', 'Merchant\MerchantController@contactInfo');
 	Route::post('merchant-franchisor','Merchant\MerchantController@franchisor');
 	Route::post('merchants-search', 'Merchant\MerchantController@autoCompleteMerchant');
 	Route::get('merchant-search', 'Merchant\MerchantController@search');
 	Route::post('merchant-branches', 'Merchant\MerchantController@branches');
 	Route::resource('merchant', 'Merchant\MerchantController');
+
+
+
 	Route::resource('price', 'Price\PriceController');
 	Route::resource('quantity', 'Quantity\QuantityController');
 
@@ -77,36 +90,22 @@ Route::get('dashboard/{user_id}', 'DashboardController@userId');
 /******************  END IMPLICIT ROUTES *****************/
 
 
-
-
-
-
- /******************* ROUTE PREFIX ********************/
-
-// Route::group(['prefix' => 'browse'], function(){
-
-// 	Route::get('{maincategory}/{maincategory_id}', 'NavController@mainCategories');
-// 	Route::get('{maincategory}/{merchantcategory}/{merchantcategory_id}', 'NavController@merchantCategories');
-// 	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{merchantsub_id}', 'NavController@merchantSubcategories');
-// 	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{product_name}/{product_id}', 'Product\ProductController@getProduct');
-// });
-
 /****************** END ROUTE PREFIX ***************/
 
-Route::post('api/authenticated', function(){
+// Route::post('api/authenticated', function(){
 
-	  if(Auth::check()){
+// 	  if(Auth::check()){
 
-            return response()->json([
+//             return response()->json([
 
-                    'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
-                    'id' => Obfuscate::encode(Auth::User()->id),
-                    'authenticated' => true
+//                     'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
+//                     'id' => Obfuscate::encode(Auth::User()->id),
+//                     'authenticated' => true
 
-                ]);
-        }
+//                 ]);
+//         }
 
-        return response()->json([
-                'authenticated' => false
-            ]);
-});
+//         return response()->json([
+//                 'authenticated' => false
+//             ]);
+// });

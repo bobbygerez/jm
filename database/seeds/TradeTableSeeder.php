@@ -18,9 +18,7 @@ class TradeTableSeeder extends Seeder
         for ($i=1; $i < 112; $i++) { 
         	Trade::create([
 
-        		'created_by' => $i,
-                'merchant_id' => rand(1, 60),
-                'for_franchise' => rand(0, 1),
+        		'created_by' => rand(1, 30),
         		'name' => $faker->company,
         		'desc' => $faker->sentence($nbWords = 6, $variableNbWords = true)
 

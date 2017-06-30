@@ -71,9 +71,13 @@ class DatabaseSeeder extends Seeder
         $this->call(BrandTableSeeder::class);
         $this->call(RegisteredByTableSeeder::class);
         $this->call(OwnershipTypeTableSeeder::class);
+
+        factory(App\User::class, 30)->create();
+
+        $this->call(TradeTableSeeder::class);
+        
         
         factory(App\CardNo::class)->create();
-        factory(App\User::class, 30)->create();
         factory(App\MerchantSubcategory::class)->create();
         factory(App\Product::class, 30)->create();
         factory(App\Merchant::class, 30)->create();
@@ -81,7 +85,7 @@ class DatabaseSeeder extends Seeder
         factory(App\Photo::class, 200)->create();
         factory(App\Price::class)->create();
 
-
+        $this->call(FranchiseTableSeeder::class);
         $this->call(PositionsTableSeeder::class);
         $this->call(BranchProductTableSeeder::class);
         $this->call(MerchantUserTableSeeder::class);
@@ -94,8 +98,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PositionUserTableSeeder::class);
         $this->call(MerchantAttachmentTableSeeder::class);
         $this->call(MerchantBranchSeeder::class);
-        $this->call(TradeTableSeeder::class);
-        $this->call(FranchiseTableSeeder::class);
+        
 
     }
 }

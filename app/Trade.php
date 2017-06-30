@@ -16,6 +16,6 @@ class Trade extends Model
 
     public function franchise(){
 
-    	return $this->hasOne('App\Franchise', 'trade_id', 'id');
+    	return $this->hasMany('App\Franchise', 'trade_id', 'id');
     }
 }

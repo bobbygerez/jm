@@ -7,6 +7,7 @@ import {store} from './store/store.vue'
 import VueRouter from 'vue-router'
 import {routes} from './router/routes.vue'
   
+window.bus = new Vue()
 
 Vue.use(VueRouter)
 

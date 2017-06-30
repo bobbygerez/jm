@@ -34,6 +34,10 @@ class CreateMerchantsTable extends Migration
             $table->foreign('ownership_type_id')->references('id')
                 ->on('ownership_type');
             $table->string('business_type')->nullable();
+            $table->boolean('for_franchise')->nullable();
+            $table->integer('trade_id')->unsigned()->nullable();
+            $table->foreign('trade_id')->references('id')
+                ->on('trade');
             $table->string('misc_data')->nullable();
             $table->string('registration_no')->unique()->nullable();
             $table->date('date_registered')->nullable();

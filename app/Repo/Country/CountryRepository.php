@@ -2,7 +2,7 @@
 
 use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
-use App\ModelLocations\Country;
+use App\Country;
 
 class CountryRepository extends BaseRepository implements CountryInterface{
 

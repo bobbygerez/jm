@@ -132,15 +132,17 @@
             </modal>
 
             <alert v-model="alertSuccess" placement="top" duration="4000" type="success" width="400px" dismissable>
-                <span class="icon-info-circled alert-icon-float-left"></span>
-                <strong><i class="fa fa-check-circle"> </i> Login Success!</strong>
+                <span class="fa fa-check-circle alert-icon-float-left-success"></span>
+                <strong>Login Success!</strong>
                 <p>{{ alertMessage }}</p>
             </alert>
 
             <alert v-model="alertDanger" placement="top" type="danger" duration="4000" width="400px" dismissable>
-                <span class="icon-info-circled alert-icon-float-left"></span>
-                <strong><i class="fa fa-warning"> </i> Authentication Failed!</strong>
-                <p>{{ alertMessage }}</p>
+                <span class="fa fa-warning alert-icon-float-left"> </span>
+                <strong> Authentication Failed!</strong>
+                <ul>
+                    <li v-for="msg in alertMessage">{{ msg }}</li>
+                </ul>
             </alert>
 
         </div>
@@ -293,3 +295,27 @@
 		}
 	}
 </script>
+
+<style type="text/css" scoped>
+
+     .alert-icon-float-left {
+      font-size:40px;
+      float:left;
+      margin: 5px;
+      margin-right:20px;
+      color: #a94442;
+      
+    }
+
+     .alert-icon-float-left-success {
+      font-size:40px;
+      float:left;
+      margin: 5px;
+      margin-right:20px;
+      color: #3c763d;
+      
+    }
+    ul li{
+        list-style: square;
+    }
+</style>

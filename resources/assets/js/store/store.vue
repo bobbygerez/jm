@@ -33,6 +33,8 @@ export const store = new Vuex.Store({
 		maritalStatus: {},
 		checkedRoles: [],
 		countries: {},
+		provinces: {},
+		cities: {},
 		branches: {},
 		products: {
 			last_page: 0
@@ -92,19 +94,38 @@ export const store = new Vuex.Store({
         	trade: {
         		name: '',
         		for_franchise: 0
+        	},
+        	address: {
+        		lat: 0,
+        		long: 0,
+        		street: '',
+        		country: {
+        			name: ''
+        		},
+        		province: {
+        			name: ''
+        		},
+        		city: {
+
+        			name: ''
+        		}
         	}
         },
         regMessage: '',
         myAccount: 'My Account',
         registeredBy: {},
-        ownershipType: {}
+        ownershipType: {},
+        coordinates: { lat: '', long: '' }
 
 	},
 
 	mutations,
 	actions,
 	getters: {
+		coordinates(){
 
+			return store.state.coordinates
+		},
 		ownershipType(){
 
 			return store.state.ownershipType
@@ -174,7 +195,14 @@ export const store = new Vuex.Store({
 
 	    	return store.state.checkedRoles
 	    },
+	    cities(){
 
+	    	return store.state.cities
+	    },
+	    provinces(){
+
+	    	return store.state.provinces
+	    },
 	    countries(){
 
 	    	return store.state.countries

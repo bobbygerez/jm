@@ -1,4 +1,6 @@
-<?php namespace App\Repo\Country;
+<?php 
+
+namespace App\Repo\Country;
 
 use App\Repo\BaseInterface;
 

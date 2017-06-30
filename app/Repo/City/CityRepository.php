@@ -2,7 +2,7 @@
 
 use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
-use App\ModelLocations\City;
+use App\City;
 
 class CityRepository extends BaseRepository implements CityInterface{
 
