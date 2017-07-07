@@ -38,7 +38,7 @@
                     </caption>
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>Merchant Name</th>
                         <th>Telephone</th>
                         <th>Mobile</th>
                         <th>Website</th>
@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-  <modal v-model="editMerchantModal" effect="fade" large :backdrop="backdrop">
+  <modal v-model="editMerchantModal" effect="fade" large :backdrop="backdrop" width="90%">
       <!-- custom header -->
       <div slot="modal-header" class="modal-header">
         <h4 class="modal-title text-center">{{ merchant.name }}</h4>
@@ -104,168 +104,290 @@
         <div class="row">
           <tabs v-model="activeTab" nav-style="tabs" justified >
             <tab header="Company Informations">
-              <form>
+             <br />
               <div class="col-md-6">
+               <form class="form-horizontal">
                   <div class="form-group">
-                      <label>Merchant Id No:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.merchant_id">
+                      <label for="merchantId" class="col-lg-3 control-label">Merchant Id No:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="merchantId" v-model="merchant.merchant_id">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Name:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.name">
+                      <label for="merchantName" class="col-lg-3 control-label">Name:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="merchantName" v-model="merchant.name">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Website:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.website">
+                      <label for="website" class="col-lg-3 control-label">Website:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="website" v-model="merchant.website">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Email:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.email">
+                      <label for="email" class="col-lg-3 control-label">Email:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" v-model="merchant.email">
+                      </div>
                   </div>
                     <div class="form-group">
 
-                      <label>Trade Type</label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" v-model="merchant.for_franchise" value="0" @click="removeError()"> Franchisee
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio"  v-model="merchant.for_franchise" value="1" @click="checkTradeName()"> Franchisor
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio"  v-model="merchant.for_franchise" value="2" @click="checkTradeName()"> None
-                      </label> 
+                      <label for="tradeName" class="col-lg-3 control-label">Trade Name:</label>
+                          <div class="col-lg-9">
+                      <input type="text" class="form-control border-input"  placeholder="Enter Trade Name" v-model="merchantTradeName" ref="franchisorName"> 
+                      </div>
 
-                      <transition name="fade">
-                        <input type="text" class="form-control border-input" v-model="tradeName" v-if="merchant.for_franchise == 1" placeholder="Enter Trade Name" @blur="checkTradeName" :class="{ error : tradeNameError}">
-                        
-                      </transition>
-
-                      <transition name="fade">
-                        <v-select :on-change="consoleCallback" value="id" label="name" v-model="vSelected" :options="vOptions" v-if="merchant.for_franchise == '0'"></v-select>
-                      </transition>
-
-                      <transition name="fade">
-                        <span class="spanError" v-if="tradeNameError">The trade name had already been taken.</span>
+                     <transition name="fade">
+                        <p class="spanError" v-if="tradeNameError"><i class="fa fa-warning"></i>{{ alertMessage }}</p>
                       </transition>
                       
                   </div>
 
-                     <div class="form-group">
-                      <label>Registered By:</label>
-                      <select class="form-control border-input margin-bottom" v-model="merchant.registered_by_id" >
-                          <option value="">Select Agency</option>
-                          <option v-for="reg in registeredBy" :value="reg.id"> {{ reg.name }}</option>
-                      </select>
-
-
-                      <transition name="fade">
-                      <div v-if="showRegUpload">
-                        <dropzone id="myVueDropzone" 
-                          :url="urlUpload" 
-                          v-on:vdropzone-success="showSuccess"
-                          v-on:vdropzone-sending="dropSending"
-                          v-on:vdropzone-removed-file="removeFile"
-                          :useFontAwesome="useFontAwesome"
-                          :headers="headers"
-                          :thumbnailHeight="thumbnailHeight"
-                          :thumbnailWidth="thumbnailWidth"
-                          >
-                          <!-- Optional parameters if any! -->
-                      </dropzone>
+                    <div class="form-group">
+                         <label class="col-lg-3 control-label">Trade Type:</label>
+                         <div class="col-lg-9">
+                           <label class="radio-inline">
+                                <input type="radio"  v-model="merchant.for_franchise" value="1" @click="checkTradeName()" @blur="checkTradeName()"> Franchisor
+                            </label>
+                             <label class="radio-inline">
+                                 <input type="radio" v-model="merchant.for_franchise" value="0" @click="removeError()"> Franchisee
+                            </label>
+                            <transition name="fade">
+                              <v-select :on-change="consoleCallback" value="id" label="name" v-model="vSelected" :options="vOptions" v-if="merchant.for_franchise == '0'"></v-select>
+                            </transition>
+                         </div>
                     </div>
-                    </transition>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                          <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
+                        </label>
 
-                  </div>
-                  
+                        <div class="col-lg-9">
+
+                            <div style="margin-top: 5px;">
+                              <dropzone ref="tradeNameDZ" id="tradeNameDZ" 
+                                  :url="urlUpload" 
+                                  v-on:vdropzone-sending="dropSendingTN"
+                                  v-on:vdropzone-removed-file="removeFileTN"
+                                  :useFontAwesome="useFontAwesome"
+                                  :headers="headers"
+                                 
+                                  :maxNumberOfFiles="maxNumberOfFiles"
+                                  v-bind:preview-template="templateRegBy"
+                                  :dropzone-options="tradeNameOptions" 
+                                  :use-custom-dropzone-options="customDropzoneOptions" 
+
+                                  >
+                                  <!-- Optional parameters if any! -->
+                              </dropzone>
+                            </div>
+
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="col-lg-3 control-label">Registered By:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control border-input margin-bottom" v-model="merchant.registered_by_id" >
+                                <option value="">Select Agency</option>
+                                <option v-for="reg in registeredBy" :value="reg.id"> {{ reg.name }}</option>
+                            </select>
+                        </div>
+                       </div>
+                      <div class="form-group">
+                           <label class="col-lg-3 control-label">
+                              <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
+                          </label>
+
+                          <div class="col-lg-9">
+                            <div style="margin-top: 5px;">
+                              <dropzone ref="myVueDropzone" id="myVueDropzone" 
+                                :url="urlUpload" 
+                                v-on:vdropzone-sending="dropSending"
+                                v-on:vdropzone-removed-file="removeFile"
+                                :useFontAwesome="useFontAwesome"
+                                :headers="headers"
+                               
+                                :maxNumberOfFiles="maxNumberOfFiles"
+                                v-bind:preview-template="templateRegBy"
+
+                                >
+                              </dropzone>
+                            </div>
+                        </div>
+
+                      </div>
+
+                 
+                </form>
                     
               </div>
               <div class="col-md-6">
-                  
+                  <form class="form-horizontal">
+                    
                    <div class="form-group">
-                      <label>Ownership Type:</label>
-                      <select class="form-control border-input" v-model="merchant.ownership_type_id">
-                          <option value="">Select Ownership Type</option>
-                          <option v-for="ownership in getOwnershipType" :value="ownership.id"> {{ ownership.name }}</option>
-                      </select>
+                      <label class="col-lg-3 control-label">Ownership Type:</label>
+                      <div class="col-lg-9">
+                        <select class="form-control border-input" v-model="merchant.ownership_type_id" style="margin-bottom: 5px;">
+                            <option value="">Select Ownership Type</option>
+                            <option v-for="ownership in getOwnershipType" :value="ownership.id"> {{ ownership.name }}</option>
+                        </select>
+                      </div>
+
+                     
 
                   </div>
+
+                  <div class="form-group">
+                    <label class="col-lg-3 control-label">
+                        <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a>
+                      </label>
+
+                    <div class="col-lg-9">
+                       <dropzone ref="dzOwnershipType" id="dzOwnershipType" 
+                            :url="urlUpload" 
+                            v-on:vdropzone-sending="dropSendingOT"
+                            v-on:vdropzone-removed-file="removeFileOT"
+                            :useFontAwesome="useFontAwesome"
+                            :headers="headers"
+                           
+                            :maxNumberOfFiles="maxNumberOfFiles"
+                            v-bind:preview-template="templateRegBy"
+
+                            >
+                            <!-- Optional parameters if any! -->
+                        </dropzone>
+                     </div>
+                  </div>
                    <div class="form-group">
-                      <label>Business/Industry Type:</label>
-                      <select class="form-control border-input">
-                          <option value="">Select Type</option>
-                          <option> To Be filled up</option>
-                      </select>
+                      <label class="col-lg-3 control-label">Business/Industry Type:</label>
+                      <div class="col-lg-9">
+                        <select class="form-control border-input">
+                            <option value="">Select Type</option>
+                            <option> To Be filled up</option>
+                        </select>
+                      </div>
 
                   </div>
                   <div class="form-group">
-                      <label>Registration No:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.registration_no">
+                      <label class="col-lg-3 control-label">Registration No:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" v-model="merchant.registration_no">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Date Registered:</label>
-                      <input type="date" class="form-control border-input" v-model="merchant.date_registered">
+                      <label class="col-lg-3 control-label">Date Registered:</label>
+                      <div class="col-lg-9">
+                        <input type="date" class="form-control border-input" v-model="merchant.date_registered">
+                      </div>
                   </div>
                   <div class="form-group">
-                    <button type="button" class="btn btn-default btn-fill" @click="closeMerchantModal()">Exit</button>
-                    <button type="button" class="btn btn-info btn-fill" @click="saveMerchant">Save</button>
+                    <label class="col-lg-3 control-label">&nbsp;</label>
+                    <div class="col-lg-9">
+                      <button type="button" class="btn btn-default btn-fill" @click="closeMerchantModal()">Exit</button>
+                      <button type="button" class="btn btn-danger btn-fill" @click="saveMerchant">Save</button>
+                    </div>
                   </div>
+
+                  </form>
+
               </div>
               
-              </form>
+          
               
             </tab>
             <tab header="Contact Informations">
-              <div class="col-lg-6">
+            <br />
+              <form class="form-horizontal">
+              <div class="col-lg-5">
                  <div class="form-group">
-                      <label>Phone:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.phone_no">
+                      <label for="phone" class="col-lg-3 control-label">Phone:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="phone" v-model="merchant.phone_no">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Mobile:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.mobile_no">
+                      <label for="mobile" class="col-lg-3 control-label">Mobile:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="mobile" v-model="merchant.mobile_no">
+                      </div>
                   </div>
                   <div class="form-group">
-                      <label>Contact Person:</label>
-                      <input type="text" class="form-control border-input" v-model="merchant.contact_person">
+                      <label for="contact_person" class="col-lg-3 control-label">Contact Person:</label>
+                      <div class="col-lg-9">
+                        <input type="text" class="form-control border-input" name="contact_person" v-model="merchant.contact_person">
+                      </div>
                   </div>
                  <div class="form-group">
-                      <label>Select Country:</label>
-                       <v-select :on-change="countryCallback"  value="id" label="name" v-model="vCountrySelected" :options="vCountries"></v-select>
+                      <label for="country" class="col-lg-3 control-label">Country:</label>
+                      <div class="col-lg-9">
+                          <v-select :on-change="countryCallback" name="country" value="id" label="name" v-model="vCountrySelected" :options="vCountries"></v-select>
+                       </div>
                   </div>
+
+                  <transition name="slide-fade">
+                    <div class="form-group" v-if="countryId === 173">
+                        <label for="region" class="col-lg-3 control-label">Region:</label>
+                        <div class="col-lg-9">
+                         <v-select :on-change="regionCallback"  value="id" label="description" v-model="vRegionSelected" :options="vRegions"></v-select>
+                        </div>
+                    </div>
+                  </transition>
+
+                  <div class="form-group">
+                      <label for="province" class="col-lg-3 control-label">Province:</label>
+                      <div class="col-lg-9">
+                       <v-select :on-change="provinceCallback" value="id" label="name" v-model="vProvinceSelected" :options="vProvinces"></v-select>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="city" class="col-lg-3 control-label">Select City:</label>
+                      <div class="col-lg-9">
+                        <v-select :on-change="cityCallback" value="id" label="name" v-model="vCitySelected" :options="vCities"></v-select>
+                       </div>
+                  </div>
+                   <div class="form-group">
+                      <label for="brgy" class="col-lg-3 control-label">Select Barangay:</label>
+                      <div class="col-lg-9">
+                          <v-select :on-change="countryCallback" value="id" label="name"  :options="vCountries"></v-select>
+                      </div>
+                  </div>
+                   <div class="form-group">
+                      <label for="street" class="col-lg-3 control-label">Street No./Lot No.</label>
+                      <div class="col-lg-9">
+                        <textarea class="form-control  border-input" v-model="street"></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="street" class="col-lg-3 control-label">Building Photo</label>
+                      <div class="col-lg-9">
+                        <textarea class="form-control  border-input" v-model="street"></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="street" class="col-lg-3 control-label">&nbsp;</label>
+                     <div class="col-lg-9">
+                        <button type="button" class="btn btn-default btn-fill" @click="closeMerchantModal()">Exit</button>
+                        <button type="button" class="btn btn-danger btn-fill" @click="saveContactInfo">Save</button>
+                     </div>
+                    
+                  </div>
+
                   
               </div>
-              <div class="col-lg-6">
-                 <div class="form-group">
-                      <label>Select Province:</label>
-                       <v-select :on-change="provinceCallback" value="id" label="name" v-model="vProvinceSelected" :options="vProvinces"></v-select>
-                  </div>
-                  <div class="form-group">
-                      <label>Select City:</label>
-                       <v-select :on-change="cityCallback" value="id" label="name" v-model="vCitySelected" :options="vCities"></v-select>
-                  </div>
-                
-                  <div class="form-group">
-                      <label>Select Barangay:</label>
-                       <v-select :on-change="countryCallback" value="id" label="name"  :options="vCountries"></v-select>
-                  </div>
-                  <div class="form-group">
-                      <label>Street No./Lot No.</label>
-                      <textarea class="form-control  border-input" v-model="street"></textarea>
-                  </div>
+              <div class="col-lg-7">
+               
+                  <google-map ></google-map>
+                 
               </div>
-              <div class="row">
-                <div class="col-lg-12">
-                <google-map ></google-map>
-                <div class="form-group pull-right" style="margin-right: 20%;">
-                    <button type="button" class="btn btn-default btn-fill" @click="closeMerchantModal()">Exit</button>
-                    <button type="button" class="btn btn-danger btn-fill" @click="saveContactInfo">Save</button>
-                  </div>
-                </div>
-              </div>
-
+              
+              </form>
             </tab>
-            <tab header="Business Attachment" >
+            <tab header="Branches" >
+              
+            </tab>
+            <tab header="Settings" >
               
             </tab>
     
@@ -324,8 +446,17 @@ export default{
   data(){
 
     return {
-        thumbnailHeight: 100,
+        customDropzoneOptions: true,
+        tradeNameOptions: {
+          language : {
+                 dictDefaultMessage: '<br>Upload Trade Name photos.'},
+
+        },
+        franchisorName: '',
         thumbnailWidth: 100,
+        thumbnailHeight: 100,
+        maxNumberOfFiles: 20,
+        ownershipTypeNumber: '',
         urlUpload: window.location.origin + '/api/merchant-upload-photos',
         showRegUpload: false,
         useFontAwesome: true,
@@ -347,6 +478,8 @@ export default{
         alertSuccess: false,
         vCountries: [],
         countryId: '',
+        vRegions: [],
+        regionId: '',
         vProvinces: [],
         provinceId: '',
         vCities:[],
@@ -362,6 +495,7 @@ export default{
     Paginate, tabs, tab, vSelect, alert, googleMap
   },
   created(){
+
     this.$store.commit('title', 'All Merchants');
     this.index();
     this.getRegisteredBy();
@@ -370,14 +504,50 @@ export default{
     this.getCountries();
 
   },
-  computed: {
+  mounted(){
+    
+    
 
-      vSelected(){
-        if(this.merchant.for_franchise == 0){
-            return  this.merchant.trade.name
+  },
+  computed: {
+      merchantTradeName: {
+
+        get(){
+            if(this.merchant.trade != null){
+
+              return this.merchant.trade.name
+            }
+
+            if(this.merchant.franchisee != null){
+
+              if(this.merchant.franchisee.trade != null){
+
+                return this.merchant.franchisee.trade.name
+                
+              }
+              
+            }
+
+            return ''
         }
 
-        return 'asdf'
+          
+      },
+      vSelected(){
+        if(this.merchant.for_franchise == 0){
+
+              if(this.merchant.franchisee != null){
+
+                if(this.merchant.franchisee.trade != null){
+
+                  return this.merchant.franchisee.trade.name
+                }
+              }
+                  
+
+        }
+
+        return ''
       },
       
       street(){
@@ -412,18 +582,33 @@ export default{
         return ''
         
       },
-      vCountrySelected(){
-
+      vRegionSelected(){
         if(this.merchant.address == null){
 
           return ''
         }
-
-        if(this.merchant.address.country != null){
-          return this.merchant.address.country.name
+        if(this.merchant.address.region != null){
+          return this.merchant.address.region.name
         }
 
         return ''
+      },
+      vCountrySelected: {
+
+        get(){
+          
+          if(this.merchant.address == null){
+
+          return ''
+          }
+
+          if(this.merchant.address.country != null){
+            return this.merchant.address.country.name
+          }
+
+          return ''
+        }
+        
         
       },
       coordinates(){
@@ -504,18 +689,93 @@ export default{
   },
 
   methods: {
-      removeFile(file){
-        console.log(file);
+    
+      templateRegBy(){
+        return `
+                  <div class="dz-preview dz-file-preview" style='margin: 5px;'>
+                      <div class="dz-image" style="width: 100px;height: 100px">
+                          <img style="max-width: 100%; max-height: 100%" data-dz-thumbnail /></div>
+                      <div class="dz-details">
+                        <div class="dz-size"><span data-dz-size></span></div>
+                        <div class="dz-filename"><span data-dz-name></span></div>
+                      </div>
+                      <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                      <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                      <div class="dz-success-mark"><i class="fa fa-check"></i></div>
+                      <div class="dz-error-mark"><i class="fa fa-close"></i></div>
+
+                  </div>
+              `;
+      },
+      getImagesDZ(merchantId, desc, refDZ, dictName){
+          var vm = this
+          refDZ.$el.innerHTML='<center><i class="fa fa-cloud-upload" aria-hidden="true"></i><br>' + dictName + '<br /></center>'
+
+
+          axios.post(this.windowLocation + 'api/merchant-get-images-dz',{
+              merchant_id: merchantId,
+              desc: desc
+          }).then(function(response){
+
+
+            for(let i=0; i <= response.data.images.length - 1; i++){
+              
+              var img = new Image();
+              img.onload = function() {}
+              img.src = vm.windowLocation + response.data.images[i].path;
+
+               var mockFile = {
+                  id: response.data.images[i].id,
+                  name: response.data.images[i].name,
+                  size: response.data.images[i].size
+                };
+
+              var fileUrl = img.src
+              refDZ.manuallyAddFile(mockFile, fileUrl)
+            }
+
+          }).catch(function(){
+
+          })
+
+       
+          
+      },
+      removeFileTN(file){
         axios.post(this.windowLocation + 'api/merchant-remove-photos',{
+          merchant_id: this.merchant.id,
+          name: file.name,
+          desc: 'Trade Name'
+        })
+      },
+      removeFileOT(file){
+        axios.post(this.windowLocation + 'api/merchant-remove-photos',{
+          merchant_id: this.merchant.id,
+          name: file.name,
+          desc: 'Ownership Type'
+        })
+      },
+      removeFile(file){
+        axios.post(this.windowLocation + 'api/merchant-remove-photos',{
+          merchant_id: this.merchant.id,
           name: file.name,
           desc: 'Regulatory Agency'
         })
       },
-      showSuccess(){
-        console.log('success');
+      dropSendingTN(file, xhr, formData){
+        formData.append('merchant_id', this.merchant.id);
+        formData.append('size', file.size);
+        formData.append('desc', 'Trade Name');
+      },
+      dropSendingOT(file, xhr, formData){
+        formData.append('merchant_id', this.merchant.id);
+        formData.append('size', file.size);
+        formData.append('desc', 'Ownership Type');
       },
       dropSending(file, xhr, formData){
+
         formData.append('merchant_id', this.merchant.id);
+        formData.append('size', file.size);
         formData.append('desc', 'Regulatory Agency');
       },
       closeMerchantModal(){
@@ -557,6 +817,10 @@ export default{
       },
       cityCallback(val){
         this.cityId = val.id
+        this.$store.commit('placeCity', val.name)
+        bus.$emit('updateMarkerByPlaces')
+
+        
       },
       provinceCallback(val){
           var store = this.$store
@@ -571,20 +835,38 @@ export default{
 
           })
       },
+      regionCallback(){
+
+      },
       countryCallback(val){
          var store = this.$store
          var vm = this
+         this.$store.commit('placeCountry', val.sortname)
+         this.$store.commit('placeCity', undefined)
          axios.get(this.windowLocation + 'api/provinces?country_id=' + val.id)
          .then(function(response){
 
             store.commit('provinces', response.data.provinces);
             vm.vProvinces = response.data.provinces
-            vm.countryId = val.id
+           
+         })
+         .catch(function(){
+
+         });
+
+         axios.get(this.windowLocation + 'api/regions')
+         .then(function(response){
+
+            store.commit('regions', response.data.regions);
+            vm.vRegions = response.data.regions;
 
          })
          .catch(function(){
 
          })
+
+         bus.$emit('updateMarkerByPlaces')
+         this.countryId = val.id
       },
       getCountries(){
         var store = this.$store
@@ -683,11 +965,16 @@ export default{
        this.page = pageNum
       },
       editMerchant(e, merchantId){
+         e.preventDefault();
 
+        this.getImagesDZ(merchantId, 'Regulatory Agency', this.$refs.myVueDropzone, 'Upload Regulatory Agency Image Attachment');
+        this.getImagesDZ(merchantId, 'Trade Name', this.$refs.tradeNameDZ, 'Upload Trade Name Image Attachment');
+        this.getImagesDZ(merchantId, 'Ownership Type', this.$refs.dzOwnershipType, 'Upload Ownership Type Image Attachment');
+        console.log(this.$refs.dzOwnershipType)
         var store = this.$store;
         var vm = this;
         this.forFranchise = [];
-        e.preventDefault();
+       
         axios.get(this.windowLocation + 'api/merchant/' + merchantId + '/edit')
         .then(function(response){
             store.commit('merchant', response.data.merchant);
@@ -699,33 +986,21 @@ export default{
         })
         this.editMerchantModal = true
         
-        // this.$store.watch(function(state){
-        //   return state.merchant
-        // }, function(){
-
-        //   vm.vFranchisor = { trade_id: 1}
-        // },{
-        //   deep: true
-        // })
-
-        
-
       },
       checkTradeName(){
 
+          var store = this.$store;
           var vm = this;
           axios.post(this.windowLocation + 'api/trade-check-unique-name',{
               id: this.tradeId,
               name: this.tradeName
           }).then(function(response){
-              if(response.data.success){
-                vm.tradeNameError = false
-              }
-              else{
-                vm.tradeNameError = true
-              }
-          }).catch(function(){
+              
+          }).catch(function(error){
 
+            store.commit('alertMessage', error.response.data.name[0]);
+            vm.tradeNameError = true
+              
           })
       },
       removeError(){
@@ -752,12 +1027,12 @@ export default{
       consoleCallback(val) {
 
         if( typeof val == 'string'){
-          this.vFranchisor = this.merchant.trade_id
+          this.vFranchisor = ''
         }
         else{
           this.vFranchisor = val.id
+          this.$store.commit('merchantTradeName', { name: val.name})
         }
-        
         
       },
       saveMerchant(){
@@ -771,8 +1046,9 @@ export default{
           name: this.merchant.name,
           website: this.merchant.website,
           email: this.merchant.email,
-          trade_id: this.vFranchisor,
+          franchise_id: this.vFranchisor,
           for_franchise: this.merchant.for_franchise,
+          franchisor_name: this.merchant.trade.name,
           registered_by_id: this.merchant.registered_by_id,
           ownership_type_id: this.merchant.ownership_type_id,
           registration_no: this.merchant.registration_no,
@@ -815,14 +1091,34 @@ export default{
       },
       'merchant.registered_by_id': function(value){
 
-          if(typeof value == 'string'){
+        if(typeof value == 'string'){
             this.showRegUpload = false
           }
           else{
             this.showRegUpload = true
           }
+        
 
+      },
+      'merchant.ownership_type_id': function(value){
+        
+          if(typeof value == 'string'){
+            this.ownershipTypeNumber = false
+          }
+          else{
+            this.ownershipTypeNumber = true
+          }
+      },
+      'merchant.for_franchise': function(value){
+
+          if(this.merchant.for_franchise == 1){
+            this.franchisorName = ''
+            this.$refs.franchisorName.focus()
+            this.merchant.vFranchisor = ''
+
+          } 
       }
+
 
   }
 }
@@ -851,5 +1147,6 @@ export default{
 .margin-bottom {
   margin-bottom: 5px;
 }
+
 </style>
 

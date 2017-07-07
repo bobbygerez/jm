@@ -21,6 +21,7 @@ class CreatePhotosTable extends Migration
             $table->boolean('is_primary')->nullable()->default(0);
             $table->string('name')->nullable();
             $table->string('desc')->nullable();
+            $table->bigInteger('size')->nullable();
             $table->timestamps();
         });
     }

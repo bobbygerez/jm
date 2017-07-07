@@ -28,8 +28,9 @@ var app = new Vue({
 	},
 	data: {
 
-		isActive: false
+		isActive: false,
 	},
+	
 	computed: {
 
 		title(){

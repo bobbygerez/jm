@@ -79,4 +79,11 @@ class MerchantController extends Controller
 		return app('App\Http\Controllers\Merchant'. '\\'. $this->role. 'MerchantController')
 			->removePhotos();
 	}
+
+
+	public function getImagesDZ(){
+
+		return app('App\Http\Controllers\Merchant'. '\\'. $this->role. 'MerchantController')
+			->getImagesDZ();
+	}
 }

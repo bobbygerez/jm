@@ -22,8 +22,6 @@ class CreateFranchiseTable extends Migration
             $table->foreign('trade_id')->references('id')
                 ->on('trade');
             $table->integer('merchant_id')->unsigned()->nullable();
-            $table->foreign('merchant_id')->references('id')
-                ->on('merchants');
             $table->timestamps();
         });
     }

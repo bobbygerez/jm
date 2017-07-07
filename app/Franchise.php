@@ -12,7 +12,7 @@ class Franchise extends Model
     	'created_by', 'merchant_id', 'trade_id'
     ];
 
-    public function franchisor(){
+    public function trade(){
 
     	return $this->hasOne('App\Trade', 'id', 'trade_id');
     }

@@ -44,7 +44,7 @@ class SystemAdminMerchantController extends Controller
     public function edit($id){
 
         $merchant = $this->merchant->whereNoDecode('id', $id)
-            ->with(['branches','photos', 'address.country', 'address.province', 'address.city', 'trade.franchise'])
+            ->with(['branches','photos', 'address.country', 'address.province', 'address.city', 'trade', 'franchisee.trade'])
             ->first();
           
         return response()->json([
@@ -150,7 +150,8 @@ class SystemAdminMerchantController extends Controller
 
         return response()->json([
 
-                'message' => $result
+                'message' => $result,
+                'success' => true
 
             ]);
     }
@@ -161,5 +162,21 @@ class SystemAdminMerchantController extends Controller
 
         $result = $this->merchant->removePhotos($request);
 
+        return response()->json([
+
+                'success' => true
+
+            ]);
+
+    }
+
+    public function getImagesDZ(){
+
+        $request = app()->make('request');
+
+        return response()->json([
+
+                'images' => $this->merchant->getImagesDZ($request, $request->desc)
+            ]);
     }
 }

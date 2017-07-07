@@ -22,24 +22,22 @@ class CreateBranchesTable extends Migration
             $table->foreign('merchant_id')->references('id')
                 ->on('merchants');
             $table->string('branch_name');
-            $table->string('phone_no');
-            $table->string('mobile_no');
-            $table->string('reg_dti')->nullable();
-            $table->string('reg_sec')->nullable();
-            $table->integer('current_country')->nullable();
-            $table->integer('current_province')->nullable();
-            $table->integer('current_city')->nullable();
-            $table->integer('current_brgy')->nullable();
-            $table->integer('perma_country')->nullable();
-            $table->integer('perma_province')->nullable();
-            $table->integer('perma_city')->nullable();
-            $table->integer('perma_brgy')->nullable();
-            $table->string('contact_person_1')->nullable();
-            $table->string('contact_person_2')->nullable();
-            $table->string('ownership_type')->nullable();
-            $table->string('tin')->nullable();
-            $table->integer('business_type')->nullable();
-            $table->timestamps();
+            $table->string('email')->nullable();
+            $table->string('phone_no')->nullable();
+            $table->string('mobile_no')->nullable();
+             $table->boolean('status')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->integer('registered_by_id')->unsigned()->nullable();
+            $table->foreign('registered_by_id')->references('id')
+                ->on('registered_by');
+            $table->integer('ownership_type_id')->unsigned()->nullable();
+            $table->foreign('ownership_type_id')->references('id')
+                ->on('ownership_type');
+            $table->string('business_type')->nullable();
+            $table->string('misc_data')->nullable();
+            $table->string('registration_no')->unique()->nullable();
+            $table->date('date_registered')->nullable();
+            $table->softDeletes();
         });
     }
 

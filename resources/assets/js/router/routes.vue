@@ -4,6 +4,7 @@ import AccessRights from './dashboard/AccessRights.vue'
 import Positions from './dashboard/Positions.vue'
 import users from './dashboard/users.vue'
 import Merchant from './dashboard/Merchant.vue'
+import Branches from './dashboard/branches/branch.vue'
 // import Products from './dashboard/Products.vue'
 import UserProfile from './dashboard/UserProfile.vue'
 
@@ -13,7 +14,8 @@ import UserProfile from './dashboard/UserProfile.vue'
 	  { path: '/users', component: users },
 	  // { path: '/products', component: Products },
 	  { path: '/user-profile', component: UserProfile},
-	  { path: '/merchant', component: Merchant}
+	  { path: '/merchant', component: Merchant},
+	  { path: '/branches', component: Branches}
 
 	]
 </script>

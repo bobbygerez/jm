@@ -1,6 +1,21 @@
 <script type="text/javascript">
 	export const mutations = {
 
+		mapZoom(state, mapZoom){
+			state.mapZoom = mapZoom
+		},
+		placeCountry(state, placeCountry){
+			state.placeCountry = placeCountry
+		},
+		placeCity(state, placeCity){
+			state.placeCity = placeCity
+		},
+		placeAddress(state, placeAddress){
+			state.placeAddress = placeAddress
+		},
+		merchantTradeName(state, merchantTradeName){
+			state.merchant.trade = merchantTradeName
+		},
 		coordinates(state, coordinates){
 			state.coordinates = coordinates
 		},
@@ -73,6 +88,9 @@
 		},
 		provinces(state, provinces){
 			state.provinces = provinces
+		},
+		regions(state, regions){
+			state.regions = regions
 		},
 		countries(state, countries){
 			state.countries = countries

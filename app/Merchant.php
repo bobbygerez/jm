@@ -11,7 +11,7 @@ class Merchant extends Model
 
     protected $fillable = [
 
-    	'created_by', 'merchant_id', 'phone_no', 'mobile_no', 'contact_person', 'status', 'name', 'website', 'email', 'registered_by_id', 'ownership_type_id', 'registration_no', 'date_registered', 'for_franchise', 'trade_id'
+    	'created_by', 'merchant_id', 'phone_no', 'mobile_no', 'contact_person', 'status', 'name', 'website', 'email', 'registered_by_id', 'ownership_type_id', 'registration_no', 'date_registered', 'for_franchise', 'trade_id', 'franchise_id'
     	
     ];
 
@@ -38,7 +38,7 @@ class Merchant extends Model
 
     public function franchisee(){
 
-        return $this->hasMany('App\Franchise', 'merchant_id', 'id');
+        return $this->hasOne('App\Franchise', 'id', 'franchise_id');
     }
 
     public function photos(){

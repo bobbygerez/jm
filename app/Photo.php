@@ -10,7 +10,7 @@ class Photo extends Model
 
     protected $fillable = [
 
-    	'path', 'imageable_id', 'imageable_type', 'name', 'desc'
+    	'path', 'imageable_id', 'imageable_type', 'name', 'desc', 'size'
     	
     ];
 

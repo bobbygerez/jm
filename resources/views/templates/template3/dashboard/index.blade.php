@@ -22,103 +22,91 @@
         .user-table tr:hover{
             cursor: pointer;
         }
+        .sidebar, .main-panel {
+            overflow: visible;
+        }
+
     </style>
 </head>
 <body>
 <div class="wrapper" id="app">
-	<div class="sidebar" data-background-color="white" data-active-color="danger">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-    <!--
-		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-	-->
+<!--
+Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+-->
 
-    	<div class="sidebar-wrapper">
+        <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="{{ url('/') }}" class="simple-text">
                     {{ Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname }}
                 </a>
             </div>
 
-            
-<ul class="nav">
 
-    <li>
-       <router-link to="/positions">
-          <i class="ti-world" aria-hidden="true"></i>
-          <p>Positions</p>
-      </router-link>
-  </li>
-      <li>
-       <router-link to="/access-rights">
-           <i class="fa fa-key" aria-hidden="true"></i>
-           <p>Access Rights</p>
-       </router-link>
-    </li>
-    <li>
+            <ul class="nav">
 
-        <router-link to="/users">
-           <i class="fa fa-users"></i>
-           <p>Users</p>
-       </router-link>
+                <li>
+                    <router-link to="/positions">
+                        <i class="ti-world" aria-hidden="true"></i>
+                        <p>Positions</p>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link to="/access-rights">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                        <p>Access Rights</p>
+                    </router-link>
+                </li>
+                <li>
 
-    </li>
+                    <router-link to="/users">
+                        <i class="fa fa-users"></i>
+                        <p>Users</p>
+                    </router-link>
+
+                </li>
 
 
-    <li>
-        <router-link to="/user-profile">
-            <i class="ti-user"></i>
-            <p>My Profile</p>
-        </router-lilnk>
-    </li>
+                <li>
+                    <router-link to="/user-profile">
+                        <i class="ti-user"></i>
+                        <p>My Profile</p>
+                    </router-link>
+                </li>
 
-    <li>
-        <router-link to="/merchant">
-            <i class="fa fa-bank"></i>
-            <p>Merchants</p>
-        </router-lilnk>
-    </li>
+                <li>
+                    <router-link to="/merchant">
+                        <i class="fa fa-bank"></i>
+                        <p>Merchants</p>
+                    </router-link>
+                </li>
 
-    <li>
-        <router-link to="/products">
-           <i class="ti-desktop"></i>
-           <p>Products</p>
-       </router-link>
-    </li>
-    <li>
-        <a href="typography.html">
-            <i class="ti-text"></i>
-            <p>Typography</p>
-        </a>
-    </li>
-    <li>
-        <a href="icons.html">
-            <i class="ti-pencil-alt2"></i>
-            <p>Icons</p>
-        </a>
-    </li>
-    <li>
-        <a href="maps.html">
-            <i class="ti-map"></i>
-            <p>Maps</p>
-        </a>
-    </li>
-    <li>
-        <a href="notifications.html">
-            <i class="ti-bell"></i>
-            <p>Notifications</p>
-        </a>
-    </li>
-    <li class="active-pro">
+                
+                <li>
+                    <router-link to="/branches">
+                       <i class="fa fa-th" aria-hidden="true"></i>
+                        <p>Branches</p>
+                    </router-link>
+                </li>
+              
+               <!--  <li>
+                    <router-link to="/products">
+                        <i class="ti-desktop"></i>
+                        <p>Products</p>
+                    </router-link>
+                </li> -->
+                <li class="active-pro">
 
-    </li>
-</ul>
-            
-    	</div>
-    </div>
+                </li>
+            </ul>
+
+        </div><!-- sidebar-wrapper -->
+    </div><!-- end sidebar -->
 
     <div class="main-panel">
-		<nav class="navbar navbar-default" style="z-index: 1">
+        <nav class="navbar navbar-default" style="z-index: 1">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle">
@@ -134,28 +122,28 @@
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="ti-panel"></i>
-								<p>Stats</p>
+                                <p>Stats</p>
                             </a>
                         </li>
                         <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="ti-bell"></i>
-                                    <p class="notification">5</p>
-									<p>Notifications</p>
-									<b class="caret"></b>
-                              </a>
-                              <ul class="dropdown-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-bell"></i>
+                                <p class="notification">5</p>
+                                <p>Notifications</p>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
                                 <li><a href="#">Notification 1</a></li>
                                 <li><a href="#">Notification 2</a></li>
                                 <li><a href="#">Notification 3</a></li>
                                 <li><a href="#">Notification 4</a></li>
                                 <li><a href="#">Another notification</a></li>
-                              </ul>
+                            </ul>
                         </li>
-						<li>
+                        <li>
                             <a href="#">
-								<i class="ti-settings"></i>
-								<p>Settings</p>
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
                             </a>
                         </li>
                     </ul>
@@ -169,14 +157,14 @@
             <div class="container-fluid">
                 <div class="col-md-12">
                     <router-view></router-view>
-               </div>
+                </div>
             </div>
         </div>
 
         <footer class="footer">
             <div class="container-fluid">
 
-           
+
                 <nav class="pull-left">
                     <ul>
 
@@ -187,7 +175,7 @@
                         </li>
                         <li>
                             <a href="http://blog.creative-tim.com">
-                               Blog
+                                Blog
                             </a>
                         </li>
                         <li>
@@ -197,7 +185,7 @@
                         </li>
                     </ul>
                 </nav>
-				<div class="copyright pull-right">
+                <div class="copyright pull-right">
                     &copy; , made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
                 </div>
             </div>
@@ -205,7 +193,7 @@
 
 
     </div>
-</div>
+</div><!-- #app -->
 
 
 </body>

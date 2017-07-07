@@ -2,9 +2,10 @@
 <div class="google-maps">
   <gmap-map
     :center="center"
-    :zoom="zoom"
-    style="width: 700px; height: 400px"
+    :zoom="mapZoom"
+    style="width: 700px; height: 600px"
     :resize-bus="customBus"
+    ref="gmap"
   >
     <gmap-marker
       :position="markers.position"
@@ -21,7 +22,7 @@
       :opened="infoWinOpen"
       @closeclick="infoWinOpen=false"
       >
-
+       
       </gmap-info-window>
 
 
@@ -36,14 +37,20 @@
   // New in 0.4.0
   import * as VueGoogleMaps from 'vue2-google-maps';
   import Vue from 'vue';
+  import alert from 'vue-strap/src/alert'
+  import axios from 'axios'
 
   Vue.use(VueGoogleMaps, {
     load: {
       key: 'AIzaSyBVrbXla_-auHKFSjrpcbp1STuQ18JFb78',
       v: '3.28',
-      // libraries: 'places', //// If you need to use place input
+      libraries: 'https://maps.googleapis.com/maps/api/geocode/json?'
     }
   });
+
+  VueGoogleMaps.loaded.then(function(){
+    console.log('asdf');
+  })
 
   export default {
     data () {
@@ -53,19 +60,31 @@
           position: {lat: 14.115286, lng: 120.962112},
           title: "<a href='" + window.location.origin +"/dashboard/458047219#/'>Sample 1</a>"
         }
-
         ,
          customBus: new Vue(),
-        infoWinOpen: true,
-        zoom: 7
+        infoWinOpen: true
 
       }
     },
     computed: {
+        mapZoom(){
+          return this.$store.getters.mapZoom
+        },
+        placeCountry(){
 
+          return this.$store.getters.placeCountry
+        },
+        placeCity(){
+
+          return this.$store.getters.placeCity
+        },
+        placeAddress(){
+            return this.$store.getters.placeAddress
+        },
         merhcantInfo(){
 
-            return "<strong>" + this.merchant.name + "</strong><br /><a href='"+ this.merchant.website +"'>" + this.merchant.website + "</a><br />" + this.merchant.phone_no + "<br />" + this.merchant.mobile_no
+            return "<div style='float: left'><img src='https://iak.olx.ph/images_olxph/839817820_1_644x461.jpg?bucket=10' width='100'/></div><div style='float:right; margin-left: 15px;'> <strong>" + this.merchant.name + "</strong><br /><a href='"+ this.merchant.website +"'>" + this.merchant.website + "</a><br />" + this.merchant.phone_no + "<br />" + this.merchant.mobile_no + "</div>"
+
         },
         merchant(){
 
@@ -88,12 +107,22 @@
     },
     created(){
       bus.$on('updateBus', () => {
-          this.updateBus()
+
+          
           this.updateMarker()
-          this.zoom = 6
+          this.updateBus()
 
       });
+      bus.$on('updateMarkerByPlaces', () => {
+
+          this.markerByPlaces();
+      });
     },
+
+    mounted(){
+
+    },
+
     methods: {
       updateMarker(){
 
@@ -102,6 +131,52 @@
          this.center = latLng
          this.$store.commit('coordinates', latLng)
          
+      },
+      markerByPlaces(){
+
+
+        var store = this.$store
+        var vm = this
+          this.$refs.gmap.$mapCreated.then(() => {
+            var geocoder = new google.maps.Geocoder();
+
+             if(typeof vm.placeCity !='undefined'){
+
+                var  componentRestrictions = {
+                    country: vm.placeCountry,
+                    locality: vm.placeCity
+                   
+                  }
+             }
+             else{
+                var  componentRestrictions = {
+                    country: vm.placeCountry,
+                   
+                  }
+             }
+             
+              geocoder.geocode({ 
+
+                'address': vm.placeAddress, 
+                'componentRestrictions': componentRestrictions,
+
+              }, function(results, status) {
+                  
+                    if (status == google.maps.GeocoderStatus.OK) {
+
+                      var latitude = results[0].geometry.location.lat();
+                      var longitude = results[0].geometry.location.lng();
+                      var latLng = { lat: parseFloat(latitude), lng: parseFloat(longitude)};
+                      vm.markers.position =  latLng
+                      vm.center =latLng
+                      store.commit('coordinates', { lat: parseFloat(latitude), long: parseFloat(longitude)})
+                      console.log(latitude + 'Long' + longitude)
+                      
+
+                      } 
+
+               });
+          })
       },
       gmapMakerClick(){
         this.infoWinOpen = true
@@ -123,7 +198,6 @@
         padding-bottom: 5%; // This is the aspect ratio
         height: 0;
         overflow: hidden;
-        margin-left: 7%;
     }
     .google-maps iframe {
         position: absolute;

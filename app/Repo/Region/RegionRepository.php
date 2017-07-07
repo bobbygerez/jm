@@ -2,7 +2,7 @@
 
 use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
-use App\ModelLocations\Region;
+use App\Region;
 
 class RegionRepository extends BaseRepository implements RegionInterface{
 

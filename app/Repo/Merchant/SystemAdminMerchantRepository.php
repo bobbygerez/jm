@@ -14,26 +14,60 @@ class SystemAdminMerchantRepository extends BaseRepository implements MerchantIn
 
 	public function updateMerchant($request){
 
-		$franchisee = [];
-		$franchisee['trade_id'] = $request->all()['franchisee'];
-		$franchisee['created_by'] = Auth::User()->id;
-		$franchisee['merchant_id'] = $request->id;
-
 		$merchant = $this->findNoDecode($request->id);
-	
-		if($merchant->franchisee != null ){
 
-			$merchant->franchisee()->update($franchisee);
+		$requestAll = $request->all();
+
+		if($requestAll['for_franchise'] == 1){
+
+			$franchisor = [];
+			$franchisor['created_by'] = Auth::User()->id;
+			$franchisor['name'] = $requestAll['franchisor_name'];
+
+				if($merchant->trade != null){
+					
+					$merchant->trade()->update($franchisor);
+					$requestAll['trade_id'] = $merchant->trade->id;
+
+				}
+				else {
+
+					dd('null');
+					$merchant->trade()->create($franchisor);
+
+				}
+
+
+			$requestAll['franchise_id'] = null;
 		}
-		else{
+		else {
+			$franchisee = [];
+			$franchisee['trade_id'] = $requestAll['franchisee'];
+			$franchisee['created_by'] = Auth::User()->id;
+			$franchisee['merchant_id'] = $request->id;
 
-			$merchant->franchisee()->create($franchisee);
+			if($merchant->franchisee != null ){
+
+				$merchant->franchisee()->update($franchisee);
+				$requestAll['franchise_id'] = $merchant->franchisee->id;
+
+			}
+			else{
+
+				$franchise = $merchant->franchisee()->create($franchisee);
+				$requestAll['franchise_id'] = $franchise->id;
+			}
+
+			$requestAll['trade_id'] = null;
+		
+
+
 		}
-
-        $merchant->update($request->all());
+		
+        $merchant->update($requestAll);
 
         return $this->whereNoDecode('id', $request->id)
-            ->with(['branches','photos', 'trade.franchise', 'address.country', 'address.province', 'address.city'])
+            ->with(['branches','photos', 'trade', 'address.country', 'address.province', 'address.city', 'franchisee'])
             ->first();
 	}
 
@@ -61,7 +95,6 @@ class SystemAdminMerchantRepository extends BaseRepository implements MerchantIn
 
 	public function photoUpload( $request ){
 
-		dd($request->all());
 		$requestAll = $request->all();
 
 		$file = $request->file;
@@ -82,8 +115,23 @@ class SystemAdminMerchantRepository extends BaseRepository implements MerchantIn
 		return 'You have successfully uploaded the image';
 	}
 
-	public function removePhotos(){
+	public function removePhotos($request){
 
-		
+		$merchant = $this->findNoDecode($request->merchant_id);
+		$merchant->photos()->where('name', $request->name)
+						->where('desc', $request->desc)
+						->delete();
+
+	}
+
+	public function getImagesDZ($request, $desc){
+
+
+		$merchant = $this->findNoDecode($request->merchant_id);
+
+		return $merchant->photos()
+					->where('desc', $desc)
+					->get();
+
 	}
 }

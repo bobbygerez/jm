@@ -22,7 +22,9 @@ Route::group(['prefix' => 'api'], function(){
 
 	Route::resource('cities', 'City\CityController');
 	Route::resource('provinces', 'Province\ProvinceController');
+	Route::resource('regions', 'Region\RegionController');
 	Route::resource('countries', 'Country\CountryController');
+
 
 	Route::post('register-user-merchant', 'Auth\RegisterController@userMerchant');
 
@@ -42,7 +44,14 @@ Route::group(['prefix' => 'api'], function(){
 
 	Route::post('trade-check-unique-name', 'Trade\TradeController@checkUnique');
 
+
+	//Branches Controller
+	Route::resource('branches', 'Branch\BranchController');
+
+
+
 	//Merchant Controller
+	Route::post('merchant-get-images-dz', 'Merchant\MerchantController@getImagesDZ');
 	Route::post('merchant-remove-photos', 'Merchant\MerchantController@removePhotos');
 	Route::post('merchant-upload-photos', 'Merchant\MerchantController@uploadPhotos');
 	Route::post('merchant-contact-info', 'Merchant\MerchantController@contactInfo');

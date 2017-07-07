@@ -9,6 +9,10 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 	state: {
 
+		mapZoom: 6,
+		placeCountry: '',
+		placeCity: '',
+		placeAddress: '',
 		title: '',
 		users: {
 			data: [],
@@ -33,6 +37,7 @@ export const store = new Vuex.Store({
 		maritalStatus: {},
 		checkedRoles: [],
 		countries: {},
+		regions: {},
 		provinces: {},
 		cities: {},
 		branches: {},
@@ -95,6 +100,11 @@ export const store = new Vuex.Store({
         		name: '',
         		for_franchise: 0
         	},
+        	franchisee: {
+        		trade: {
+        			name: ''
+        		}
+        	},
         	address: {
         		lat: 0,
         		long: 0,
@@ -122,6 +132,21 @@ export const store = new Vuex.Store({
 	mutations,
 	actions,
 	getters: {
+
+		
+		mapZoom(){
+
+			return store.state.mapZoom
+		},
+		placeCountry(){
+			return store.state.placeCountry
+		},
+		placeCity(){
+			return store.state.placeCity
+		},
+		placeAddress(){
+			return store.state.placeAddress
+		},
 		coordinates(){
 
 			return store.state.coordinates
@@ -202,6 +227,10 @@ export const store = new Vuex.Store({
 	    provinces(){
 
 	    	return store.state.provinces
+	    },
+	    regions(){
+
+	    	return store.state.regions
 	    },
 	    countries(){
 
