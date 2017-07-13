@@ -13,7 +13,7 @@ class MerchantBranchSeeder extends Seeder
     public function run()
     {
 
-    	for ($i=1; $i < 60; $i++) { 
+    	for ($i=1; $i < 30; $i++) { 
     		
     		$merchant = Merchant::find($i);
 

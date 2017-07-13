@@ -5,11 +5,11 @@
     :zoom="mapZoom"
     style="width: 700px; height: 600px"
     :resize-bus="customBus"
-    ref="gmap"
+    ref="gmapBranch"
   >
     <gmap-marker
       :position="markers.position"
-      :title="merchant.name"
+      :title="branch.name"
       :clickable="true"
       :draggable="true"
       @dragend="dragend($event.latLng)"
@@ -18,7 +18,7 @@
     >
         <gmap-info-window 
       
-      :content="merhcantInfo"
+      :content="branchInfo"
       :opened="infoWinOpen"
       @closeclick="infoWinOpen=false"
       >
@@ -48,9 +48,6 @@
     }
   });
 
-  VueGoogleMaps.loaded.then(function(){
-    console.log('asdf');
-  })
 
   export default {
     data () {
@@ -67,7 +64,6 @@
       }
     },
     computed: {
-       
         mapZoom(){
           return this.$store.getters.mapZoom
         },
@@ -82,47 +78,48 @@
         placeAddress(){
             return this.$store.getters.placeAddress
         },
-        merhcantInfo(){
+        branchInfo(){
 
-            return "<div style='float: left'><img src='https://iak.olx.ph/images_olxph/839817820_1_644x461.jpg?bucket=10' width='100'/></div><div style='float:right; margin-left: 15px;'> <strong>" + this.merchant.name + "</strong><br /><a href='"+ this.merchant.website +"'>" + this.merchant.website + "</a><br />" + this.merchant.phone_no + "<br />" + this.merchant.mobile_no + "</div>"
+            return "<div style='float: left'><img src='https://iak.olx.ph/images_olxph/839817820_1_644x461.jpg?bucket=10' width='100'/></div><div style='float:right; margin-left: 15px;'> <strong>" + this.branch.branch_name + "</strong><br /><a href='"+ this.branch.merchant.website +"'>" + this.branch.merchant.website + "</a><br />" + this.branch.phone_no + "<br />" + this.branch.mobile_no + "</div>"
 
         },
-        merchant(){
+        branch(){
 
-            return this.$store.getters.merchant
+            return this.$store.getters.branch
         },
         lat(){
 
-          if(this.merchant.address != null){
-            return parseFloat(this.merchant.address.lat)
+          if(this.branch.address != null){
+            return parseFloat(this.branch.address.lat)
           }
           return parseFloat(14.115286)
         },
         lng(){
 
-          if(this.merchant.address != null){
-            return parseFloat(this.merchant.address.long)
+          if(this.branch.address != null){
+            return parseFloat(this.branch.address.long)
           }
           return parseFloat(120.962112)
         }
     },
     created(){
-      bus.$on('updateBus', () => {
+      
+    },
 
+    mounted(){
+
+      bus.$on('updateBus', () => {
           
           this.updateMarker()
           this.updateBus()
 
       });
+
       bus.$on('updateMarkerByPlaces', () => {
 
           this.markerByPlaces();
           this.updateBus()
       });
-    },
-
-    mounted(){
-
     },
 
     methods: {
@@ -132,19 +129,18 @@
          this.markers.position = latLng
          this.center = latLng
          this.$store.commit('coordinates', latLng)
-         
+
+
       },
       markerByPlaces(){
 
 
         var store = this.$store
         var vm = this
+        
+        if(typeof this.$refs.gmapBranch != 'undefined'){
 
-      
-
-        if(typeof this.$refs.gmap != 'undefined'){
-
-            this.$refs.gmap.$mapCreated.then(() => {
+           this.$refs.gmapBranch.$mapCreated.then(() => {
             var geocoder = new google.maps.Geocoder();
 
              if(typeof vm.placeCity !='undefined'){
@@ -184,9 +180,10 @@
 
                });
           })
+          
         }
 
-          
+         
       },
       gmapMakerClick(){
         this.infoWinOpen = true

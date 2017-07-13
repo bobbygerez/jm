@@ -94,6 +94,8 @@ $factory->define(App\Branch::class, function(Faker\Generator $faker){
             'created_by' => rand(1, 30),
             'phone_no' => $faker->tollFreePhoneNumber,
             'mobile_no' => $faker->e164PhoneNumber,
+            'email' => $faker->unique()->safeEmail,
+            'status' => rand(0, 1)
     ];
 });
 
@@ -200,7 +202,7 @@ $factory->define(App\Merchant::class, function(Faker\Generator $faker){
         'contact_person' => $faker->name,
         'registered_by_id' => rand(1,4),
         'ownership_type_id' => rand(1, 5),
-        'trade_id' => rand(1, 112),
+        'trade_id' => rand(1, 28),
         'for_franchise' => rand(0, 1),
         'phone_no' => $faker->tollFreePhoneNumber,
         'mobile_no' => $faker->e164PhoneNumber

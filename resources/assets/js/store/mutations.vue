@@ -1,6 +1,21 @@
 <script type="text/javascript">
 	export const mutations = {
-
+		
+		branchUrlSave(state, branchUrlSave){
+			state.branchUrlSave = branchUrlSave
+		},
+		activeTab(state, activeTab){
+			state.activeTab = activeTab
+		},
+		showModal(state, showModal){
+			state.showModal = showModal
+		},
+		per_page(state, per_page){
+			state.per_page = per_page
+		},
+		page(state, page){
+			state.page = page
+		},
 		mapZoom(state, mapZoom){
 			state.mapZoom = mapZoom
 		},
@@ -98,8 +113,11 @@
 		title(state, title){
 			state.title = title
 		},
-		branches(state, payload){
-			state.branches = payload
+		branch(state, branch){
+			state.branch = branch
+		},
+		branches(state, branches){
+			state.branches = branches
 		},
 		products(state, payload){
 			state.products = payload

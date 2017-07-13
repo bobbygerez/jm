@@ -4,6 +4,7 @@ use App\Repo\BaseRepository;
 use App\Repo\BaseInterface;
 use App\Merchant;
 use Auth;
+use File;
 
 class SystemAdminMerchantRepository extends BaseRepository implements MerchantInterface{
 
@@ -118,6 +119,16 @@ class SystemAdminMerchantRepository extends BaseRepository implements MerchantIn
 	public function removePhotos($request){
 
 		$merchant = $this->findNoDecode($request->merchant_id);
+
+		$photos = $merchant->photos()->where('name', $request->name)
+						->where('desc', $request->desc)
+						->get();
+
+		foreach ($photos as $photo) {
+			
+			File::delete($photo->path);
+		}
+
 		$merchant->photos()->where('name', $request->name)
 						->where('desc', $request->desc)
 						->delete();
@@ -134,4 +145,6 @@ class SystemAdminMerchantRepository extends BaseRepository implements MerchantIn
 					->get();
 
 	}
+
+	
 }

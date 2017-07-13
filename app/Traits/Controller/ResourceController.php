@@ -12,4 +12,18 @@ trait ResourceController {
 		 	->index();
 	}
 
+	public function show($id){
+
+		return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+		 	->show($id);
+	}
+
+	public function edit($id){
+
+		return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+		 	->edit($id);
+	}
+
+	
+
 }

@@ -9,11 +9,8 @@ class Branch extends Model
    
    protected $table = 'branches';
    protected $fillable = [
-   		'created_by', 'phone_no', 'mobile_no', 'reg_dti', 'reg_sec',
-   		'current_country', 'current_province', 'current_city', 'current_brgy',
-   		'perma_country', 'perma_province', 'perma_city', 'perma_brgy',
-   		'contact_person_1', 'contact_person_2', 'ownership_type', 'tin',
-   		'business_type'
+   		'created_by', 'branch_name', 'email', 'branch_id_no',
+   		'status', 'registration_no', 'date_registered'
    ];
 
    public function merchant(){
@@ -30,4 +27,13 @@ class Branch extends Model
 
          return $this->belongsToMany('App\User', 'branch_user', 'branch_id', 'user_id');
    }
+
+   public function photos(){
+
+        return $this->morphMany('App\Photo', 'imageable', 'imageable_type', 'imageable_id');
+    }
+   public function address(){
+
+        return $this->morphOne('App\Address', 'addressable', 'address_type', 'address_id');
+    }
 }

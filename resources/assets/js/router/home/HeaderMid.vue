@@ -2,19 +2,34 @@
 	<div class="header-mid">
             <div class="container">
                 <div class="header-mid-left">
-                    <p class="wellcome-to">Wellcome to Super Market</p>
+                    <p class="wellcome-to">Welcome to Juan Merkado</p>
                     <p class="register-or-login" v-show="register">
                         <a href="#" class="register" @click="registerUser('Register as User', 1)">Register as User</a>
                         or
                         <a href="#" class="login" @click="registerUser('Sell on Juan Merkado', 2)">Sell on Juan Merkado</a>
                     </p>
+                    <p class="register-or-login" v-show="register == false">
+                        <a :href="loginHref" class="register" >{{ myAccount }}!</a>
+                    </p>
                     
                 </div>
                 <div class="header-mid-right">
-                    <div class="header-mid-right-content">
+                    <div class="header-mid-right-content" v-if="register">
+                        <a href="/" @click="login($event)">
+                            <i class="flaticon-user-outline"></i>
+                            My Account
+                        </a>
+                    </div>
+                    <div class="header-mid-right-content" v-else>
                         <a :href="loginHref" @click="login()">
                             <i class="flaticon-user-outline"></i>
-                            {{ myAccount }}
+                            Dashboard
+                        </a>
+                    </div>
+                    <div class="header-mid-right-content" v-if="register == false">
+                        <a href="/" @click="logout($event)">
+                            <i class="fa fa-power-off" style="margin-top: 5px;"></i>
+                            Logout
                         </a>
                     </div>
                     <div class="header-mid-right-content">
@@ -137,6 +152,12 @@
                 <p>{{ alertMessage }}</p>
             </alert>
 
+            <alert v-model="alertLogout" placement="top" duration="4000" type="success" width="400px" dismissable>
+                <span class="fa fa-check-circle alert-icon-float-left-success"></span>
+                <strong>Logout Success!</strong>
+                <p>{{ alertMessage }}</p>
+            </alert>
+
             <alert v-model="alertDanger" placement="top" type="danger" duration="4000" width="400px" dismissable>
                 <span class="fa fa-warning alert-icon-float-left"> </span>
                 <strong> Authentication Failed!</strong>
@@ -165,7 +186,7 @@
 		data(){
 
 			return {
-
+                alertLogout: false,
 				windowLocation: window.location.origin + '/',
                 registerIn: '',
 				register: true,
@@ -180,7 +201,7 @@
                 email: '',
                 alertSuccess: false,
                 alertDanger: false,
-                loginHref: '#'
+                loginHref: '#',
 			}
 		},
         computed: {
@@ -204,6 +225,7 @@
 			this.sitekey = SiteKey.googleSiteKey
             this.authenticated()
 
+
 		},
 		methods: {
 
@@ -217,7 +239,7 @@
 					if(response.data.authenticated){
 
                         store.commit('myAccount', response.data.user);
-
+                        vm.register = false
                         vm.loginHref = 'dashboard'
 					}
 				})
@@ -246,12 +268,28 @@
             validateBeforeSubmit: function(){
               bus.$emit('check-register-form')
             },
-            login(){
-                 
-                 if(this.loginHref == '#'){
-                    this.loginModal = true
-                 }
+            login(e){
 
+                e.preventDefault()
+                this.loginModal = true
+       
+
+            },
+            logout(e){
+                e.preventDefault();
+                var vm = this
+                var store = this.$store
+                axios.get(window.location.origin + '/logout')
+                    .then(resp => {
+
+                        store.commit('alertMessage', resp.data.message);
+                        vm.alertLogout = true
+                        vm.register = true
+                    })
+
+                    .catch(resp => {
+
+                    })
             },
             LoginMethod: function(){
 
@@ -260,6 +298,8 @@
                   axios.post('login',{
                       email: this.email,
                       password: this.password
+
+
                   })
                     .then(function(response){
 
@@ -275,6 +315,7 @@
                             setTimeout(function() {
                                 vm.loginModal = false
                             }, 4500);
+                            vm.register = false
 
                            
                         }

@@ -1,32 +1,6 @@
 <script type="text/javascript">
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { state } from './state.vue'
-import { mutations } from './mutations.vue'
-import { actions } from './actions.vue'
-
-Vue.use(Vuex)
-export const store = new Vuex.Store({
-	state,
-	mutations,
-	actions,
-	getters: {
-		
-		branchUpdateParam(){
-
-			return store.state.branchUpdateParam
-		},
-		branchUrlSave(){
-			
-			return store.state.branchUrlSave
-		},
-		activeTab(){
-			return store.state.activeTab
-		},
-		showModal(){
-
-			return store.state.showModal
-		},
+	
+	export default {
 		per_page(){
 
 			return store.state.per_page
@@ -141,10 +115,6 @@ export const store = new Vuex.Store({
 
 	    	return store.state.title
 	    },
-	    branch(){
-
-	    	return store.state.branch
-	    },
 	    branches(){
 
 	    	return store.state.branches
@@ -187,9 +157,4 @@ export const store = new Vuex.Store({
 	    	return store.state.users
 	    }
 	}
-	
-	
-})
-
-
 </script>

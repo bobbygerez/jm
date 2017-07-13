@@ -1,6 +1,9 @@
-<?php namespace App\Repo;
+<?php 
+
+namespace App\Repo;
 
 use Obfuscate;
+use File;
 
 class BaseRepository{
 
@@ -95,5 +98,57 @@ class BaseRepository{
 		}
 
 		return [];
+	}
+
+	public function photoUpload( $request ){
+
+		$requestAll = $request->all();
+
+		$file = $request->file;
+
+		$destinationPath = 'images/uploads/';
+		// Get the orginal filname or create the filename of your choice
+		$filename =  str_random(10) . '-' . $file->getClientOriginalName();
+		// Copy the file in our upload folder
+		$file->move($destinationPath, $filename );
+
+		$model = $this->findNoDecode($request->id);
+
+		$requestAll['name'] = $file->getClientOriginalName();
+		$requestAll['path'] = $destinationPath.$filename;
+
+		$model->photos()->create($requestAll);
+		
+		return 'You have successfully uploaded the image';
+	}
+
+	public function removePhotos($request){
+
+		$model = $this->findNoDecode($request->id);
+
+		$photos = $model->photos()->where('name', $request->name)
+						->where('desc', $request->desc)
+						->get();
+
+		foreach ($photos as $photo) {
+			
+			File::delete($photo->path);
+		}
+
+		$model->photos()->where('name', $request->name)
+						->where('desc', $request->desc)
+						->delete();
+
+	}
+	
+	public function getImagesDZ($request, $desc){
+
+		
+		$merchant = $this->findNoDecode($request->id);
+
+		return $merchant->photos()
+					->where('desc', $desc)
+					->get();
+
 	}
 }

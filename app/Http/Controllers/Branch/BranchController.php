@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Branch;
 
+use App\Http\Requests\Branch\BranchCompanyInfoRequest;
 use App\Traits\Controller\ResourceController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,6 +24,42 @@ class BranchController extends Controller
 			return $next($request);
 		});
 
+    }
+
+    public function branchSearch(){
+
+    	return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+		 	->branchSearch();
+    }
+
+
+    public function companyInfoUpdate(BranchCompanyInfoRequest $request){
+
+        return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+            ->companyInfoUpdate();
+    }
+
+    public function contactInfoUpdate(){
+
+        return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+            ->contactInfoUpdate();
+    }
+
+    public function uploadPhotos(){
+        return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+            ->uploadPhotos();
+    }
+
+    public function removePhotos(){
+
+        return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+            ->removePhotos();
+    }
+
+    public function getImagesDZ(){
+
+        return app('App\Http\Controllers\Branch'. '\\'. $this->role. 'BranchController')
+            ->getImagesDZ();
     }
 
     

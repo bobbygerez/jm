@@ -27,7 +27,16 @@
     window.SiteKey = {!!  json_encode([
                     'googleSiteKey' => env('RE_CAP_SITE')
                   ]) !!}
+    
+    window.Laravel = {!!
+
+                json_encode([
+                    'csrfToken' => csrf_token()
+                  ])
+
+              !!}
 </script>
+
 <script type='text/javascript' src="{{ asset('template3/assets/js/template3.js') }}"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
 </body>

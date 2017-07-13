@@ -7,15 +7,6 @@
 
 Route::group(['prefix' => 'api'], function(){
 
-	// /** Locations **/
-	// Route::get('regions', 'LocationController@region');
-	// Route::get('provinces/{region_id}', 'LocationController@regionProvinces');
-	// Route::get('provinces', 'LocationController@provinceAll');
-	// Route::get('cities', 'LocationController@cityAll');
-	// Route::get('cities/{province_id}', 'LocationController@provinceCities');
-	// Route::get('barangays/{cityCode}', 'LocationController@cityBarangay');
-	// Route::get('countries', 'LocationController@countries');
-	
 	Route::post('photo/product/upload', 'Photo\PhotoController@photoProduct');
 	Route::resource('role', 'Role\AdminRoleController');
 	Route::resource('product', 'Product\ProductController');
@@ -46,6 +37,12 @@ Route::group(['prefix' => 'api'], function(){
 
 
 	//Branches Controller
+	Route::post('branch-contact-info-update', 'Branch\BranchController@contactInfoUpdate');
+	Route::post('branch-get-images-dz', 'Branch\BranchController@getImagesDZ');
+	Route::post('branch-remove-photos', 'Branch\BranchController@removePhotos');
+	Route::post('branch-upload-photos', 'Branch\BranchController@uploadPhotos');
+	Route::post('branch-company-info-update', 'Branch\BranchController@companyInfoUpdate');
+	Route::post('branch-search', 'Branch\BranchController@branchSearch');
 	Route::resource('branches', 'Branch\BranchController');
 
 
@@ -101,20 +98,20 @@ Route::get('dashboard/{user_id}', 'DashboardController@userId');
 
 /****************** END ROUTE PREFIX ***************/
 
-// Route::post('api/authenticated', function(){
+Route::post('api/authenticated', function(){
 
-// 	  if(Auth::check()){
+	  if(Auth::check()){
 
-//             return response()->json([
+            return response()->json([
 
-//                     'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
-//                     'id' => Obfuscate::encode(Auth::User()->id),
-//                     'authenticated' => true
+                    'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
+                    'id' => Obfuscate::encode(Auth::User()->id),
+                    'authenticated' => true
 
-//                 ]);
-//         }
+                ]);
+        }
 
-//         return response()->json([
-//                 'authenticated' => false
-//             ]);
-// });
+        return response()->json([
+                'authenticated' => false
+            ]);
+});

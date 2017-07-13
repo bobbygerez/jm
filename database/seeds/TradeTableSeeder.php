@@ -15,7 +15,7 @@ class TradeTableSeeder extends Seeder
         
         $faker = Faker\Factory::create();
 
-        for ($i=1; $i < 112; $i++) { 
+        for ($i=1; $i < 30; $i++) { 
         	Trade::create([
 
         		'created_by' => rand(1, 30),

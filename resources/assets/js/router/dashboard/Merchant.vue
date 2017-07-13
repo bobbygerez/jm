@@ -342,7 +342,7 @@
                       </div>
                   </div>
                   <div class="form-group">
-                      <label for="city" class="col-lg-3 control-label">Select City:</label>
+                      <label for="city" class="col-lg-3 control-label">City:</label>
                       <div class="col-lg-9">
                         <v-select :on-change="cityCallback" value="id" label="name" v-model="vCitySelected" :options="vCities"></v-select>
                        </div>
@@ -834,15 +834,19 @@ export default{
           .catch(function(response){
 
           })
+        this.$store.commit('placeAddress', val.name)
+         bus.$emit('updateMarkerByPlaces')
       },
-      regionCallback(){
-
+      regionCallback(val){
+         this.$store.commit('placeAddress', val.description)
+         bus.$emit('updateMarkerByPlaces')
       },
       countryCallback(val){
          var store = this.$store
          var vm = this
          this.$store.commit('placeCountry', val.sortname)
          this.$store.commit('placeCity', undefined)
+         
          axios.get(this.windowLocation + 'api/provinces?country_id=' + val.id)
          .then(function(response){
 

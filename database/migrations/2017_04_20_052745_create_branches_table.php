@@ -21,11 +21,12 @@ class CreateBranchesTable extends Migration
             $table->integer('merchant_id')->unsigned()->nullable();
             $table->foreign('merchant_id')->references('id')
                 ->on('merchants');
+            $table->string('branch_id_no')->nullable();
             $table->string('branch_name');
             $table->string('email')->nullable();
             $table->string('phone_no')->nullable();
             $table->string('mobile_no')->nullable();
-             $table->boolean('status')->nullable();
+            $table->boolean('status')->nullable();
             $table->string('contact_person')->nullable();
             $table->integer('registered_by_id')->unsigned()->nullable();
             $table->foreign('registered_by_id')->references('id')
@@ -37,6 +38,7 @@ class CreateBranchesTable extends Migration
             $table->string('misc_data')->nullable();
             $table->string('registration_no')->unique()->nullable();
             $table->date('date_registered')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

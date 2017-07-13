@@ -105,9 +105,37 @@ class LoginController extends Controller
         );
     }
 
-    
+    public function homeAuth(){
 
-   
+        dd('asdf');
+
+        if(Auth::check()){
+
+            return response()->json([
+
+                    'user' => Auth::User()->personalData->firstname . ' ' . Auth::User()->personalData->lastname,
+                    'id' => Obfuscate::encode(Auth::User()->id),
+                    'authenticated' => true
+
+                ]);
+        }
+
+        return response()->json([
+                'authenticated' => false
+            ]);
+    }
+
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        return response()->json([   
+                'success' => true,
+                'message' => 'You have successfully logout.'
+            ]);
+
+    }
 
 
 }

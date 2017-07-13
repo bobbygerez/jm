@@ -17,9 +17,12 @@ import MenuPrimary from './router/home/MenuPrimary.vue'
 import Banner from './router/home/Banner.vue'
 import {store} from './store/store.vue'
 
-Vue.use(VeeValidate);
+axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': window.Laravel.csrfToken,
+    'X-Requested-With': 'XMLHttpRequest'
+};
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+Vue.use(VeeValidate);
 
 window.bus = new Vue();
 
